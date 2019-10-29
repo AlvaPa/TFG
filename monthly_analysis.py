@@ -4,21 +4,22 @@ import numpy as np
 import numba
 
 
-def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant):
+def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant, days):
     """
 
-    :param data_index:
-    :param data_lon:
-    :param data_lat:
-    :param data_month:
-    :param data_pollutant:
+    :param data_index: Index provided by the text file
+    :param data_lon: Longitude provided by the text file
+    :param data_lat: Latitude provided by the text file
+    :param data_month: Month provided by the text file
+    :param data_pollutant: Daily pollution provided by the text file [ug/m^3]
+    :param days: Number of days the year has, whether it's a leap year or not
     :return:
     """
 
     "Variable's initialization"
     # Arrays made for sorting the data through months (and computing the median of each month)
     # Size of the arrays
-    size = int(12 * len(data_month) / 365)
+    size = int(12 * len(data_month) / days)
     # Index of the location
     index = np.array([0] * size, dtype=int)
     # Longitude of the location
@@ -54,20 +55,16 @@ def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant)
     # Robust kurtosis
     monthly_robust_kurtosis = np.array([0] * 12, dtype=float)
     # Median of the pollution for every location for each month [ug/m^3]
-    statistical_pollution = np.array([0] * int(len(data_month) / 365), dtype=float)
+    statistical_pollution = np.array([0] * int(len(data_month) / days), dtype=float)
 
     "Sorting data through months and obtaining the median of each month"
-
-    print('Sorting the data through months and obtaining the media of each month')
-    for i in range(0, int(len(data_index) / 365)):
+    for i in range(0, int(len(data_index) / days)):
         # We separate the data for every location
         index, lon, lat, month, pollution, m = \
             monthly_separation(index, lon, lat, month, pollution, monthly_pollution, data_index, data_lon, data_lat,
-                               data_month, data_pollutant, i, m)
+                               data_month, data_pollutant, i, m, days)
 
     "Location statistical analysis"
-
-    print('We compute the statistical variables')
     # We compute the statistical variables
     sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
         monthly_yule_kendall, monthly_robust_kurtosis = \
@@ -75,15 +72,13 @@ def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant)
                            monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis, statistical_pollution,
                            index, lon, lat, month, pollution)
 
-    print('Median:', monthly_median, '\n', 'Interquartile range: ', monthly_iqr, '\n', 'Yule-Kendall index: ',
-          monthly_yule_kendall, '\n', 'Robust kurtosis: ', monthly_robust_kurtosis)
-
-    return
+    return sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
+        monthly_yule_kendall, monthly_robust_kurtosis
 
 
 @numba.njit()
 def monthly_separation(index, lon, lat, month, pollution, monthly_pollution, data_index, data_lon, data_lat, data_month,
-                       data_pollutant, i, m):
+                       data_pollutant, i, m, days):
     """
     This function returns the annual median of the pollutant's concentration for every given location, allowing us
     to later perform an statistical analysis of the location.
@@ -100,11 +95,12 @@ def monthly_separation(index, lon, lat, month, pollution, monthly_pollution, dat
     :param data_pollutant: Mean of the day and location of the concentration of the pollutant [ug/m^3]
     :param i:
     :param m:
+    :param days:
     :return: annual_index, annual_lon, annual_lat, annual_month, annual_day, annual_pollutant, j
     """
 
     # We initialize the variables
-    j = i * 365
+    j = i * days
     # We separate each index according to it's spatial location
     k = 0
     # Index which counts the days passed in a year
@@ -115,12 +111,12 @@ def monthly_separation(index, lon, lat, month, pollution, monthly_pollution, dat
     condition = True
 
     while condition:
-        for l in range(0, 364):
+        for l in range(0, days - 1):
             monthly_pollution[x] = data_pollutant[l + j + n]
             k += 1
             x += 1
             # When the year or the month have finished, we stop the iteration
-            if ((l + j + n + 1) % 365) == 0 or data_month[l + j + n] < data_month[l + j + n + 1]:
+            if ((l + j + n + 1) % days) == 0 or data_month[l + j + n] < data_month[l + j + n + 1]:
                 x = 0
                 break
 
@@ -177,7 +173,7 @@ def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorte
     i = 0
 
     while m < 12:
-        for k in range(0, n - 1):
+        for k in range(0, n):
             sorted_index[k + j] = index[12 * k + m]
             sorted_lon[k + j] = lon[12 * k + m]
             sorted_lat[k + j] = lat[12 * k + m]

@@ -4,29 +4,22 @@ import pandas as pd
 import numpy as np
 import os
 import sys
-import monthly_analysis
 
 
-def read():
+def read(root, name, year):
     """
     Main function of this script, where all the other functions are called to read the files necessary to perform the
     statistical analysis.
     :return:
     """
-
-    # We obtain the absolute path of the directory where the files are saved.
-    print('Finding path')
-    root = path_finder()
-    # We generate the file's name for each year and each pollutant
-    file_name = 'surface_2007_no2.txt.gz'
-    # The absolute path is
+    # We generate the file's name for the pollutant and year
+    file_name = 'surface_%s_%s.txt.gz' % (year, name)
+    # We generate the absolute path
     absolute_path = os.path.abspath(os.path.join(root, file_name))
-    print('The absolute path is', absolute_path)
     # We open the file and assign the variables
-    print('Reading file')
-    data_index, data_lon, data_lat, data_month, data_day, data_pollutant = file_opening(absolute_path)
-    print('Performing analysis')
-    monthly_analysis.monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant)
+    data_index, data_lon, data_lat, data_month, data_pollutant = file_opening(absolute_path, name)
+
+    return data_index, data_lon, data_lat, data_month, data_pollutant
 
 
 def path_finder():
@@ -52,11 +45,12 @@ def path_finder():
     sys.exit('The file does not exist.')
 
 
-def file_opening(absolute_path):
+def file_opening(absolute_path, name):
     """
     Function designed to open the files with the stored data. It opens all the data necessary to perform the statistical
     analysis.
     :param absolute_path: Absolute path of the file to be opened.
+    :param name: Pollutant's name
     :return: index, lon, lat, month, day, pollutant
     """
 
@@ -68,22 +62,17 @@ def file_opening(absolute_path):
     data_lon = np.array([], dtype=float)
     data_lat = np.array([], dtype=float)
     data_month = np.array([], dtype=int)
-    data_day = np.array([], dtype=int)
     data_pollutant = np.array([], dtype=float)
 
     # We start reading the file. Since it's so big, chunk of data are loaded at a time
     for chunk in pd.read_csv(absolute_path, sep=" ", compression='gzip',
                              dtype={'index': int, 'lon': float, 'lat': float, 'year': int, 'month': int, 'day': int,
-                                    'aqum': float, 'no2': float, 'sd': float}, low_memory=False, chunksize=chunk_size):
+                                    'aqum': float, '%s' % name: float, 'sd': float}, low_memory=False,
+                             chunksize=chunk_size):
         data_index = np.append(data_index, np.array(chunk['index'].tolist(), dtype=int))
         data_lon = np.append(data_lon, np.array(chunk['lon'].tolist(), dtype=float))
         data_lat = np.append(data_lat, np.array(chunk['lat'].tolist(), dtype=float))
         data_month = np.append(data_month, np.array(chunk['month'].tolist(), dtype=int))
-        data_day = np.append(data_day, np.array(chunk['day'].tolist(), dtype=int))
-        data_pollutant = np.append(data_pollutant, np.array(chunk['no2'].tolist(), dtype=float))
+        data_pollutant = np.append(data_pollutant, np.array(chunk['%s' % name].tolist(), dtype=float))
 
-    return data_index, data_lon, data_lat, data_month, data_day, data_pollutant
-
-
-if __name__ == '__main__':
-    read()
+    return data_index, data_lon, data_lat, data_month, data_pollutant

@@ -2,9 +2,15 @@
   <dictionary name="FA">
     <words>
       <w>aqum</w>
+      <w>boxplot</w>
+      <w>boxplots</w>
+      <w>epanechnikov</w>
+      <w>frac</w>
       <w>interquantile</w>
       <w>interquartile</w>
       <w>kurtosis</w>
+      <w>lightgrey</w>
+      <w>practicas</w>
     </words>
   </dictionary>
 </component>
