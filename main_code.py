@@ -24,7 +24,7 @@ def main_code():
     root = read_files.path_finder()
 
     # We start the iterations to analyze all the data
-    for x in range(2, 4):
+    for x in range(0, 4):
         # Pollutant which is going to be analyzed for the five years of data collected
         name = pollutants_names[x]
         big_name = pollutant_big_name[x]
@@ -48,12 +48,12 @@ def main_code():
                 monthly_analysis.monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant, days)
 
             # We plot the boxplots and histograms
-            diagrams.diagrams_representation(sorted_pollution, name, big_name, year)
+            pollution, longitude, latitude = diagrams.diagrams_representation(sorted_pollution, sorted_lon,
+                                                                              sorted_lat, name, big_name, year)
 
             # We create the output files
-            output_files.output_and_closing(sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution,
-                                            monthly_median, monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis,
-                                            name, year)
+            output_files.output_and_closing(pollution, longitude, latitude, monthly_median, monthly_iqr,
+                                            monthly_yule_kendall, monthly_robust_kurtosis, name, year)
 
             # We emit a beep to show that this pollutant in the selected year has been analyzed
             winsound.Beep(2500, 500)
