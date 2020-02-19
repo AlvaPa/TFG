@@ -10,7 +10,8 @@ def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_
     """"""
 
     # We make the boxplots of the pollutants
-    pollution, longitude, latitude = boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year)
+    pollution, pollution_histogram, longitude, latitude = boxplot(sorted_pollution, sorted_lon, sorted_lat, name,
+                                                                  big_name, year)
 
     # We compute the kernel density smoothing to plot it next to the histograms
     # We initialize some parameters
@@ -21,10 +22,10 @@ def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_
                                  [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::])],
                                 dtype=float)
     # We compute the quartic function
-    quartic_function = quartic_kernel(pollution, h, quartic_function)
+    quartic_function = quartic_kernel(pollution_histogram, h, quartic_function)
 
     # We plot the histogram and the kernel density smoothing
-    histogram(pollution, name, big_name, year, quartic_function)
+    histogram(pollution_histogram, name, big_name, year, quartic_function)
 
     return pollution, longitude, latitude
 
@@ -44,8 +45,16 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
 
     # Initialize array for months and dictionary, also the longitude and latitude
     dictionary = {}
-    # Pollution
+    # Pollution for the output
     pollution = \
+        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
+    # Pollution for the histogram
+    pollution_histogram = \
         np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
                   [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
                   [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
@@ -78,6 +87,7 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
     for i in range(0, 12):
         for j in range(0, int(len(sorted_pollution) / 12)):
             pollution[i, j] = sorted_pollution[j + n]
+            pollution_histogram[i, j] = sorted_pollution[j + n]
             longitude[i, j] = sorted_lon[j + n]
             latitude[i, j] = sorted_lat[j + n]
             k += 1
@@ -85,9 +95,10 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
         n += k
         k = 0
         # We add the month's pollution to the dictionary to plot all the months later
-        dictionary['month_%s' % str(i + 1)] = pollution[i, ::]
+        dictionary['month_%s' % str(i + 1)] = pollution_histogram[i, ::]
 
     # We plot the box and whiskers plot for the whole year
+
     # Parameters
     fig = plt.figure(12, figsize=(18, 12))
     ax = fig.add_subplot(111)
@@ -117,7 +128,7 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
     # We close the figure
     plt.close(12)
 
-    return pollution, longitude, latitude
+    return pollution, pollution_histogram, longitude, latitude
 
 
 def histogram(pollution, name, big_name, year, quartic_function):
