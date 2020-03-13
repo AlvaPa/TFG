@@ -5,7 +5,7 @@ import os
 
 
 def output_and_closing(pollution, longitude, latitude, monthly_median,
-                       monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis, name, year):
+                       monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis, name, year, r, e, d, e_mod, d_mod):
     """
     This function performs the output to the previously computed statistical variables and the sorted data.
     After that, it closes the data opened at the beginning of the iteration
@@ -23,6 +23,7 @@ def output_and_closing(pollution, longitude, latitude, monthly_median,
 
     output_sorted_data(pollution, longitude, latitude, name, year)
     statistics_output(monthly_median, monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis, name, year)
+    coefficients_output(r, e, d, e_mod, d_mod, name, year)
 
     return
 
@@ -60,3 +61,16 @@ def statistics_output(monthly_median, monthly_iqr, monthly_yule_kendall, monthly
         df.to_csv(file, index=False, chunksize=chunk_size, sep=',')
 
     return
+
+
+def coefficients_output(r, e, d, e_mod, d_mod, name, year):
+    """"""
+
+    # We generate the data frame to output
+    df = pd.DataFrame({'r': r, 'd': d, 'e': e, 'd_mod': d_mod, 'e_mod': e_mod})
+    # We generate the file
+    absolute_path = os.path.abspath(os.path.join(r'C:\Users\FA\Desktop\practicas_alvaro\output_data',
+                                                 'efficiency_coefficients_%s_%s.txt' % (name, year)))
+    with open(absolute_path, 'w+') as file:
+        # We write the file
+        df.to_csv(file, index=False, sep=',')

@@ -48,12 +48,13 @@ def main_code():
                 monthly_analysis.monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant, days)
 
             # We plot the boxplots and histograms
-            pollution, longitude, latitude = diagrams.diagrams_representation(sorted_pollution, sorted_lon,
-                                                                              sorted_lat, name, big_name, year)
+            pollution, longitude, latitude, r, e, d, e_mod, d_mod = \
+                diagrams.diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year)
 
             # We create the output files
             output_files.output_and_closing(pollution, longitude, latitude, monthly_median, monthly_iqr,
-                                            monthly_yule_kendall, monthly_robust_kurtosis, name, year)
+                                            monthly_yule_kendall, monthly_robust_kurtosis, name, year, r, e, d, e_mod,
+                                            d_mod)
 
             # We emit a beep to show that this pollutant in the selected year has been analyzed
             winsound.Beep(2500, 500)

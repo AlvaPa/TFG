@@ -7,7 +7,17 @@ from constants import *
 
 
 def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
-    """"""
+    """
+    Main functions where the boxplots and histograms are represented. Here it is also computed the coefficients of the
+    histograms to determine the efficiency criteria.
+    :param sorted_pollution: Monthly median of the pollutant's concentration of each location [ug/m^3]
+    :param sorted_lon: Longitude sorted to math the pollution
+    :param sorted_lat: Latitude sorted to math the pollution
+    :param name: Hazard being studied
+    :param big_name:
+    :param year: Year
+    :return: pollution, longitude, latitude
+    """
 
     # We make the boxplots of the pollutants
     pollution, pollution_histogram, longitude, latitude = boxplot(sorted_pollution, sorted_lon, sorted_lat, name,
@@ -16,18 +26,34 @@ def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_
     # We compute the kernel density smoothing to plot it next to the histograms
     # We initialize some parameters
     h = np.array([0] * 12, dtype=float)
-    quartic_function = np.array([[0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                 [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                 [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                 [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::])],
-                                dtype=float)
-    # We compute the quartic function
-    quartic_function = quartic_kernel(pollution_histogram, h, quartic_function)
+    quadratic_function = \
+        np.array([[0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
+                  [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
+                  [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
+                  [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::])],
+                 dtype=float)
+    # We compute the quadratic function
+    quadratic_function = quadratic_kernel(pollution_histogram, h, quadratic_function)
 
     # We plot the histogram and the kernel density smoothing
-    histogram(pollution_histogram, name, big_name, year, quartic_function)
+    histogram(pollution_histogram, name, big_name, year, quadratic_function)
 
-    return pollution, longitude, latitude
+    # We initialize the efficiency coefficients we want to compute
+    # Pearson coefficient
+    r = np.array([0] * 12, dtype=float)
+    # Nash-Sutcliffe coefficient
+    e = np.array([0] * 12, dtype=float)
+    # Index of agreement
+    d = np.array([0] * 12, dtype=float)
+    # Modified Nash-Sutcliffe coefficient
+    e_mod = np.array([0] * 12, dtype=float)
+    # Modified index of agreement
+    d_mod = np.array([0] * 12, dtype=float)
+
+    # We compute these coefficients
+    r, e, d, e_mod, d_mod = efficiency_criteria(pollution_histogram, quadratic_function, r, e, d, e_mod, d_mod)
+
+    return pollution, longitude, latitude, r, e, d, e_mod, d_mod
 
 
 def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
@@ -131,7 +157,7 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
     return pollution, pollution_histogram, longitude, latitude
 
 
-def histogram(pollution, name, big_name, year, quartic_function):
+def histogram(pollution, name, big_name, year, quadratic_function):
     """"""
 
     for i in range(0, 12):
@@ -150,8 +176,8 @@ def histogram(pollution, name, big_name, year, quartic_function):
                      % (big_name, month, year))
         ax.set_xlabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)')
         ax.set_ylabel('Probability density')
-        ax.hist(pollution[i, ::], bins=n_bins, density=True)
-        ax.plot(pollution[i, ::], quartic_function[i, ::], '--', lw=1.5)
+        n = ax.hist(pollution[i, ::], bins=n_bins, density=True)
+        ax.plot(pollution[i, ::], quadratic_function[i, ::], '--', lw=1.5)
         ax.text(0.7, 0.95, r'Bin width = %f $\frac{{\mu}g}{m^{3}}$' % width, transform=ax.transAxes)
         fig.tight_layout()
         plt.savefig(r'C:\Users\FA\Desktop\practicas_alvaro\images\histograms\%s_%s_%s_histograms.tiff'
@@ -193,8 +219,14 @@ def month_selector(i):
 
 
 @numba.jit(nopython=True)
-def quartic_kernel(pollution, h, quartic_function):
-    """"""
+def quadratic_kernel(pollution, h, quadratic_function):
+    """
+    Function which computes the quadratic kernel in order to plot the histogram.
+    :param pollution:
+    :param h:
+    :param quadratic_function:
+    :return:
+    """
 
     # We start computing the functions
     k_t = 0
@@ -215,7 +247,47 @@ def quartic_kernel(pollution, h, quartic_function):
                 if t > 1.0:
                     continue
             constant = h[i] * n
-            quartic_function[i, j] = k_t / constant
+            quadratic_function[i, j] = k_t / constant
             k_t = 0
 
-    return quartic_function
+    return quadratic_function
+
+
+def efficiency_criteria(pollution_histogram, quadratic_function, r, e, d, e_mod, d_mod):
+    """"""
+
+    # We start computing the coefficients
+    num_r = 0.0
+    den_r_poll = 0.0
+    den_r_quar = 0.0
+    num_d = 0.0
+    den_d = 0.0
+    num_d_mod = 0.0
+    den_d_mod = 0.0
+    den_e_mod = 0.0
+    for i in range(0, 12):
+        # Mean of the measured pollution
+        mean_pollution = np.mean(pollution_histogram[i, ::])
+        # Mean of the quadratic function
+        mean_quadratic = np.mean(quadratic_function[i, ::])
+        n = len(pollution_histogram[i, ::])
+        for j in range(0, n):
+            num_r = num_r + ((pollution_histogram[i, j] - mean_pollution) * (quadratic_function[i, j] - mean_quadratic))
+            den_r_poll = den_r_poll + ((pollution_histogram[i, j] - mean_pollution) ** 2)
+            den_r_quar = den_r_quar + ((quadratic_function[i, j] - mean_quadratic) ** 2)
+            num_d = num_d + ((pollution_histogram[i, j] - quadratic_function[i, j]) ** 2)
+            den_d = den_d + (np.abs(quadratic_function[i, j] - mean_pollution) + np.abs(pollution_histogram[i, j]
+                                                                                        - mean_pollution)) ** 2
+            num_d_mod = num_d_mod + np.abs(pollution_histogram[i, j] - quadratic_function[i, j])
+            den_d_mod = den_d_mod + (
+                        np.abs(quadratic_function[i, j] - mean_pollution) + np.abs(pollution_histogram[i, j]
+                                                                                   - mean_pollution))
+            den_e_mod = den_e_mod + np.abs(pollution_histogram[i, j] - mean_pollution)
+        # We compute the coefficients
+        r[i] = (num_r / (np.sqrt(den_r_poll) * np.sqrt(den_r_quar))) ** 2
+        d[i] = 1 - (num_d / den_d)
+        e[i] = 1 - (num_d / den_r_poll)
+        d_mod[i] = 1 - (num_d_mod / den_d_mod)
+        e_mod[i] = 1 - (num_d_mod / den_e_mod)
+
+    return r, e, d, e_mod, d_mod
