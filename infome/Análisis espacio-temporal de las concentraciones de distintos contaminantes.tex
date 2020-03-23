@@ -1,0 +1,105 @@
+% Template created in order to write a scientific document from an university or enterprise in spanish.
+
+% We initiate the packages and functions
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{a4paper,
+total={170mm, 257mm},
+left=20mm,
+top=20mm
+}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\pagenumbering{gobble}
+
+\begin{document}
+
+%Title page
+\begin{titlepage}
+
+%Corporation's logo
+\begin{center}
+
+\begin{minipage}[c]{170mm}
+\includegraphics[scale=0.7]{logo_uva}
+\hspace{3cm}
+\includegraphics[scale=0.4]{logotipo-3-3}
+
+\hspace{1.2cm}Facultad de ciencias
+\end{minipage}
+
+\end{center}
+%Title, author and date
+\begin{center}
+
+\vspace{4cm}
+\Huge \textbf{TRABAJO FIN DE GRADO} \\
+\vspace{2cm}
+\Large Grado en Física \\
+\vspace{2cm}
+{\Large \textbf{Análisis espacio-temporal de las concentraciones de distintos contaminantes}} \\
+\vspace{4cm}
+\normalsize \textbf{Autor: Álvaro Patricio Prieto Pérez} \\
+\vspace{1cm}
+\textbf{Tutor/es: Isidro Pérez Bartolomé \\ María Ángeles García}
+
+\end{center}
+
+\end{titlepage}
+
+%Giving thanks
+\newpage
+\vspace{10cm}
+\newpage
+
+\begin{minipage}[]{20cm}
+\vspace{10cm}
+\end{minipage}
+
+
+\begin{flushright}
+\normalsize \textit{En primer lugar, quiero agradecer a mis tutores por haberme ayudado y ofrecido sus puntos de vista para la realización de este Trabajo de Fin de Grado, así como a la European Centre for Environment and Human Health por los datos disponibles. Del mismo modo, quiero agradecer a todos mis familiares y amigos que han estado allí tanto en los momentos buenos como en los malos, pues el apoyo que me han dado a lo largo de mi vida ha supuesto que este trabajo sea posible.}
+\end{flushright}
+
+%Table of contents
+\parskip = 0.5cm
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\tableofcontents
+\newpage
+
+%We start the document from here
+\Huge Abstract
+\addcontentsline{toc}{section}{\protect\numberline{}Abstract/Resumen}%
+
+\normalsize An statistical analysis has been made using the data of the concentrations of various hazards ($NO_2, O_3, PM_{10} and PM_{2.5}$) in the territory of England and Wales during the period from 2007 to 2011 -given by the European Centre for Environment and Human Health- in order to view the mensual evolution of the concentrations of these hazards we mentioned earlier in the territory.
+
+The data has been processed by a Python 3.7 code which sorted it by month, obtained for each month the statisticals necessary to perform the study (median, IQR, Yule-Kendall index and robust kurtosis), made the box and whiskers diagrams and histograms and elaborated the output data for its further representation on maps.
+
+With it, a study of the hazards' concentrations in England and Wales can be done, viewing the zones and months with more concentration for each hazard and trying to give an explanation for it.
+
+\vspace{0.5cm}
+
+\Huge Resumen
+
+\normalsize A partir de los datos de concentración de distintos contaminantes ($NO_2, O_3, PM_{10} y PM_{2.5}$) en el territorio de Inglaterra y Gales durante el período del 2007 al 2011 -proporcionados por la European Centre for Environment and Human Health- se ha hecho un análisis estadístico para observar la evolución mensual de la concentración de dichos contaminantes en este territorio.
+
+Estos datos han sido procesados mediante un código escrito en Python 3.7 de cara a ser ordenados por meses, obtener para cada mes los estadísticos que nos parecen importantes (mediana, RIC, índice de Yule-Kendal y curtosis robusta), realizados los diagramas de caja y bigotes e histogramas y, finalmente, el volcado de datos para su posterior representación en mapas.
+
+Con ello, puede hacerse un estudio de la concentración de los contaminantes en Inglaterra y Gales, viendo las zonas y meses de mayor concentración para cada contaminante e intentando dar una explicación de ello.
+
+\newpage
+
+\Huge Una breve introducción
+\addcontentsline{toc}{section}{\protect\numberline{}Una breve introducción}%
+
+\normalsize La Revolución Industrial fue un gran paso hacia adelante para la humanidad
+
+\end{document}

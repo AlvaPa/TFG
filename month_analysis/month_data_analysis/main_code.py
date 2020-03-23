@@ -1,10 +1,10 @@
 # encoding utf-8 #
 
 import winsound
-import read_files
-import monthly_analysis
-import diagrams
-import output_files
+from month_analysis.month_data_analysis import read_files
+from month_analysis.month_data_analysis import monthly_analysis
+from month_analysis.month_data_analysis import diagrams
+from month_analysis.month_data_analysis import output_files
 from constants import *
 
 
@@ -48,12 +48,15 @@ def main_code():
                 monthly_analysis.monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant, days)
 
             # We plot the boxplots and histograms
-            pollution, longitude, latitude = diagrams.diagrams_representation(sorted_pollution, sorted_lon,
-                                                                              sorted_lat, name, big_name, year)
+            pollution, longitude, latitude, pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, \
+                e_mod_coefficient = diagrams.diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name,
+                                                                     big_name, year)
 
             # We create the output files
             output_files.output_and_closing(pollution, longitude, latitude, monthly_median, monthly_iqr,
-                                            monthly_yule_kendall, monthly_robust_kurtosis, name, year)
+                                            monthly_yule_kendall, monthly_robust_kurtosis, name, year,
+                                            pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient,
+                                            e_mod_coefficient)
 
             # We emit a beep to show that this pollutant in the selected year has been analyzed
             winsound.Beep(2500, 500)
