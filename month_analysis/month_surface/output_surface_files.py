@@ -37,7 +37,7 @@ def no2_output(total_surface_percentage, name, year, months, username):
     with open(r'C:\Users\%s\Desktop\practicas_alvaro\output_data\surface\%s_%s_surface_percentage.txt'
               % (username, name, year), 'w+') as file:
         # We write the file
-        df.to_csv(file, index=False, sep=',')
+        df.to_csv(file, index=False, sep='\t')
 
     return
 
@@ -57,7 +57,7 @@ def ozone_output(total_surface_percentage, name, year, months, username):
     with open(r'C:\Users\%s\Desktop\practicas_alvaro\output_data\surface\%s_%s_surface_percentage.txt'
               % (username, name, year), 'w+') as file:
         # We write the file
-        df.to_csv(file, index=False, sep=',')
+        df.to_csv(file, index=False, sep='\t')
 
     return
 
@@ -79,7 +79,7 @@ def pm10_output(total_surface_percentage, name, year, months, username):
     with open(r'C:\Users\%s\Desktop\practicas_alvaro\output_data\surface\%s_%s_surface_percentage.txt'
               % (username, name, year), 'w+') as file:
         # We write the file
-        df.to_csv(file, index=False, sep=',')
+        df.to_csv(file, index=False, sep='\t')
 
     return
 
@@ -101,6 +101,6 @@ def pm2p5_output(total_surface_percentage, name, year, months, username):
     with open(r'C:\Users\%s\Desktop\practicas_alvaro\output_data\surface\%s_%s_surface_percentage.txt'
               % (username, name, year), 'w+') as file:
         # We write the file
-        df.to_csv(file, index=False, sep=',')
+        df.to_csv(file, index=False, sep='\t')
 
     return

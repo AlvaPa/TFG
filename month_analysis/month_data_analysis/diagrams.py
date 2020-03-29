@@ -31,6 +31,7 @@ def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_
 
     # We plot the histogram and the kernel density smoothing
     bar_values = histogram(pollution_histogram, name, big_name, year, quadratic_function, username)
+
     # We initialize the coefficients to determine the efficiency of the parametric curves
     pearson_coefficient = np.array([0] * 12, dtype=float)
     d_coefficient = np.array([0] * 12, dtype=float)
@@ -141,7 +142,9 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year, user
     # We plot the box and whiskers
     ax.boxplot(dictionary.values())
     # We save the file
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\%s_%s_boxplot_definitive.tiff'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.tiff'
+                % (username, name, year), bbox_inches='tight', dpi=300)
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.png'
                 % (username, name, year), bbox_inches='tight', dpi=300)
     # We close the figure
     plt.close(12)
@@ -151,8 +154,8 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year, user
 
 def histogram(pollution, name, big_name, year, quadratic_function, username):
     """
-    This function represents the histogram and the parametric plot of the probabilites of the concentrations in the same
-    diagram per month
+    This function represents the histogram and the parametric plot of the probabilities of the concentrations in the
+    same diagram per month
     :param pollution:
     :param name:
     :param big_name:
@@ -171,7 +174,12 @@ def histogram(pollution, name, big_name, year, quadratic_function, username):
 
     for i in range(0, 12):
         # We compute the width of the bins
-        n_bins = 130
+        if name == no2:
+            n_bins = 270
+        elif name == pm_2p5:
+            n_bins = 250
+        else:
+            n_bins = 130
         pollution_range = np.max(pollution[i, ::]) - np.min(pollution[i, ::])
         width = float(pollution_range / (n_bins + 1))
         # We start plotting the histogram
@@ -189,14 +197,17 @@ def histogram(pollution, name, big_name, year, quadratic_function, username):
         ax.plot(pollution[i, ::], quadratic_function[i, ::], '--', lw=1.5)
         ax.text(0.7, 0.95, r'Bin width = %f $\frac{{\mu}g}{m^{3}}$' % width, transform=ax.transAxes)
         fig.tight_layout()
-        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\%s_%s_%s_histograms.tiff'
+        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.tiff'
+                    % (username, name, year, str(i + 1)), bbox_inches='tight', dpi=300)
+        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.png'
                     % (username, name, year, str(i + 1)), bbox_inches='tight', dpi=300)
         # We assign the bar probability values
         # We convert the output to array
         n = np.asarray(output[0])
+        interval_elements = int((len(pollution[0]) / n_bins) + 1)  # Number of elements each interval has
         for j in range(0, len(n)):
-            for k in range(0, 1164):
-                m = j * 1164 + k
+            for k in range(0, interval_elements):
+                m = j * interval_elements + k
                 if m >= len(bar_values[0]):
                     break
                 bar_values[i, m] = n[j]
@@ -294,10 +305,10 @@ def efficiency_criteria(bar_values, quadratic_function, pearson_coefficient, d_c
                                      np.abs(bar_values[i, j] - np.mean(bar_values[i])))
             den_e_mod = den_e_mod + np.abs(bar_values[i, j] - np.mean(bar_values[i]))
         # We compute the efficiency coefficients of each month
-        pearson_coefficient[i] = (num_r / (np.sqrt(den_r_poll) * np.sqrt(den_r_quar))) ** 2
-        d_coefficient[i] = 1 - (num_d / den_d)
-        e_coefficient[i] = 1 - (num_d / den_r_poll)
-        d_mod_coefficient[i] = 1 - (num_d_mod / den_d_mod)
-        e_mod_coefficient[i] = 1 - (num_d_mod / den_e_mod)
+        pearson_coefficient[i] = round((num_r / (np.sqrt(den_r_poll) * np.sqrt(den_r_quar))) ** 2, 4)
+        d_coefficient[i] = round(1 - (num_d / den_d), 4)
+        e_coefficient[i] = round(1 - (num_d / den_r_poll), 4)
+        d_mod_coefficient[i] = round(1 - (num_d_mod / den_d_mod), 4)
+        e_mod_coefficient[i] = round(1 - (num_d_mod / den_e_mod), 4)
 
     return pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient

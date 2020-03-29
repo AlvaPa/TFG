@@ -32,11 +32,11 @@ def main_code():
         efficiency_diagrams.boxplot(r_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient,
                                     name, big_name)
 
-        # We emit a beep to show that the efficiency coefficients of the current pollutant has been plotted
-        winsound.Beep(2500, 500)
-
     # When the iterations have finished, the plotting is finished as well
     print('All data analyzed!')
+
+    # We emit a beep to show that the code has finished
+    winsound.Beep(2500, 500)
 
     return
 

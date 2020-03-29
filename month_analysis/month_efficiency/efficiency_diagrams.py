@@ -2,7 +2,6 @@
 
 import os
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 def boxplot(r_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient, name, big_name):

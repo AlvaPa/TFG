@@ -65,7 +65,7 @@ def statistics_output(monthly_median, monthly_iqr, monthly_yule_kendall, monthly
                                                                                                      year),
               'w+') as file:
         # We write the file
-        df.to_csv(file, index=False, chunksize=chunk_size, sep=',')
+        df.to_csv(file, index=False, chunksize=chunk_size, sep='\t')
 
     return
 
@@ -83,6 +83,6 @@ def efficiency_output(pearson_coefficient, d_coefficient, e_coefficient, d_mod_c
                                                                                                        year),
               'w+') as file:
         # We write the file
-        df.to_csv(file, index=False, chunksize=chunk_size, sep=',')
+        df.to_csv(file, index=False, chunksize=chunk_size, sep='\t')
 
     return

@@ -555,6 +555,6 @@ def surface_percentage_calculation(pollution, counter_array, surface_percentage)
 
     # We compute the percentage of surface for each pollutant's concentration
     for i in range(0, len(counter_array)):
-        surface_percentage[i] = 100.0 * (float(counter_array[i]) / float(len(pollution)))
+        surface_percentage[i] = round(100.0 * (float(counter_array[i]) / float(len(pollution))), 4)
 
     return surface_percentage

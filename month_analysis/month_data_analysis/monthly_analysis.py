@@ -72,8 +72,8 @@ def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant,
                            monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis, statistical_pollution,
                            index, lon, lat, month, pollution)
 
-    return sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
-        monthly_yule_kendall, monthly_robust_kurtosis
+    return (sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr,
+            monthly_yule_kendall, monthly_robust_kurtosis)
 
 
 @numba.njit()
@@ -125,7 +125,7 @@ def monthly_separation(index, lon, lat, month, pollution, monthly_pollution, dat
         lon[m] = data_lon[l + j + n]
         lat[m] = data_lat[l + j + n]
         month[m] = data_month[l + j + n]
-        pollution[m] = np.nanmedian(monthly_pollution)
+        pollution[m] = round(np.nanmean(monthly_pollution), 4)
 
         # If the year has ended, we stop the while loop
         if data_month[l + n] == 12:
@@ -182,15 +182,16 @@ def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorte
             statistical_pollution[k] = pollution[12 * k + m]
             i += 1
 
-        monthly_median[m] = np.median(statistical_pollution)
-        monthly_iqr[m] = np.quantile(statistical_pollution, 0.75) - np.quantile(statistical_pollution, 0.25)
-        monthly_yule_kendall[m] = (np.quantile(statistical_pollution, 0.75) + np.quantile(statistical_pollution, 0.25)
-                                   - 2 * monthly_median[m]) / monthly_iqr[m]
-        monthly_robust_kurtosis[m] = monthly_iqr[m] / (2 * (np.quantile(statistical_pollution, 0.9) -
-                                                            np.quantile(statistical_pollution, 0.10)))
+        monthly_median[m] = round(np.median(statistical_pollution), 4)
+        monthly_iqr[m] = round(np.quantile(statistical_pollution, 0.75) - np.quantile(statistical_pollution, 0.25), 4)
+        monthly_yule_kendall[m] = \
+            round((np.quantile(statistical_pollution, 0.75) + np.quantile(statistical_pollution, 0.25) -
+                   2 * monthly_median[m]) / monthly_iqr[m], 4)
+        monthly_robust_kurtosis[m] = round(monthly_iqr[m] / (2 * (np.quantile(statistical_pollution, 0.9) -
+                                                                  np.quantile(statistical_pollution, 0.10))), 4)
         m += 1
         j += i
         i = 0
 
-    return sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
-        monthly_yule_kendall, monthly_robust_kurtosis
+    return (sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr,
+            monthly_yule_kendall, monthly_robust_kurtosis)

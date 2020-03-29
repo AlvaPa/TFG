@@ -46,7 +46,7 @@ def main_code():
                 surface_percentage, classified_lon, classified_lat = counter.counter(lon, lat, pollution, name)
 
                 # We plot the map
-                surface_maps.maps_plotting(classified_lon, classified_lat, name, big_name, year, z)
+                surface_maps.maps_plotting(classified_lon, classified_lat, name, big_name, year, month, z)
 
                 # We assign the surface percentage to the one that saves for the whole year
                 for t in range(0, len(surface_percentage)):
@@ -55,8 +55,11 @@ def main_code():
             # We save the data in the output
             output_surface_files.output_and_closing(total_surface_percentage, name, year, months)
 
-        # We emit a beep to show that this pollutant in the selected year has been analyzed
-        winsound.Beep(2500, 500)
+        # We make the color legend
+        surface_maps.legend_maker(name, big_name)
+
+    # We emit a beep to show that the code has ended
+    winsound.Beep(2500, 500)
 
     return
 
