@@ -43,17 +43,21 @@ def main_code():
             data_index, data_lon, data_lat, data_month, data_pollutant = read_files.read(root, name, year)
 
             # We sort the data and compute the statistical variables
-            sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
+            sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, sorted_pollution_iqr, \
+                sorted_pollution_yule_kendall, sorted_pollution_kurtosis, monthly_median, monthly_iqr, \
                 monthly_yule_kendall, monthly_robust_kurtosis = \
                 monthly_analysis.monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant, days)
 
             # We plot the boxplots and histograms
-            pollution, longitude, latitude, pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, \
-                e_mod_coefficient = diagrams.diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name,
-                                                                     big_name, year)
+            pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, longitude, latitude, \
+                pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient = \
+                diagrams.diagrams_representation(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall,
+                                                 sorted_pollution_kurtosis, sorted_lon, sorted_lat, name, big_name,
+                                                 year)
 
             # We create the output files
-            output_files.output_and_closing(pollution, longitude, latitude, monthly_median, monthly_iqr,
+            output_files.output_and_closing(pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis,
+                                            longitude, latitude, monthly_median, monthly_iqr,
                                             monthly_yule_kendall, monthly_robust_kurtosis, name, year,
                                             pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient,
                                             e_mod_coefficient)

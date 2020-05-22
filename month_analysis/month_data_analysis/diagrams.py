@@ -7,15 +7,17 @@ import os
 from constants import *
 
 
-def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year):
+def diagrams_representation(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall,
+                            sorted_pollution_kurtosis, sorted_lon, sorted_lat, name, big_name, year):
     """"""
 
     # We get the username
     username = os.getlogin()
 
     # We make the boxplots of the pollutants
-    pollution, pollution_histogram, longitude, latitude = boxplot(sorted_pollution, sorted_lon, sorted_lat, name,
-                                                                  big_name, year, username)
+    pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, pollution_histogram, longitude, latitude = \
+        boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall, sorted_pollution_kurtosis,
+                sorted_lon, sorted_lat, name, big_name, year, username)
 
     # We compute the kernel density smoothing to plot it next to the histograms
     # We initialize some parameters
@@ -44,17 +46,21 @@ def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, big_
         efficiency_criteria(bar_values, quadratic_function, pearson_coefficient, d_coefficient, e_coefficient,
                             d_mod_coefficient, e_mod_coefficient)
 
-    return (pollution, longitude, latitude, pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient,
-            e_mod_coefficient)
+    return (pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, longitude, latitude,
+            pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient)
 
 
-def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year, username):
+def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall, sorted_pollution_kurtosis,
+            sorted_lon, sorted_lat, name, big_name, year, username):
     """
     This function represents the box and whiskers plot for each month of the pollution's concentration in each location.
     Then it represents all the twelve box and whiskers plot in a single graphic to compare.
     :param sorted_pollution:
-    :param sorted_lon
-    :param sorted_lat
+    :param sorted_pollution_iqr:
+    :param sorted_pollution_yule_kendall:
+    :param sorted_pollution_kurtosis:
+    :param sorted_lon:
+    :param sorted_lat:
     :param name:
     :param big_name:
     :param year:
@@ -66,6 +72,27 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year, user
     dictionary = {}
     # Pollution for the output
     pollution = \
+        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
+    pollution_iqr = \
+        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
+    pollution_yule_kendall = \
+        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
+                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
+    pollution_kurtosis = \
         np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
                   [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
                   [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
@@ -106,6 +133,9 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year, user
     for i in range(0, 12):
         for j in range(0, int(len(sorted_pollution) / 12)):
             pollution[i, j] = sorted_pollution[j + n]
+            pollution_iqr[i, j] = sorted_pollution_iqr[j + n]
+            pollution_yule_kendall[i, j] = sorted_pollution_yule_kendall[j + n]
+            pollution_kurtosis[i, j] = sorted_pollution_kurtosis[j + n]
             pollution_histogram[i, j] = sorted_pollution[j + n]
             longitude[i, j] = sorted_lon[j + n]
             latitude[i, j] = sorted_lat[j + n]
@@ -125,11 +155,6 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year, user
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
                   alpha=0.5)
     ax.set_axisbelow(True)
-    ax.set_title('Location boxplots of the concentration of %s during the year %s' % (big_name, year))
-    ax.set_xticklabels(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                        'October', 'November', 'December'])
-    ax.set_ylabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)')
-    ax.set_xlabel('Months')
     # We select the range of plot
     if name == no2:
         ax.set_ylim(0, 100)
@@ -141,15 +166,35 @@ def boxplot(sorted_pollution, sorted_lon, sorted_lat, name, big_name, year, user
         ax.set_ylim(0, 40)
     # We plot the box and whiskers
     ax.boxplot(dictionary.values())
+    # We change the name of the labels in the x axis
+    x_tick_labels = ax.get_xticks().tolist()
+    x_tick_labels[0] = 'January'
+    x_tick_labels[1] = 'February'
+    x_tick_labels[2] = 'March'
+    x_tick_labels[3] = 'April'
+    x_tick_labels[4] = 'May'
+    x_tick_labels[5] = 'June'
+    x_tick_labels[6] = 'July'
+    x_tick_labels[7] = 'August'
+    x_tick_labels[8] = 'September'
+    x_tick_labels[9] = 'October'
+    x_tick_labels[10] = 'November'
+    x_tick_labels[11] = 'December'
+    ax.set_xticklabels(x_tick_labels)
+    ax.set_ylabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)', size=20)
+    ax.set_xlabel('Months', size=20)
     # We save the file
     plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.tiff'
                 % (username, name, year), bbox_inches='tight', dpi=300)
     plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.png'
-                % (username, name, year), bbox_inches='tight', dpi=300)
+                % (username, name, year), bbox_inches='tight', dpi=90)
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.jpg'
+                % (username, name, year), bbox_inches='tight', quality=10)
     # We close the figure
     plt.close(12)
 
-    return pollution, pollution_histogram, longitude, latitude
+    return (pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, pollution_histogram, longitude,
+            latitude)
 
 
 def histogram(pollution, name, big_name, year, quadratic_function, username):
@@ -189,10 +234,8 @@ def histogram(pollution, name, big_name, year, quadratic_function, username):
         ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
                       alpha=0.5)
         ax.set_axisbelow(True)
-        ax.set_title('Location histogram and Epanechnikov density smoothing of the concentration of %s in %s %s'
-                     % (big_name, month, year))
-        ax.set_xlabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)')
-        ax.set_ylabel('Probability density')
+        ax.set_xlabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)', size=20)
+        ax.set_ylabel('Probability density', size=20)
         output = ax.hist(pollution[i, ::], bins=n_bins, density=True)
         ax.plot(pollution[i, ::], quadratic_function[i, ::], '--', lw=1.5)
         ax.text(0.7, 0.95, r'Bin width = %f $\frac{{\mu}g}{m^{3}}$' % width, transform=ax.transAxes)
@@ -200,7 +243,9 @@ def histogram(pollution, name, big_name, year, quadratic_function, username):
         plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.tiff'
                     % (username, name, year, str(i + 1)), bbox_inches='tight', dpi=300)
         plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.png'
-                    % (username, name, year, str(i + 1)), bbox_inches='tight', dpi=300)
+                    % (username, name, year, str(i + 1)), bbox_inches='tight', dpi=90)
+        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.jpg'
+                    % (username, name, year, str(i + 1)), bbox_inches='tight', quality=10)
         # We assign the bar probability values
         # We convert the output to array
         n = np.asarray(output[0])

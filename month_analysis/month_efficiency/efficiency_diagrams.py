@@ -28,10 +28,15 @@ def boxplot(r_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mo
     ax.set_ylabel('Values')
     xtickNames = plt.setp(ax, xticklabels=labels)
     plt.setp(xtickNames)
+    fig.tight_layout()
     # We plot the box and whiskers
     ax.boxplot(dictionary.values())
     # We save the file
     plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\efficiency_boxplots\%s_efficiency_boxplot.tiff'
                 % (username, name), dpi=300)
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\efficiency_boxplots\%s_efficiency_boxplot.png'
+                % (username, name), dpi=90)
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\efficiency_boxplots\%s_efficiency_boxplot.jpg'
+                % (username, name), quality=10)
     # We close the figure
     plt.close()

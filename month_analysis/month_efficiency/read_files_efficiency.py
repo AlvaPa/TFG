@@ -65,7 +65,7 @@ def file_opening(absolute_path, r_coefficient, d_coefficient, e_coefficient, d_m
     """"""
 
     # We start reading the file. Since it's so big, chunk of data are loaded at a time
-    df = pd.read_csv(absolute_path, sep=",", dtype={'r': float, 'd': float, 'e': float, 'dmod': float,
+    df = pd.read_csv(absolute_path, sep="\t", dtype={'r': float, 'd': float, 'e': float, 'dmod': float,
                                                     'emod': float}, low_memory=False)
 
     r_coefficient = np.append(r_coefficient, np.array(df['r'].tolist(), dtype=float))

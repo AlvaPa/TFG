@@ -2,28 +2,48 @@
 \BOOKMARK [1][-]{section*.4}{Una breve introducci\363n}{}% 2
 \BOOKMARK [1][-]{section.1}{Descripci\363n te\363rica}{}% 3
 \BOOKMARK [1][-]{section.2}{M\351todo de an\341lisis de datos}{}% 4
-\BOOKMARK [1][-]{section.3}{Resultados obtenidos}{}% 5
-\BOOKMARK [1][-]{section.4}{Conclusiones}{}% 6
-\BOOKMARK [1][-]{section.5}{Futuras l\355neas de estudio}{}% 7
-\BOOKMARK [1][-]{section.6}{Bibliograf\355a}{}% 8
-\BOOKMARK [1][-]{section*.5}{Anexo I: Mapas de contaminaci\363n de contaminantes}{}% 9
-\BOOKMARK [1][-]{section*.6}{Anexo II: Diagramas de caja y bigotes}{}% 10
-\BOOKMARK [1][-]{section*.7}{Anexo III: Histogramas y curvas param\351tricas}{}% 11
-\BOOKMARK [2][-]{section*.8}{Gr\341ficas anuales}{section*.7}% 12
-\BOOKMARK [2][-]{section*.9}{ \040Di\363xido de nitr\363geno}{section*.7}% 13
-\BOOKMARK [2][-]{section*.13}{ \040Ozono}{section*.7}% 14
-\BOOKMARK [2][-]{section*.17}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.7}% 15
-\BOOKMARK [2][-]{section*.21}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.7}% 16
-\BOOKMARK [2][-]{section*.25}{Gr\341ficas mensuales}{section*.7}% 17
-\BOOKMARK [2][-]{section*.26}{ \040Di\363xido de nitr\363geno}{section*.7}% 18
-\BOOKMARK [2][-]{section*.57}{ \040Ozono}{section*.7}% 19
-\BOOKMARK [2][-]{section*.88}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.7}% 20
-\BOOKMARK [2][-]{section*.119}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.7}% 21
-\BOOKMARK [1][-]{section*.150}{Anexo IV: Tablas de superficie}{}% 22
-\BOOKMARK [2][-]{section*.151}{Valores anuales}{section*.150}% 23
-\BOOKMARK [2][-]{section*.152}{ \040Di\363xido de nitr\363geno}{section*.150}% 24
-\BOOKMARK [2][-]{section*.154}{ \040Ozono}{section*.150}% 25
-\BOOKMARK [2][-]{section*.156}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.150}% 26
-\BOOKMARK [2][-]{section*.158}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.150}% 27
-\BOOKMARK [2][-]{section*.160}{Valores mensuales}{section*.150}% 28
-\BOOKMARK [2][-]{section*.161}{ \040Di\363xido de nitr\363geno}{section*.150}% 29
+\BOOKMARK [2][-]{subsection.2.1}{Archivos con la media anual de contaminaci\363n}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Archivos con la media diaria de contaminaci\363n}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.3}{An\341lisis de la distribuci\363n de concentraci\363n de contaminantes}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.4}{Metodolog\355a de an\341lisis de datos}{section.2}% 8
+\BOOKMARK [1][-]{section.3}{Resultados obtenidos}{}% 9
+\BOOKMARK [1][-]{section.4}{Conclusiones}{}% 10
+\BOOKMARK [1][-]{section.5}{Futuras l\355neas de estudio}{}% 11
+\BOOKMARK [1][-]{section.6}{Bibliograf\355a}{}% 12
+\BOOKMARK [1][-]{section*.9}{Anexo I: Mapas de concentraci\363n de contaminantes}{}% 13
+\BOOKMARK [2][-]{section*.10}{Mapas anuales}{section*.9}% 14
+\BOOKMARK [2][-]{section*.11}{ \040Di\363xido de nitr\363geno}{section*.9}% 15
+\BOOKMARK [2][-]{section*.15}{ \040Ozono}{section*.9}% 16
+\BOOKMARK [2][-]{section*.19}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.9}% 17
+\BOOKMARK [2][-]{section*.23}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.9}% 18
+\BOOKMARK [2][-]{section*.27}{Mapas mensuales}{section*.9}% 19
+\BOOKMARK [2][-]{section*.28}{ \040Di\363xido de nitr\363geno}{section*.9}% 20
+\BOOKMARK [2][-]{section*.59}{ \040Ozono}{section*.9}% 21
+\BOOKMARK [2][-]{section*.90}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.9}% 22
+\BOOKMARK [2][-]{section*.121}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.9}% 23
+\BOOKMARK [1][-]{section*.152}{Anexo II: Diagramas de caja y bigotes}{}% 24
+\BOOKMARK [2][-]{section*.153}{Diagramas completos}{section*.152}% 25
+\BOOKMARK [2][-]{section*.158}{Diagramas anuales}{section*.152}% 26
+\BOOKMARK [2][-]{section*.159}{ \040Di\363xido de nitr\363geno}{section*.152}% 27
+\BOOKMARK [2][-]{section*.165}{ \040Ozono}{section*.152}% 28
+\BOOKMARK [2][-]{section*.171}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.152}% 29
+\BOOKMARK [2][-]{section*.177}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.152}% 30
+\BOOKMARK [1][-]{section*.183}{Anexo III: Histogramas y curvas param\351tricas}{}% 31
+\BOOKMARK [2][-]{section*.184}{Gr\341ficas anuales}{section*.183}% 32
+\BOOKMARK [2][-]{section*.185}{ \040Di\363xido de nitr\363geno}{section*.183}% 33
+\BOOKMARK [2][-]{section*.189}{ \040Ozono}{section*.183}% 34
+\BOOKMARK [2][-]{section*.193}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.183}% 35
+\BOOKMARK [2][-]{section*.197}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.183}% 36
+\BOOKMARK [2][-]{section*.201}{Gr\341ficas mensuales}{section*.183}% 37
+\BOOKMARK [2][-]{section*.202}{ \040Di\363xido de nitr\363geno}{section*.183}% 38
+\BOOKMARK [2][-]{section*.233}{ \040Ozono}{section*.183}% 39
+\BOOKMARK [2][-]{section*.264}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.183}% 40
+\BOOKMARK [2][-]{section*.295}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.183}% 41
+\BOOKMARK [1][-]{section*.326}{Anexo IV: Tablas de superficie}{}% 42
+\BOOKMARK [2][-]{section*.327}{Valores anuales}{section*.326}% 43
+\BOOKMARK [2][-]{section*.328}{ \040Di\363xido de nitr\363geno}{section*.326}% 44
+\BOOKMARK [2][-]{section*.330}{ \040Ozono}{section*.326}% 45
+\BOOKMARK [2][-]{section*.332}{ \040Part\355culas de menos de diez micras de di\341metro}{section*.326}% 46
+\BOOKMARK [2][-]{section*.334}{ \040Part\355culas de menos de dos micras y media de di\341metro}{section*.326}% 47
+\BOOKMARK [2][-]{section*.336}{Valores mensuales}{section*.326}% 48
+\BOOKMARK [2][-]{section*.337}{ \040Di\363xido de nitr\363geno}{section*.326}% 49

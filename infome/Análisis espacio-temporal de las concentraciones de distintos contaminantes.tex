@@ -6,7 +6,9 @@
 \geometry{a4paper,
 total={170mm, 257mm},
 left=20mm,
-top=20mm
+right=20mm,
+top=20mm,
+bottom=20mm
 }
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -66,7 +68,9 @@ top=20mm
 
 %Giving thanks
 \newpage
+\begin{minipage}[]{20cm}
 \vspace{10cm}
+\end{minipage}
 \newpage
 
 \begin{minipage}[]{20cm}
@@ -75,8 +79,16 @@ top=20mm
 
 
 \begin{flushright}
-\normalsize \textit{En primer lugar, quiero agradecer a mis tutores por haberme ayudado y ofrecido sus puntos de vista para la realización de este Trabajo de Fin de Grado, así como a la European Centre for Environment and Human Health por los datos disponibles. Del mismo modo, quiero agradecer a todos mis familiares y amigos que han estado allí tanto en los momentos buenos como en los malos, pues el apoyo que me han dado a lo largo de mi vida ha supuesto que este trabajo sea posible.}
+\normalsize \textit{Introducir agradeciemintos aquí}
 \end{flushright}
+
+\newpage
+
+\begin{minipage}[]{20cm}
+\vspace{10cm}
+\end{minipage}
+
+\newpage
 
 %Table of contents
 \parskip = 0.5cm
@@ -90,21 +102,13 @@ top=20mm
 \section*{Abstract}
 \addcontentsline{toc}{section}{\protect\numberline{}Abstract/Resumen}%
 
-\normalsize An statistical analysis has been made using the data of the concentrations of various hazards ($NO_2, O_3, PM_{10} and PM_{2.5}$) in the territory of England and Wales during the period from 2007 to 2011 -given by the European Centre for Environment and Human Health- in order to view the mensual evolution of the concentrations of these hazards we mentioned earlier in the territory.
-
-The data has been processed by a Python 3.7 code which sorted it by month, obtained for each month the statisticals necessary to perform the study (median, IQR, Yule-Kendall index and robust kurtosis), made the box and whiskers diagrams and histograms and elaborated the output data for its further representation on maps.
-
-With it, a study of the hazards' concentrations in England and Wales can be done, viewing the zones and months with more concentration for each hazard and trying to give an explanation for it.
+\normalsize Write abstract here
 
 \vspace{0.5cm}
 
 \section*{Resumen}
 
-\normalsize A partir de los datos de concentración de distintos contaminantes ($NO_2, O_3, PM_{10} y PM_{2.5}$) en el territorio de Inglaterra y Gales durante el período del 2007 al 2011 -proporcionados por la European Centre for Environment and Human Health- se ha hecho un análisis estadístico para observar la evolución mensual de la concentración de dichos contaminantes en este territorio.
-
-Estos datos han sido procesados mediante un código escrito en Python 3.7 de cara a ser ordenados por meses, obtener para cada mes los estadísticos que nos parecen importantes (mediana, RIC, índice de Yule-Kendal y curtosis robusta), realizados los diagramas de caja y bigotes e histogramas y, finalmente, el volcado de datos para su posterior representación en mapas.
-
-Con ello, puede hacerse un estudio de la concentración de los contaminantes en Inglaterra y Gales, viendo las zonas y meses de mayor concentración para cada contaminante e intentando dar una explicación de ello.
+\normalsize Introducir resumen aquí
 
 \newpage
 
@@ -125,7 +129,128 @@ Introducir aquí la introducción teórica
 
 \section{Método de análisis de datos}
 
-Introducir aquí el método de análisis
+Los datos que se han utilizado en este trabajo de análisis espacio-temporal de distintos contaminantes han sido proporcionados por la \textbf{M}edical \& \textbf{E}nvironmental \textbf{D}ata \textbf{M}ash-up \textbf{I}nfrastructure project (\href{https://www.data-mashup.org.uk/}{\textbf{MEDMI}}). Estos datos están almacenados en archivos .txt que han sido generados en su estimación de concentración de contaminantes en Inglaterra y Gales mediante un modelo espacio-temporal bayesiano y que pueden ser descargados en este \href{https://www.data-mashup.org.uk/research-projects/statistical-downscaling-of-gridded-air-quality-data/}{enlace}.
+
+En cada archivo, tenemos la estimación del contaminante escogido para cada kilómetro cuadrado de Inglaterra y Gales. En unos archivos está la media anual por kilómetro cuadrado de la concentración de contaminantes, mientras que en otros archivos se tiene la media diaria de cada concentración de contaminantes por kilómetro cuadrado. Utilizando ambos tipos de archivos, se puede hacer un estudio de la evolución año a año de la distribución de contaminación en Inglaterra y Gales y, del mismo modo, se puede estudiar la distribución mensual de contaminación a lo largo de un año dado.
+
+\subsection{Archivos con la media anual de contaminación}
+
+Utilizando este tipo de archivos, es posible estudiar la distribución anual de contaminación a lo largo del periodo del 2007 al 2011 en el que ha sido realizada la estimación. La estructura de datos es la siguiente:
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.4\textwidth}{c *{1}{>{\centering\arraybackslash}X}}
+Índice & Concentración \\
+1 & $P_{1}$ \\
+2 & $P_{2}$ \\
+3 & $P_{3}$ \\
+$\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ \\
+n & $P_{n}$ \\
+\end{tabularx}
+\label{table:ii-1}
+\caption{Ejemplo de la estructura de datos de los archivos con la media anual de contaminación en un año dado.}
+\end{table}
+
+Para cada índice, hay asociadas unas coordenadas determinadas (dadas en longitud y latitud). Con esta estructura de datos, el análisis de distribución de contaminantes alrededor del territorio puede realizarse directamente. Más adelante se dirá la manera de proceder.
+
+\subsection{Archivos con la media diaria de contaminación}
+
+Con este tipo de archivos, es posible calcular la media mensual para cada localización y, por ende, poder realizar un estudio de la distribución de la contaminación en Inglaterra y Gales a lo largo de un año. La estructura de los datos es la siguiente:
+
+\newpage
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.5\textwidth}{c *{3}{>{\centering\arraybackslash}X}}
+Índice & Mes & Día & Concentración \\
+1 & 1 & 1 & $P_{1}$ \\
+1 & 1 & 2 & $P_{2}$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+1 & 1 & 31 & $P_{31}$ \\
+1 & 2 & 1 & $P_{32}$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+1 & 12 & 31 & $P_{365}$ \\
+2 & 1 & 1 & $P_{366}$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+n & 12 & 31 & $P_{365 \cdot n}$ \\
+\end{tabularx}
+\label{table:ii-2}
+\caption{Ejemplo de la estructura de datos de los archivos con la media diaria de contaminación en un año dado.}
+\end{table}
+
+Como puede verse en la tabla, para cada índice se encuentra, de manera ordenada, la concentración de contaminantes para cada día del año. Sin embargo, para realizar el análisis que hemos descrito, necesitamos una estimación mensual de contaminación para cada contaminante. Así, si se implementa un algoritmo que calcula la media mensual de cada localización, se obtiene:
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.5\textwidth}{c *{2}{>{\centering\arraybackslash}X}}
+Índice & Mes & Concentración \\
+1 & 1 & $\mu_{1}$ \\
+1 & 2 & $\mu_{2}$ \\
+$\cdot$ & $\cdot$ & $\cdot$\\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+1 & 12 & $\mu_{12}$ \\
+2 & 1 & $\mu_{13}$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+n & 12 & $\mu_{12 \cdot n}$ \\
+\end{tabularx}
+\label{table:ii-3}
+\caption{Ejemplo de la estructura de datos de los archivos con la media mensual de contaminación en un año dado.}
+\end{table} 
+
+Ahora, se tiene la media media mensual de contaminación para cada índice. Sin embargo, el orden de la tabla no permite ver la distribución a lo largo del territorio para un mes dado. Por ello, hay que aplicar un segundo algoritmo que ordene los datos por el mes, como puede verse en la siguiente tabla:
+
+\newpage
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.5\textwidth}{c *{2}{>{\centering\arraybackslash}X}}
+Índice & Mes & Concentración \\
+1 & 1 & $\mu_{1}$ \\
+2 & 1 & $\mu_{13}$ \\
+$\cdot$ & $\cdot$ & $\cdot$\\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+n & 1 & $\mu_{i}$ \\
+1 & 2 & $\mu_{2}$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+$\cdot$ & $\cdot$ & $\cdot$ \\
+n & 12 & $\mu_{12 \cdot n}$ \\
+\end{tabularx}
+\label{table:ii-4}
+\caption{Ahora los datos están ordenados mes a mes.}
+\end{table}
+
+Con esta nueva estructura en los datos, ya es posible realizar un análisis mes a mes de la distribución de la concentración de contaminantes en el territorio de Inglaterra y Gales.
+
+\subsection{Análisis de la distribución de concentración de contaminantes}
+
+El siguiente tratamiento de datos se aplica tanto a los archivos con la media anual de concentración de contaminantes como a los archivos ordenados con la media mensual de concentración de contaminantes pues, en ambos casos, se busca analizar la distribución de la concentración de contaminantes en el territorio de Inglaterra y Gales.
+
+Por ello, con los archivos se han hallado los estadísticos de localización, dispersión, simetría y curtosis. Para evitar los inconvenientes que pueden presentar los estadísticos comunes como la media, la desviación estándar, etc., se han calculado estadísticos robustos y resistentes. Así, se han calculado la mediana, el RIC, el índice de Yule-Kendall y la curtosis robusta utilizando las ecuaciones x, x, x y x, respectivamente.
+
+Los estadísticos aportan información acerca de la distribución de los datos pero, de cara a realizar un análisis más completo, representar los datos puede aportar mucha más información. Utilizando los datos de media anual se han representado diagramas de caja y bigotes con los datos de cada año desde el 2007 hasta el 2011 (de cara a estudiar la evolución en el tiempo). Con los datos de media mensual, se han representado en diagramas de caja y bigotes los datos de cada mes para cada año (para poder estudiar la evolución a lo largo de un año).
+
+Del mismo modo, tanto para los datos con la media anual como para los datos con la media mensual, se han representado histogramas y el estimado de densidad de núcleo (con un núcleo cuadrático) en un mismo diagrama, de cara visualizar las concentraciones más probables.
+
+Por otro lado, dado que cada punto de la malla es un kilómetro cuadrado de la superficie de Inglaterra y Gales, es posible clasificar la concentración de contaminantes en grupos y, por ende, clasificar la superficie contaminada según intervalo de concentración de contaminantes.
+
+\subsection{Metodología de análisis de datos}
+
+Finalmente, de cara a realizar el análisis de datos, hay que tener en cuenta que la malla utilizada consta de 151 428 puntos. Teniendo en cuanta que hay que analizar cuatro contaminantes en un periodo de cinco años (tanto para la media anual como para la media mensual), ello implica que, en total, hay que clasificar, tratar y analizar más de mil millones de datos. Hacerlo manualmente, usando programas como Excel, resultaría en extremo tedioso y daría pie a cometer errores.
+
+Por ello, de cara a realizar todas las operaciones rápidamente y sin el inconveniente de poder cometer errores, todo lo desarrollado anteriormente se ha realizado mediante un programa escrito en Python 3.7.
 
 \newpage
 
@@ -143,30 +268,2421 @@ Introducir aquí las conclusiones
 
 \section{Futuras líneas de estudio}
 
-Introducir aquí las conclusiones
+Introducir aquí las futuras líneas de estudio
 
 \newpage
 
 \section{Bibliografía}
 
-Introducir aquí las conclusiones
+Introducir aquí la bibliografía
 
 \newpage
 
 % Here go all the tables and graphics
+
+\newgeometry{left=20mm,
+right=20mm,
+top=10mm,
+bottom=10mm}
 \pagenumbering{Roman}	% We change the page numbering to uppercase roman numbers
 
-\section*{Anexo I: Mapas de contaminación de contaminantes}
-\addcontentsline{toc}{section}{\protect\numberline{}Anexo I: Mapas de contaminación de contaminantes}%
+\section*{Anexo I: Mapas de concentración de contaminantes}
+\addcontentsline{toc}{section}{\protect\numberline{}Anexo I: Mapas de concentración de contaminantes}%
 
-Introducir aquí los mapas
+\subsection*{Mapas anuales}
+\addcontentsline{toc}{subsection}{\protect\numberline{}Mapas anuales}%
+
+\subsubsection*{Dióxido de nitrógeno}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Dióxido de nitrógeno}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/anual/no2_2007_anual_mapa.png}
+\caption{Año 2007}
+\label{fig:map-ann-1-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/anual/no2_2008_anual_mapa.png}
+\caption{Año 2008}
+\label{fig:map-ann-1-2}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\vspace{30mm}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/anual/no2_2009_anual_mapa.png}
+\caption{Año 2009}
+\label{fig:map-ann-1-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/anual/no2_2010_anual_mapa.png}
+\caption{Año 2010}
+\label{fig:map-ann-1-4}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/anual/no2_2011_anual_mapa.png}
+\label{fig:map-ann-1-5}
+\caption{Año 2011}
+\end{figure}
+
+\vspace{30mm}
+
+\subsubsection*{Ozono}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Ozono}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/anual/ozone_2007_anual_mapa.png}
+\caption{Año 2007}
+\label{fig:map-ann-2-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/anual/ozone_2008_anual_mapa.png}
+\caption{Año 2008}
+\label{fig:map-ann-2-2}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/anual/ozone_2009_anual_mapa.png}
+\caption{Año 2009}
+\label{fig:map-ann-2-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/anual/ozone_2010_anual_mapa.png}
+\caption{Año 2010}
+\label{fig:map-ann-2-4}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\vspace{30mm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/anual/ozone_2011_anual_mapa.png}
+\caption{Año 2011}
+\label{fig:map-ann-2-5}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Partículas de menos de diez micras de diámetro}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Partículas de menos de diez micras de diámetro}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/anual/pm10_2007_anual_mapa.png}
+\caption{Año 2007}
+\label{fig:map-ann-3-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/anual/pm10_2008_anual_mapa.png}
+\caption{Año 2008}
+\label{fig:map-ann-3-2}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/anual/pm10_2009_anual_mapa.png}
+\caption{Año 2009}
+\label{fig:map-ann-3-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/anual/pm10_2010_anual_mapa.png}
+\caption{Año 2010}
+\label{fig:map-ann-3-4}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/anual/pm10_2011_anual_mapa.png}
+\caption{Año 2011}
+\label{fig:map-ann-3-5}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Partículas de menos de dos micras y media de diámetro}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Partículas de menos de dos micras y media de diámetro}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/anual/pm2p5_2007_anual_mapa.png}
+\caption{Año 2007}
+\label{fig:map-ann-4-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/anual/pm2p5_2008_anual_mapa.png}
+\caption{Año 2008}
+\label{fig:map-ann-4-2}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/anual/pm2p5_2009_anual_mapa.png}
+\caption{Año 2009}
+\label{fig:map-ann-4-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/anual/pm2p5_2010_anual_mapa.png}
+\caption{Año 2010}
+\label{fig:map-ann-4-4}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/anual/pm2p5_2011_anual_mapa.png}
+\caption{Año 2011}
+\label{fig:map-ann-4-5}
+\end{figure}
+
+\newpage
+
+\subsection*{Mapas mensuales}
+\addcontentsline{toc}{subsection}{\protect\numberline{}Mapas mensuales}%
+
+\subsubsection*{Dióxido de nitrógeno}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Dióxido de nitrógeno}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_1_mapa.png}
+\caption{Enero de 2007}
+\label{fig:map-mon-1-1-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_2_mapa.png}
+\caption{Febrero de 2007}
+\label{fig:map-mon-1-2-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_3_mapa.png}
+\caption{Marzo de 2007}
+\label{fig:map-mon-1-3-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_4_mapa.png}
+\caption{Abril de 2007}
+\label{fig:map-mon-1-4-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_5_mapa.png}
+\caption{Mayo de 2007}
+\label{fig:map-mon-1-5-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_6_mapa.png}
+\caption{Junio de 2007}
+\label{fig:map-mon-1-6-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_7_mapa.png}
+\caption{Julio de 2007}
+\label{fig:map-mon-1-7-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_8_mapa.png}
+\caption{Agosto de 2007}
+\label{fig:map-mon-1-8-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_9_mapa.png}
+\caption{Septiembre de 2007}
+\label{fig:map-mon-1-9-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_10_mapa.png}
+\caption{Octubre de 2007}
+\label{fig:map-mon-1-10-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_11_mapa.png}
+\caption{Noviembre de 2007}
+\label{fig:map-mon-1-11-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2007/no2_2007_12_mapa.png}
+\caption{Diciembre de 2007}
+\label{fig:map-mon-1-12-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_1_mapa.png}
+\caption{Enero de 2008}
+\label{fig:map-mon-1-1-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_2_mapa.png}
+\caption{Febrero de 2008}
+\label{fig:map-mon-1-2-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_3_mapa.png}
+\caption{Marzo de 2008}
+\label{fig:map-mon-1-3-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_4_mapa.png}
+\caption{Abril de 2008}
+\label{fig:map-mon-1-4-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_5_mapa.png}
+\caption{Mayo de 2008}
+\label{fig:map-mon-1-5-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_6_mapa.png}
+\caption{Junio de 2008}
+\label{fig:map-mon-1-6-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_7_mapa.png}
+\caption{Julio de 2008}
+\label{fig:map-mon-1-7-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_8_mapa.png}
+\caption{Agosto de 2008}
+\label{fig:map-mon-1-8-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_9_mapa.png}
+\caption{Septiembre de 2008}
+\label{fig:map-mon-1-9-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_10_mapa.png}
+\caption{Octubre de 2008}
+\label{fig:map-mon-1-10-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_11_mapa.png}
+\caption{Noviembre de 2008}
+\label{fig:map-mon-1-11-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2008/no2_2008_12_mapa.png}
+\caption{Diciembre de 2008}
+\label{fig:map-mon-1-12-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_1_mapa.png}
+\caption{Enero de 2009}
+\label{fig:map-mon-1-1-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_2_mapa.png}
+\caption{Febrero de 2009}
+\label{fig:map-mon-1-2-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_3_mapa.png}
+\caption{Marzo de 2009}
+\label{fig:map-mon-1-3-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_4_mapa.png}
+\caption{Abril de 2009}
+\label{fig:map-mon-1-4-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_5_mapa.png}
+\caption{Mayo de 2009}
+\label{fig:map-mon-1-5-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_6_mapa.png}
+\caption{Junio de 2009}
+\label{fig:map-mon-1-6-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_7_mapa.png}
+\caption{Julio de 2009}
+\label{fig:map-mon-1-7-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_8_mapa.png}
+\caption{Agosto de 2009}
+\label{fig:map-mon-1-8-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_9_mapa.png}
+\caption{Septiembre de 2009}
+\label{fig:map-mon-1-9-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_10_mapa.png}
+\caption{Octubre de 2009}
+\label{fig:map-mon-1-10-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_11_mapa.png}
+\caption{Noviembre de 2009}
+\label{fig:map-mon-1-11-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2009/no2_2009_12_mapa.png}
+\caption{Diciembre de 2009}
+\label{fig:map-mon-1-12-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_1_mapa.png}
+\caption{Enero de 2010}
+\label{fig:map-mon-1-1-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_2_mapa.png}
+\caption{Febrero de 2010}
+\label{fig:map-mon-1-2-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_3_mapa.png}
+\caption{Marzo de 2010}
+\label{fig:map-mon-1-3-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_4_mapa.png}
+\caption{Abril de 2010}
+\label{fig:map-mon-1-4-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_5_mapa.png}
+\caption{Mayo de 2010}
+\label{fig:map-mon-1-5-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_6_mapa.png}
+\caption{Junio de 2010}
+\label{fig:map-mon-1-6-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_7_mapa.png}
+\caption{Julio de 2010}
+\label{fig:map-mon-1-7-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_8_mapa.png}
+\caption{Agosto de 2010}
+\label{fig:map-mon-1-8-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_9_mapa.png}
+\caption{Septiembre de 2010}
+\label{fig:map-mon-1-9-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_10_mapa.png}
+\caption{Octubre de 2010}
+\label{fig:map-mon-1-10-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_11_mapa.png}
+\caption{Noviembre de 2010}
+\label{fig:map-mon-1-11-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2010/no2_2010_12_mapa.png}
+\caption{Diciembre de 2010}
+\label{fig:map-mon-1-12-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_1_mapa.png}
+\caption{Enero de 2011}
+\label{fig:map-mon-1-1-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_2_mapa.png}
+\caption{Febrero de 2011}
+\label{fig:map-mon-1-2-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_3_mapa.png}
+\caption{Marzo de 2011}
+\label{fig:map-mon-1-3-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_4_mapa.png}
+\caption{Abril de 2011}
+\label{fig:map-mon-1-4-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_5_mapa.png}
+\caption{Mayo de 2011}
+\label{fig:map-mon-1-5-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_6_mapa.png}
+\caption{Junio de 2011}
+\label{fig:map-mon-1-6-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_7_mapa.png}
+\caption{Julio de 2011}
+\label{fig:map-mon-1-7-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_8_mapa.png}
+\caption{Agosto de 2011}
+\label{fig:map-mon-1-8-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_9_mapa.png}
+\caption{Septiembre de 2011}
+\label{fig:map-mon-1-9-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_10_mapa.png}
+\caption{Octubre de 2011}
+\label{fig:map-mon-1-10-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_11_mapa.png}
+\caption{Noviembre de 2011}
+\label{fig:map-mon-1-11-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/no2/2011/no2_2011_12_mapa.png}
+\caption{Diciembre de 2011}
+\label{fig:map-mon-1-12-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Ozono}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Ozono}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_1_mapa.png}
+\caption{Enero de 2007}
+\label{fig:map-mon-2-1-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_2_mapa.png}
+\caption{Febrero de 2007}
+\label{fig:map-mon-2-2-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_3_mapa.png}
+\caption{Marzo de 2007}
+\label{fig:map-mon-2-3-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_4_mapa.png}
+\caption{Abril de 2007}
+\label{fig:map-mon-2-4-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_5_mapa.png}
+\caption{Mayo de 2007}
+\label{fig:map-mon-2-5-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_6_mapa.png}
+\caption{Junio de 2007}
+\label{fig:map-mon-2-6-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_7_mapa.png}
+\caption{Julio de 2007}
+\label{fig:map-mon-2-7-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_8_mapa.png}
+\caption{Agosto de 2007}
+\label{fig:map-mon-2-8-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_9_mapa.png}
+\caption{Septiembre de 2007}
+\label{fig:map-mon-2-9-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_10_mapa.png}
+\caption{Octubre de 2007}
+\label{fig:map-mon-2-10-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_11_mapa.png}
+\caption{Noviembre de 2007}
+\label{fig:map-mon-2-11-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2007/ozone_2007_12_mapa.png}
+\caption{Diciembre de 2007}
+\label{fig:map-mon-2-12-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_1_mapa.png}
+\caption{Enero de 2008}
+\label{fig:map-mon-2-1-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_2_mapa.png}
+\caption{Febrero de 2008}
+\label{fig:map-mon-2-2-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_3_mapa.png}
+\caption{Marzo de 2008}
+\label{fig:map-mon-2-3-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_4_mapa.png}
+\caption{Abril de 2008}
+\label{fig:map-mon-2-4-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_5_mapa.png}
+\caption{Mayo de 2008}
+\label{fig:map-mon-2-5-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_6_mapa.png}
+\caption{Junio de 2008}
+\label{fig:map-mon-2-6-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_7_mapa.png}
+\caption{Julio de 2008}
+\label{fig:map-mon-2-7-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_8_mapa.png}
+\caption{Agosto de 2008}
+\label{fig:map-mon-2-8-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_9_mapa.png}
+\caption{Septiembre de 2008}
+\label{fig:map-mon-2-9-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_10_mapa.png}
+\caption{Octubre de 2008}
+\label{fig:map-mon-2-10-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_11_mapa.png}
+\caption{Noviembre de 2008}
+\label{fig:map-mon-2-11-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2008/ozone_2008_12_mapa.png}
+\caption{Diciembre de 2008}
+\label{fig:map-mon-2-12-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_1_mapa.png}
+\caption{Enero de 2009}
+\label{fig:map-mon-2-1-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_2_mapa.png}
+\caption{Febrero de 2009}
+\label{fig:map-mon-2-2-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_3_mapa.png}
+\caption{Marzo de 2009}
+\label{fig:map-mon-2-3-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_4_mapa.png}
+\caption{Abril de 2009}
+\label{fig:map-mon-2-4-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_5_mapa.png}
+\caption{Mayo de 2009}
+\label{fig:map-mon-2-5-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_6_mapa.png}
+\caption{Junio de 2009}
+\label{fig:map-mon-2-6-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_7_mapa.png}
+\caption{Julio de 2009}
+\label{fig:map-mon-2-7-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_8_mapa.png}
+\caption{Agosto de 2009}
+\label{fig:map-mon-2-8-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_9_mapa.png}
+\caption{Septiembre de 2009}
+\label{fig:map-mon-2-9-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_10_mapa.png}
+\caption{Octubre de 2009}
+\label{fig:map-mon-2-10-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_11_mapa.png}
+\caption{Noviembre de 2009}
+\label{fig:map-mon-2-11-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2009/ozone_2009_12_mapa.png}
+\caption{Diciembre de 2009}
+\label{fig:map-mon-2-12-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_1_mapa.png}
+\caption{Enero de 2010}
+\label{fig:map-mon-2-1-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_2_mapa.png}
+\caption{Febrero de 2010}
+\label{fig:map-mon-2-2-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_3_mapa.png}
+\caption{Marzo de 2010}
+\label{fig:map-mon-2-3-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_4_mapa.png}
+\caption{Abril de 2010}
+\label{fig:map-mon-2-4-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_5_mapa.png}
+\caption{Mayo de 2010}
+\label{fig:map-mon-2-5-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_6_mapa.png}
+\caption{Junio de 2010}
+\label{fig:map-mon-2-6-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_7_mapa.png}
+\caption{Julio de 2010}
+\label{fig:map-mon-2-7-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_8_mapa.png}
+\caption{Agosto de 2010}
+\label{fig:map-mon-2-8-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_9_mapa.png}
+\caption{Septiembre de 2010}
+\label{fig:map-mon-2-9-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_10_mapa.png}
+\caption{Octubre de 2010}
+\label{fig:map-mon-2-10-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_11_mapa.png}
+\caption{Noviembre de 2010}
+\label{fig:map-mon-2-11-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2010/ozone_2010_12_mapa.png}
+\caption{Diciembre de 2010}
+\label{fig:map-mon-2-12-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_1_mapa.png}
+\caption{Enero de 2011}
+\label{fig:map-mon-2-1-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_2_mapa.png}
+\caption{Febrero de 2011}
+\label{fig:map-mon-2-2-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_3_mapa.png}
+\caption{Marzo de 2011}
+\label{fig:map-mon-2-3-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_4_mapa.png}
+\caption{Abril de 2011}
+\label{fig:map-mon-2-4-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_5_mapa.png}
+\caption{Mayo de 2011}
+\label{fig:map-mon-2-5-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_6_mapa.png}
+\caption{Junio de 2011}
+\label{fig:map-mon-2-6-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_7_mapa.png}
+\caption{Julio de 2011}
+\label{fig:map-mon-2-7-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_8_mapa.png}
+\caption{Agosto de 2011}
+\label{fig:map-mon-2-8-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_9_mapa.png}
+\caption{Septiembre de 2011}
+\label{fig:map-mon-2-9-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_10_mapa.png}
+\caption{Octubre de 2011}
+\label{fig:map-mon-2-10-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_11_mapa.png}
+\caption{Noviembre de 2011}
+\label{fig:map-mon-2-11-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/ozone/2011/ozone_2011_12_mapa.png}
+\caption{Diciembre de 2011}
+\label{fig:map-mon-2-12-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Partículas de menos de diez micras de diámetro}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Partículas de menos de diez micras de diámetro}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_1_mapa.png}
+\caption{Enero de 2007}
+\label{fig:map-mon-3-1-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_2_mapa.png}
+\caption{Febrero de 2007}
+\label{fig:map-mon-3-2-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_3_mapa.png}
+\caption{Marzo de 2007}
+\label{fig:map-mon-3-3-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_4_mapa.png}
+\caption{Abril de 2007}
+\label{fig:map-mon-3-4-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_5_mapa.png}
+\caption{Mayo de 2007}
+\label{fig:map-mon-3-5-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_6_mapa.png}
+\caption{Junio de 2007}
+\label{fig:map-mon-3-6-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_7_mapa.png}
+\caption{Julio de 2007}
+\label{fig:map-mon-3-7-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_8_mapa.png}
+\caption{Agosto de 2007}
+\label{fig:map-mon-3-8-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_9_mapa.png}
+\caption{Septiembre de 2007}
+\label{fig:map-mon-3-9-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_10_mapa.png}
+\caption{Octubre de 2007}
+\label{fig:map-mon-3-10-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_11_mapa.png}
+\caption{Noviembre de 2007}
+\label{fig:map-mon-3-11-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2007/pm10_2007_12_mapa.png}
+\caption{Diciembre de 2007}
+\label{fig:map-mon-3-12-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_1_mapa.png}
+\caption{Enero de 2008}
+\label{fig:map-mon-3-1-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_2_mapa.png}
+\caption{Febrero de 2008}
+\label{fig:map-mon-3-2-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_3_mapa.png}
+\caption{Marzo de 2008}
+\label{fig:map-mon-3-3-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_4_mapa.png}
+\caption{Abril de 2008}
+\label{fig:map-mon-3-4-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_5_mapa.png}
+\caption{Mayo de 2008}
+\label{fig:map-mon-3-5-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_6_mapa.png}
+\caption{Junio de 2008}
+\label{fig:map-mon-3-6-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_7_mapa.png}
+\caption{Julio de 2008}
+\label{fig:map-mon-3-7-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_8_mapa.png}
+\caption{Agosto de 2008}
+\label{fig:map-mon-3-8-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_9_mapa.png}
+\caption{Septiembre de 2008}
+\label{fig:map-mon-3-9-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_10_mapa.png}
+\caption{Octubre de 2008}
+\label{fig:map-mon-3-10-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_11_mapa.png}
+\caption{Noviembre de 2008}
+\label{fig:map-mon-3-11-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2008/pm10_2008_12_mapa.png}
+\caption{Diciembre de 2008}
+\label{fig:map-mon-3-12-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_1_mapa.png}
+\caption{Enero de 2009}
+\label{fig:map-mon-3-1-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_2_mapa.png}
+\caption{Febrero de 2009}
+\label{fig:map-mon-3-2-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_3_mapa.png}
+\caption{Marzo de 2009}
+\label{fig:map-mon-3-3-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_4_mapa.png}
+\caption{Abril de 2009}
+\label{fig:map-mon-3-4-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_5_mapa.png}
+\caption{Mayo de 2009}
+\label{fig:map-mon-3-5-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_6_mapa.png}
+\caption{Junio de 2009}
+\label{fig:map-mon-3-6-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_7_mapa.png}
+\caption{Julio de 2009}
+\label{fig:map-mon-3-7-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_8_mapa.png}
+\caption{Agosto de 2009}
+\label{fig:map-mon-3-8-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_9_mapa.png}
+\caption{Septiembre de 2009}
+\label{fig:map-mon-3-9-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_10_mapa.png}
+\caption{Octubre de 2009}
+\label{fig:map-mon-3-10-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_11_mapa.png}
+\caption{Noviembre de 2009}
+\label{fig:map-mon-3-11-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2009/pm10_2009_12_mapa.png}
+\caption{Diciembre de 2009}
+\label{fig:map-mon-3-12-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_1_mapa.png}
+\caption{Enero de 2010}
+\label{fig:map-mon-3-1-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_2_mapa.png}
+\caption{Febrero de 2010}
+\label{fig:map-mon-3-2-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_3_mapa.png}
+\caption{Marzo de 2010}
+\label{fig:map-mon-3-3-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_4_mapa.png}
+\caption{Abril de 2010}
+\label{fig:map-mon-3-4-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_5_mapa.png}
+\caption{Mayo de 2010}
+\label{fig:map-mon-3-5-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_6_mapa.png}
+\caption{Junio de 2010}
+\label{fig:map-mon-3-6-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_7_mapa.png}
+\caption{Julio de 2010}
+\label{fig:map-mon-3-7-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_8_mapa.png}
+\caption{Agosto de 2010}
+\label{fig:map-mon-3-8-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_9_mapa.png}
+\caption{Septiembre de 2010}
+\label{fig:map-mon-3-9-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_10_mapa.png}
+\caption{Octubre de 2010}
+\label{fig:map-mon-3-10-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_11_mapa.png}
+\caption{Noviembre de 2010}
+\label{fig:map-mon-3-11-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2010/pm10_2010_12_mapa.png}
+\caption{Diciembre de 2010}
+\label{fig:map-mon-3-12-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_1_mapa.png}
+\caption{Enero de 2011}
+\label{fig:map-mon-3-1-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_2_mapa.png}
+\caption{Febrero de 2011}
+\label{fig:map-mon-3-2-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_3_mapa.png}
+\caption{Marzo de 2011}
+\label{fig:map-mon-3-3-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_4_mapa.png}
+\caption{Abril de 2011}
+\label{fig:map-mon-3-4-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_5_mapa.png}
+\caption{Mayo de 2011}
+\label{fig:map-mon-3-5-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_6_mapa.png}
+\caption{Junio de 2011}
+\label{fig:map-mon-3-6-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_7_mapa.png}
+\caption{Julio de 2011}
+\label{fig:map-mon-3-7-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_8_mapa.png}
+\caption{Agosto de 2011}
+\label{fig:map-mon-3-8-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_9_mapa.png}
+\caption{Septiembre de 2011}
+\label{fig:map-mon-3-9-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_10_mapa.png}
+\caption{Octubre de 2011}
+\label{fig:map-mon-3-10-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_11_mapa.png}
+\caption{Noviembre de 2011}
+\label{fig:map-mon-3-11-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm10/2011/pm10_2011_12_mapa.png}
+\caption{Diciembre de 2011}
+\label{fig:map-mon-3-12-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Partículas de menos de dos micras y media de diámetro}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Partículas de menos de dos micras y media de diámetro}%
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_1_mapa.png}
+\caption{Enero de 2007}
+\label{fig:map-mon-4-1-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_2_mapa.png}
+\caption{Febrero de 2007}
+\label{fig:map-mon-4-2-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_3_mapa.png}
+\caption{Marzo de 2007}
+\label{fig:map-mon-4-3-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_4_mapa.png}
+\caption{Abril de 2007}
+\label{fig:map-mon-4-4-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_5_mapa.png}
+\caption{Mayo de 2007}
+\label{fig:map-mon-4-5-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_6_mapa.png}
+\caption{Junio de 2007}
+\label{fig:map-mon-4-6-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_7_mapa.png}
+\caption{Julio de 2007}
+\label{fig:map-mon-4-7-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_8_mapa.png}
+\caption{Agosto de 2007}
+\label{fig:map-mon-4-8-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_9_mapa.png}
+\caption{Septiembre de 2007}
+\label{fig:map-mon-4-9-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_10_mapa.png}
+\caption{Octubre de 2007}
+\label{fig:map-mon-4-10-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_11_mapa.png}
+\caption{Noviembre de 2007}
+\label{fig:map-mon-4-11-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2007/pm2p5_2007_12_mapa.png}
+\caption{Diciembre de 2007}
+\label{fig:map-mon-4-12-2007}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_1_mapa.png}
+\caption{Enero de 2008}
+\label{fig:map-mon-4-1-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_2_mapa.png}
+\caption{Febrero de 2008}
+\label{fig:map-mon-4-2-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_3_mapa.png}
+\caption{Marzo de 2008}
+\label{fig:map-mon-4-3-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_4_mapa.png}
+\caption{Abril de 2008}
+\label{fig:map-mon-4-4-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_5_mapa.png}
+\caption{Mayo de 2008}
+\label{fig:map-mon-4-5-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_6_mapa.png}
+\caption{Junio de 2008}
+\label{fig:map-mon-4-6-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_7_mapa.png}
+\caption{Julio de 2008}
+\label{fig:map-mon-4-7-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_8_mapa.png}
+\caption{Agosto de 2008}
+\label{fig:map-mon-4-8-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_9_mapa.png}
+\caption{Septiembre de 2008}
+\label{fig:map-mon-4-9-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_10_mapa.png}
+\caption{Octubre de 2008}
+\label{fig:map-mon-4-10-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_11_mapa.png}
+\caption{Noviembre de 2008}
+\label{fig:map-mon-4-11-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2008/pm2p5_2008_12_mapa.png}
+\caption{Diciembre de 2008}
+\label{fig:map-mon-4-12-2008}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_1_mapa.png}
+\caption{Enero de 2009}
+\label{fig:map-mon-4-1-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_2_mapa.png}
+\caption{Febrero de 2009}
+\label{fig:map-mon-4-2-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_3_mapa.png}
+\caption{Marzo de 2009}
+\label{fig:map-mon-4-3-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_4_mapa.png}
+\caption{Abril de 2009}
+\label{fig:map-mon-4-4-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_5_mapa.png}
+\caption{Mayo de 2009}
+\label{fig:map-mon-4-5-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_6_mapa.png}
+\caption{Junio de 2009}
+\label{fig:map-mon-4-6-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_7_mapa.png}
+\caption{Julio de 2009}
+\label{fig:map-mon-4-7-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_8_mapa.png}
+\caption{Agosto de 2009}
+\label{fig:map-mon-4-8-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_9_mapa.png}
+\caption{Septiembre de 2009}
+\label{fig:map-mon-4-9-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_10_mapa.png}
+\caption{Octubre de 2009}
+\label{fig:map-mon-4-10-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_11_mapa.png}
+\caption{Noviembre de 2009}
+\label{fig:map-mon-4-11-2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2009/pm2p5_2009_12_mapa.png}
+\caption{Diciembre de 2009}
+\label{fig:map-mon-4-12-2009}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_1_mapa.png}
+\caption{Enero de 2010}
+\label{fig:map-mon-4-1-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_2_mapa.png}
+\caption{Febrero de 2010}
+\label{fig:map-mon-4-2-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_3_mapa.png}
+\caption{Marzo de 2010}
+\label{fig:map-mon-4-3-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_4_mapa.png}
+\caption{Abril de 2010}
+\label{fig:map-mon-4-4-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_5_mapa.png}
+\caption{Mayo de 2010}
+\label{fig:map-mon-4-5-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_6_mapa.png}
+\caption{Junio de 2010}
+\label{fig:map-mon-4-6-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_7_mapa.png}
+\caption{Julio de 2010}
+\label{fig:map-mon-4-7-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_8_mapa.png}
+\caption{Agosto de 2010}
+\label{fig:map-mon-4-8-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_9_mapa.png}
+\caption{Septiembre de 2010}
+\label{fig:map-mon-4-9-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_10_mapa.png}
+\caption{Octubre de 2010}
+\label{fig:map-mon-4-10-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_11_mapa.png}
+\caption{Noviembre de 2010}
+\label{fig:map-mon-4-11-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2010/pm2p5_2010_12_mapa.png}
+\caption{Diciembre de 2010}
+\label{fig:map-mon-4-12-2010}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_1_mapa.png}
+\caption{Enero de 2011}
+\label{fig:map-mon-4-1-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_2_mapa.png}
+\caption{Febrero de 2011}
+\label{fig:map-mon-4-2-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_3_mapa.png}
+\caption{Marzo de 2011}
+\label{fig:map-mon-4-3-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_4_mapa.png}
+\caption{Abril de 2011}
+\label{fig:map-mon-4-4-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_5_mapa.png}
+\caption{Mayo de 2011}
+\label{fig:map-mon-4-5-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_6_mapa.png}
+\caption{Junio de 2011}
+\label{fig:map-mon-4-6-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_7_mapa.png}
+\caption{Julio de 2011}
+\label{fig:map-mon-4-7-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_8_mapa.png}
+\caption{Agosto de 2011}
+\label{fig:map-mon-4-8-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_9_mapa.png}
+\caption{Septiembre de 2011}
+\label{fig:map-mon-4-9-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_10_mapa.png}
+\caption{Octubre de 2011}
+\label{fig:map-mon-4-10-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_11_mapa.png}
+\caption{Noviembre de 2011}
+\label{fig:map-mon-4-11-2011}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/pm2p5/2011/pm2p5_2011_12_mapa.png}
+\caption{Diciembre de 2011}
+\label{fig:map-mon-4-12-2011}
+\end{subfigure}
+\caption{}
+\end{figure}
 
 \newpage
 
 \section*{Anexo II: Diagramas de caja y bigotes}
 \addcontentsline{toc}{section}{\protect\numberline{}Anexo II: Diagramas de caja y bigotes}%
 
-Introducir aquí los diagramas de caja y bigotes
+\subsection*{Diagramas completos}
+\addcontentsline{toc}{subsection}{\protect\numberline{}Diagramas completos}%
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_no2_boxplot.png}
+\caption{Dióxido de nitrógeno}
+\label{fig:box-com-1}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_ozone_boxplot.png}
+\caption{Ozono}
+\label{fig:box-com-2}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_pm10_boxplot.png}
+\caption{$PM_{10}$}
+\label{fig:box-com-3}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_pm2p5_boxplot.png}
+\caption{$PM_{2.5}$}
+\label{fig:box-com-4}
+\end{figure}
+
+\newpage
+
+\subsection*{Diagramas mensuales}
+\addcontentsline{toc}{subsection}{\protect\numberline{}Diagramas anuales}%
+
+\subsubsection*{Dióxido de nitrógeno}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Dióxido de nitrógeno}%
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2007_boxplot_definitive.png}
+\caption{Año 2007}
+\label{fig:box-ann-1-2007}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2008_boxplot_definitive.png}
+\caption{Año 2008}
+\label{fig:box-ann-1-2008}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2009_boxplot_definitive.png}
+\caption{Año 2009}
+\label{fig:box-ann-1-2009}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2010_boxplot_definitive.png}
+\caption{Año 2010}
+\label{fig:box-ann-1-2010}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2011_boxplot_definitive.png}
+\caption{Año 2011}
+\label{fig:box-ann-1-2011}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Ozono}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Ozono}%
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2007_boxplot_definitive.png}
+\caption{Año 2007}
+\label{fig:box-ann-2-2007}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2008_boxplot_definitive.png}
+\caption{Año 2008}
+\label{fig:box-ann-2-2008}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2009_boxplot_definitive.png}
+\caption{Año 2009}
+\label{fig:box-ann-2-2009}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2010_boxplot_definitive.png}
+\caption{Año 2010}
+\label{fig:box-ann-2-2010}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2011_boxplot_definitive.png}
+\caption{Año 2011}
+\label{fig:box-ann-2-2011}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Partículas de menos de diez micras de diámetro}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Partículas de menos de diez micras de diámetro}%
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2007_boxplot_definitive.png}
+\caption{Año 2007}
+\label{fig:box-ann-3-2007}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2008_boxplot_definitive.png}
+\caption{Año 2008}
+\label{fig:box-ann-3-2008}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2009_boxplot_definitive.png}
+\caption{Año 2009}
+\label{fig:box-ann-3-2009}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2010_boxplot_definitive.png}
+\caption{Año 2010}
+\label{fig:box-ann-3-2010}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2011_boxplot_definitive.png}
+\caption{Año 2011}
+\label{fig:box-ann-3-2011}
+\end{figure}
+
+\newpage
+
+\subsubsection*{Partículas de menos de dos micras y media de diámetro}
+\addcontentsline{toc}{subsection}{\protect\numberline{}\hspace{6mm} Partículas de menos de dos micras y media de diámetro}%
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2007_boxplot_definitive.png}
+\caption{Año 2007}
+\label{fig:box-ann-4-2007}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2008_boxplot_definitive.png}
+\caption{Año 2008}
+\label{fig:box-ann-4-2008}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2009_boxplot_definitive.png}
+\caption{Año 2009}
+\label{fig:box-ann-4-2009}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2010_boxplot_definitive.png}
+\caption{Año 2010}
+\label{fig:box-ann-4-2010}
+\end{figure}
+
+\newpage
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2011_boxplot_definitive.png}
+\caption{Año 2011}
+\label{fig:box-ann-4-2011}
+\end{figure}
 
 \newpage
 
@@ -183,13 +2699,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2007_histogram.png}
-\caption{}
+\caption{Año 2007}
 \label{fig:hist-ann-1-1}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2008_histogram.png}
-\caption{}
+\caption{Año 2008}
 \label{fig:hist-ann-1-2}
 \end{subfigure}
 \caption{}
@@ -199,13 +2715,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2009_histogram.png}
-\caption{}
+\caption{Año 2009}
 \label{fig:hist-ann-1-3}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2010_histogram.png}
-\caption{}
+\caption{Año 2010}
 \label{fig:hist-ann-1-4}
 \end{subfigure}
 \caption{}
@@ -215,7 +2731,7 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2011_histogram.png}
 \label{fig:hist-ann-1-5}
-\caption{}
+\caption{Año 2011}
 \end{figure}
 
 \newpage
@@ -227,13 +2743,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2007_histogram.png}
-\caption{}
+\caption{Año 2007}
 \label{fig:hist-ann-2-1}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2008_histogram.png}
-\caption{}
+\caption{Año 2008}
 \label{fig:hist-ann-2-2}
 \end{subfigure}
 \caption{}
@@ -243,13 +2759,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2009_histogram.png}
-\caption{}
+\caption{Año 2009}
 \label{fig:hist-ann-2-3}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2010_histogram.png}
-\caption{}
+\caption{Año 2010}
 \label{fig:hist-ann-2-4}
 \end{subfigure}
 \caption{}
@@ -259,7 +2775,7 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2011_histogram.png}
 \label{fig:hist-ann-2-5}
-\caption{}
+\caption{Año 2011}
 \end{figure}
 
 \newpage
@@ -271,13 +2787,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2007_histogram.png}
-\caption{}
+\caption{Año 2007}
 \label{fig:hist-ann-3-1}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2008_histogram.png}
-\caption{}
+\caption{Año 2008}
 \label{fig:hist-ann-3-2}
 \end{subfigure}
 \caption{}
@@ -287,13 +2803,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2009_histogram.png}
-\caption{}
+\caption{Año 2009}
 \label{fig:hist-ann-3-3}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2010_histogram.png}
-\caption{}
+\caption{Año 2010}
 \label{fig:hist-ann-3-4}
 \end{subfigure}
 \caption{}
@@ -303,7 +2819,7 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2011_histogram.png}
 \label{fig:hist-ann-3-5}
-\caption{}
+\caption{Año 2011}
 \end{figure}
 
 \newpage
@@ -315,13 +2831,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2007_histogram.png}
-\caption{}
+\caption{Año 2007}
 \label{fig:hist-ann-4-1}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2008_histogram.png}
-\caption{}
+\caption{Año 2008}
 \label{fig:hist-ann-4-2}
 \end{subfigure}
 \caption{}
@@ -331,13 +2847,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2009_histogram.png}
-\caption{}
+\caption{Año 2009}
 \label{fig:hist-ann-4-3}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2010_histogram.png}
-\caption{}
+\caption{Año 2010}
 \label{fig:hist-ann-4-4}
 \end{subfigure}
 \caption{}
@@ -347,7 +2863,7 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2011_histogram.png}
 \label{fig:hist-ann-4-5}
-\caption{}
+\caption{Año 2011}
 \end{figure}
 
 \newpage
@@ -362,13 +2878,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_1_histograms.png}
-\caption{}
+\caption{Enero de 2007}
 \label{fig:hist-mon-1-1-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_2_histograms.png}
-\caption{}
+\caption{Febrero de 2007}
 \label{fig:hist-mon-1-2-2007}
 \end{subfigure}
 \caption{}
@@ -378,13 +2894,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_3_histograms.png}
-\caption{}
+\caption{Marzo de 2007}
 \label{fig:hist-mon-1-3-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_4_histograms.png}
-\caption{}
+\caption{Abril de 2007}
 \label{fig:hist-mon-1-4-2007}
 \end{subfigure}
 \caption{}
@@ -394,13 +2910,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_5_histograms.png}
-\caption{}
+\caption{Mayo de 2007}
 \label{fig:hist-mon-1-5-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_6_histograms.png}
-\caption{}
+\caption{Junio de 2007}
 \label{fig:hist-mon-1-6-2007}
 \end{subfigure}
 \caption{}
@@ -412,13 +2928,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_7_histograms.png}
-\caption{}
+\caption{Julio de 2007}
 \label{fig:hist-mon-1-7-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_8_histograms.png}
-\caption{}
+\caption{Agosto de 2007}
 \label{fig:hist-mon-1-8-2007}
 \end{subfigure}
 \caption{}
@@ -428,13 +2944,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2007}
 \label{fig:hist-mon-1-9-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_10_histograms.png}
-\caption{}
+\caption{Octubre de 2007}
 \label{fig:hist-mon-1-10-2007}
 \end{subfigure}
 \caption{}
@@ -444,13 +2960,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2007}
 \label{fig:hist-mon-1-11-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2007_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2007}
 \label{fig:hist-mon-1-12-2007}
 \end{subfigure}
 \caption{}
@@ -462,13 +2978,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_1_histograms.png}
-\caption{}
+\caption{Enero de 2008}
 \label{fig:hist-mon-1-1-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_2_histograms.png}
-\caption{}
+\caption{Febrero de 2008}
 \label{fig:hist-mon-1-2-2008}
 \end{subfigure}
 \caption{}
@@ -478,13 +2994,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_3_histograms.png}
-\caption{}
+\caption{Marzo de 2008}
 \label{fig:hist-mon-1-3-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_4_histograms.png}
-\caption{}
+\caption{Abril de 2008}
 \label{fig:hist-mon-1-4-2008}
 \end{subfigure}
 \caption{}
@@ -494,13 +3010,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_5_histograms.png}
-\caption{}
+\caption{Mayo de 2008}
 \label{fig:hist-mon-1-5-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_6_histograms.png}
-\caption{}
+\caption{Junio de 2008}
 \label{fig:hist-mon-1-6-2008}
 \end{subfigure}
 \caption{}
@@ -512,13 +3028,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_7_histograms.png}
-\caption{}
+\caption{Julio de 2008}
 \label{fig:hist-mon-1-7-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_8_histograms.png}
-\caption{}
+\caption{Agosto de 2008}
 \label{fig:hist-mon-1-8-2008}
 \end{subfigure}
 \caption{}
@@ -528,13 +3044,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2008}
 \label{fig:hist-mon-1-9-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_10_histograms.png}
-\caption{}
+\caption{Octubre de 2008}
 \label{fig:hist-mon-1-10-2008}
 \end{subfigure}
 \caption{}
@@ -544,13 +3060,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2008}
 \label{fig:hist-mon-1-11-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2008_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2008}
 \label{fig:hist-mon-1-12-2008}
 \end{subfigure}
 \caption{}
@@ -562,13 +3078,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_1_histograms.png}
-\caption{}
+\caption{Enero de 2009}
 \label{fig:hist-mon-1-1-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_2_histograms.png}
-\caption{}
+\caption{Febrero de 2009}
 \label{fig:hist-mon-1-2-2009}
 \end{subfigure}
 \caption{}
@@ -578,13 +3094,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_3_histograms.png}
-\caption{}
+\caption{Marzo de 2009}
 \label{fig:hist-mon-1-3-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_4_histograms.png}
-\caption{}
+\caption{Abril de 2009}
 \label{fig:hist-mon-1-4-2009}
 \end{subfigure}
 \caption{}
@@ -594,13 +3110,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_5_histograms.png}
-\caption{}
+\caption{Mayo de 2009}
 \label{fig:hist-mon-1-5-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_6_histograms.png}
-\caption{}
+\caption{Junio de 2009}
 \label{fig:hist-mon-1-6-2009}
 \end{subfigure}
 \caption{}
@@ -612,13 +3128,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_7_histograms.png}
-\caption{}
+\caption{Julio de 2009}
 \label{fig:hist-mon-1-7-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_8_histograms.png}
-\caption{}
+\caption{Agosto de 2009}
 \label{fig:hist-mon-1-8-2009}
 \end{subfigure}
 \caption{}
@@ -628,13 +3144,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2009}
 \label{fig:hist-mon-1-9-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_10_histograms.png}
-\caption{}
+\caption{Octubre de 2009}
 \label{fig:hist-mon-1-10-2009}
 \end{subfigure}
 \caption{}
@@ -644,13 +3160,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2009}
 \label{fig:hist-mon-1-11-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2009_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2009}
 \label{fig:hist-mon-1-12-2009}
 \end{subfigure}
 \caption{}
@@ -662,13 +3178,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_1_histograms.png}
-\caption{}
+\caption{Enero de 2010}
 \label{fig:hist-mon-1-1-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_2_histograms.png}
-\caption{}
+\caption{Febrero de 2010}
 \label{fig:hist-mon-1-2-2010}
 \end{subfigure}
 \caption{}
@@ -678,13 +3194,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_3_histograms.png}
-\caption{}
+\caption{Marzo de 2010}
 \label{fig:hist-mon-1-3-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_4_histograms.png}
-\caption{}
+\caption{Abril de 2010}
 \label{fig:hist-mon-1-4-2010}
 \end{subfigure}
 \caption{}
@@ -694,13 +3210,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_5_histograms.png}
-\caption{}
+\caption{Mayo de 2010}
 \label{fig:hist-mon-1-5-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_6_histograms.png}
-\caption{}
+\caption{Junio de 2010}
 \label{fig:hist-mon-1-6-2010}
 \end{subfigure}
 \caption{}
@@ -712,13 +3228,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_7_histograms.png}
-\caption{}
+\caption{Julio de 2010}
 \label{fig:hist-mon-1-7-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_8_histograms.png}
-\caption{}
+\caption{Agosto de 2010}
 \label{fig:hist-mon-1-8-2010}
 \end{subfigure}
 \caption{}
@@ -728,13 +3244,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2010}
 \label{fig:hist-mon-1-9-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_10_histograms.png}
-\caption{}
+\caption{Octubre de 2010}
 \label{fig:hist-mon-1-10-2010}
 \end{subfigure}
 \caption{}
@@ -744,13 +3260,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2010}
 \label{fig:hist-mon-1-11-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2010_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2010}
 \label{fig:hist-mon-1-12-2010}
 \end{subfigure}
 \caption{}
@@ -762,13 +3278,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_1_histograms.png}
-\caption{}
+\caption{Enero de 2011}
 \label{fig:hist-mon-1-1-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_2_histograms.png}
-\caption{}
+\caption{Febrero de 2011}
 \label{fig:hist-mon-1-2-2011}
 \end{subfigure}
 \caption{}
@@ -778,13 +3294,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_3_histograms.png}
-\caption{}
+\caption{Marzo de 2011}
 \label{fig:hist-mon-1-3-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_4_histograms.png}
-\caption{}
+\caption{Abril de 2011}
 \label{fig:hist-mon-1-4-2011}
 \end{subfigure}
 \caption{}
@@ -794,13 +3310,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_5_histograms.png}
-\caption{}
+\caption{Mayo de 2011}
 \label{fig:hist-mon-1-5-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_6_histograms.png}
-\caption{}
+\caption{Junio de 2011}
 \label{fig:hist-mon-1-6-2011}
 \end{subfigure}
 \caption{}
@@ -812,13 +3328,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_7_histograms.png}
-\caption{}
+\caption{Julio de 2011}
 \label{fig:hist-mon-1-7-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_8_histograms.png}
-\caption{}
+\caption{Agosto de 2011}
 \label{fig:hist-mon-1-8-2011}
 \end{subfigure}
 \caption{}
@@ -828,13 +3344,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2011}
 \label{fig:hist-mon-1-9-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_10_histograms.png}
-\caption{}
+\caption{Octubre de 2011}
 \label{fig:hist-mon-1-10-2011}
 \end{subfigure}
 \caption{}
@@ -844,13 +3360,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2011}
 \label{fig:hist-mon-1-11-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/no2_2011_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2011}
 \label{fig:hist-mon-1-12-2011}
 \end{subfigure}
 \caption{}
@@ -865,13 +3381,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_1_histograms.png}
-\caption{}
+\caption{Enero de 2007}
 \label{fig:hist-mon-2-1-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_2_histograms.png}
-\caption{}
+\caption{Febrero de 2007}
 \label{fig:hist-mon-2-2-2007}
 \end{subfigure}
 \caption{}
@@ -881,13 +3397,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_3_histograms.png}
-\caption{}
+\caption{Marzo de 2007}
 \label{fig:hist-mon-2-3-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_4_histograms.png}
-\caption{}
+\caption{Abril de 2007}
 \label{fig:hist-mon-2-4-2007}
 \end{subfigure}
 \caption{}
@@ -897,13 +3413,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_5_histograms.png}
-\caption{}
+\caption{Mayo de 2007}
 \label{fig:hist-mon-2-5-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_6_histograms.png}
-\caption{}
+\caption{Junio de 2007}
 \label{fig:hist-mon-2-6-2007}
 \end{subfigure}
 \caption{}
@@ -915,13 +3431,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_7_histograms.png}
-\caption{}
+\caption{Julio de 2007}
 \label{fig:hist-mon-2-7-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_8_histograms.png}
-\caption{}
+\caption{Agosto de 2007}
 \label{fig:hist-mon-2-8-2007}
 \end{subfigure}
 \caption{}
@@ -931,13 +3447,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2007}
 \label{fig:hist-mon-2-9-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_10_histograms.png}
-\caption{}
+\caption{Octubre de 2007}
 \label{fig:hist-mon-2-10-2007}
 \end{subfigure}
 \caption{}
@@ -947,13 +3463,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2007}
 \label{fig:hist-mon-2-11-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2007_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2007}
 \label{fig:hist-mon-2-12-2007}
 \end{subfigure}
 \caption{}
@@ -965,13 +3481,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_1_histograms.png}
-\caption{}
+\caption{Enero de 2008}
 \label{fig:hist-mon-2-1-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_2_histograms.png}
-\caption{}
+\caption{Febrero de 2008}
 \label{fig:hist-mon-2-2-2008}
 \end{subfigure}
 \caption{}
@@ -981,13 +3497,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_3_histograms.png}
-\caption{}
+\caption{Marzo de 2008}
 \label{fig:hist-mon-2-3-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_4_histograms.png}
-\caption{}
+\caption{Abril de 2008}
 \label{fig:hist-mon-2-4-2008}
 \end{subfigure}
 \caption{}
@@ -997,13 +3513,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_5_histograms.png}
-\caption{}
+\caption{Mayo de 2008}
 \label{fig:hist-mon-2-5-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_6_histograms.png}
-\caption{}
+\caption{Junio de 2008}
 \label{fig:hist-mon-2-6-2008}
 \end{subfigure}
 \caption{}
@@ -1015,13 +3531,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_7_histograms.png}
-\caption{}
+\caption{Julio de 2008}
 \label{fig:hist-mon-2-7-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_8_histograms.png}
-\caption{}
+\caption{Agosto de 2008}
 \label{fig:hist-mon-2-8-2008}
 \end{subfigure}
 \caption{}
@@ -1031,13 +3547,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2008}
 \label{fig:hist-mon-2-9-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_10_histograms.png}
-\caption{}
+\caption{Octubre de 2008}
 \label{fig:hist-mon-2-10-2008}
 \end{subfigure}
 \caption{}
@@ -1047,13 +3563,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2008}
 \label{fig:hist-mon-2-11-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2008_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2008}
 \label{fig:hist-mon-2-12-2008}
 \end{subfigure}
 \caption{}
@@ -1065,13 +3581,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_1_histograms.png}
-\caption{}
+\caption{Enero de 2009}
 \label{fig:hist-mon-2-1-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_2_histograms.png}
-\caption{}
+\caption{Febrero de 2009}
 \label{fig:hist-mon-2-2-2009}
 \end{subfigure}
 \caption{}
@@ -1081,13 +3597,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_3_histograms.png}
-\caption{}
+\caption{Marzo de 2009}
 \label{fig:hist-mon-2-3-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_4_histograms.png}
-\caption{}
+\caption{Abril de 2009}
 \label{fig:hist-mon-2-4-2009}
 \end{subfigure}
 \caption{}
@@ -1097,13 +3613,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_5_histograms.png}
-\caption{}
+\caption{Mayo de 2009}
 \label{fig:hist-mon-2-5-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_6_histograms.png}
-\caption{}
+\caption{Junio de 2009}
 \label{fig:hist-mon-2-6-2009}
 \end{subfigure}
 \caption{}
@@ -1115,13 +3631,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_7_histograms.png}
-\caption{}
+\caption{Julio de 2009}
 \label{fig:hist-mon-2-7-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_8_histograms.png}
-\caption{}
+\caption{Agosto de 2009}
 \label{fig:hist-mon-2-8-2009}
 \end{subfigure}
 \caption{}
@@ -1131,13 +3647,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2009}
 \label{fig:hist-mon-2-9-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_10_histograms.png}
-\caption{}
+\caption{Octubre de 2009}
 \label{fig:hist-mon-2-10-2009}
 \end{subfigure}
 \caption{}
@@ -1147,13 +3663,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2009}
 \label{fig:hist-mon-2-11-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2009_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2009}
 \label{fig:hist-mon-2-12-2009}
 \end{subfigure}
 \caption{}
@@ -1165,13 +3681,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_1_histograms.png}
-\caption{}
+\caption{Enero de 2010}
 \label{fig:hist-mon-2-1-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_2_histograms.png}
-\caption{}
+\caption{Febrero de 2010}
 \label{fig:hist-mon-2-2-2010}
 \end{subfigure}
 \caption{}
@@ -1181,13 +3697,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_3_histograms.png}
-\caption{}
+\caption{Marzo de 2010}
 \label{fig:hist-mon-2-3-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_4_histograms.png}
-\caption{}
+\caption{Abril de 2010}
 \label{fig:hist-mon-2-4-2010}
 \end{subfigure}
 \caption{}
@@ -1197,13 +3713,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_5_histograms.png}
-\caption{}
+\caption{Mayo de 2010}
 \label{fig:hist-mon-2-5-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_6_histograms.png}
-\caption{}
+\caption{Junio de 2010}
 \label{fig:hist-mon-2-6-2010}
 \end{subfigure}
 \caption{}
@@ -1215,13 +3731,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_7_histograms.png}
-\caption{}
+\caption{Julio de 2010}
 \label{fig:hist-mon-2-7-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_8_histograms.png}
-\caption{}
+\caption{Agosto de 2010}
 \label{fig:hist-mon-2-8-2010}
 \end{subfigure}
 \caption{}
@@ -1231,13 +3747,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2010}
 \label{fig:hist-mon-2-9-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_10_histograms.png}
-\caption{}
+\caption{Octubre de 2010}
 \label{fig:hist-mon-2-10-2010}
 \end{subfigure}
 \caption{}
@@ -1247,13 +3763,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2010}
 \label{fig:hist-mon-2-11-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2010_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2010}
 \label{fig:hist-mon-2-12-2010}
 \end{subfigure}
 \caption{}
@@ -1265,13 +3781,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_1_histograms.png}
-\caption{}
+\caption{Enero de 2011}
 \label{fig:hist-mon-2-1-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_2_histograms.png}
-\caption{}
+\caption{Febrero de 2011}
 \label{fig:hist-mon-2-2-2011}
 \end{subfigure}
 \caption{}
@@ -1281,13 +3797,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_3_histograms.png}
-\caption{}
+\caption{Marzo de 2011}
 \label{fig:hist-mon-2-3-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_4_histograms.png}
-\caption{}
+\caption{Abril de 2011}
 \label{fig:hist-mon-2-4-2011}
 \end{subfigure}
 \caption{}
@@ -1297,13 +3813,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_5_histograms.png}
-\caption{}
+\caption{Mayo de 2011}
 \label{fig:hist-mon-2-5-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_6_histograms.png}
-\caption{}
+\caption{Junio de 2011}
 \label{fig:hist-mon-2-6-2011}
 \end{subfigure}
 \caption{}
@@ -1315,13 +3831,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_7_histograms.png}
-\caption{}
+\caption{Julio de 2011}
 \label{fig:hist-mon-2-7-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_8_histograms.png}
-\caption{}
+\caption{Agosto de 2011}
 \label{fig:hist-mon-2-8-2011}
 \end{subfigure}
 \caption{}
@@ -1331,13 +3847,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2011}
 \label{fig:hist-mon-2-9-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_10_histograms.png}
-\caption{}
+\caption{Octubre de 2011}
 \label{fig:hist-mon-2-10-2011}
 \end{subfigure}
 \caption{}
@@ -1347,13 +3863,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2011}
 \label{fig:hist-mon-2-11-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/ozone_2011_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2011}
 \label{fig:hist-mon-2-12-2011}
 \end{subfigure}
 \caption{}
@@ -1368,13 +3884,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_1_histograms.png}
-\caption{}
+\caption{Enero de 2007}
 \label{fig:hist-mon-3-1-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_2_histograms.png}
-\caption{}
+\caption{Febrero de 2007}
 \label{fig:hist-mon-3-2-2007}
 \end{subfigure}
 \caption{}
@@ -1384,13 +3900,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_3_histograms.png}
-\caption{}
+\caption{Marzo de 2007}
 \label{fig:hist-mon-3-3-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_4_histograms.png}
-\caption{}
+\caption{Abril de 2007}
 \label{fig:hist-mon-3-4-2007}
 \end{subfigure}
 \caption{}
@@ -1400,13 +3916,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_5_histograms.png}
-\caption{}
+\caption{Mayo de 2007}
 \label{fig:hist-mon-3-5-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_6_histograms.png}
-\caption{}
+\caption{Junio de 2007}
 \label{fig:hist-mon-3-6-2007}
 \end{subfigure}
 \caption{}
@@ -1418,13 +3934,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_7_histograms.png}
-\caption{}
+\caption{Julio de 2007}
 \label{fig:hist-mon-3-7-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_8_histograms.png}
-\caption{}
+\caption{Agosto de 2007}
 \label{fig:hist-mon-3-8-2007}
 \end{subfigure}
 \caption{}
@@ -1434,13 +3950,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2007}
 \label{fig:hist-mon-3-9-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_10_histograms.png}
-\caption{}
+\caption{Octubre de 2007}
 \label{fig:hist-mon-3-10-2007}
 \end{subfigure}
 \caption{}
@@ -1450,13 +3966,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2007}
 \label{fig:hist-mon-3-11-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2007_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2007}
 \label{fig:hist-mon-3-12-2007}
 \end{subfigure}
 \caption{}
@@ -1468,13 +3984,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_1_histograms.png}
-\caption{}
+\caption{Enero de 2008}
 \label{fig:hist-mon-3-1-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_2_histograms.png}
-\caption{}
+\caption{Febrero de 2008}
 \label{fig:hist-mon-3-2-2008}
 \end{subfigure}
 \caption{}
@@ -1484,13 +4000,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_3_histograms.png}
-\caption{}
+\caption{Marzo de 2008}
 \label{fig:hist-mon-3-3-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_4_histograms.png}
-\caption{}
+\caption{Abril de 2008}
 \label{fig:hist-mon-3-4-2008}
 \end{subfigure}
 \caption{}
@@ -1500,13 +4016,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_5_histograms.png}
-\caption{}
+\caption{Mayo de 2008}
 \label{fig:hist-mon-3-5-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_6_histograms.png}
-\caption{}
+\caption{Junio de 2008}
 \label{fig:hist-mon-3-6-2008}
 \end{subfigure}
 \caption{}
@@ -1518,13 +4034,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_7_histograms.png}
-\caption{}
+\caption{Julio de 2008}
 \label{fig:hist-mon-3-7-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_8_histograms.png}
-\caption{}
+\caption{Agosto de 2008}
 \label{fig:hist-mon-3-8-2008}
 \end{subfigure}
 \caption{}
@@ -1534,13 +4050,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2008}
 \label{fig:hist-mon-3-9-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_10_histograms.png}
-\caption{}
+\caption{Octubre de 2008}
 \label{fig:hist-mon-3-10-2008}
 \end{subfigure}
 \caption{}
@@ -1550,13 +4066,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2008}
 \label{fig:hist-mon-3-11-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2008_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2008}
 \label{fig:hist-mon-3-12-2008}
 \end{subfigure}
 \caption{}
@@ -1568,13 +4084,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_1_histograms.png}
-\caption{}
+\caption{Enero de 2009}
 \label{fig:hist-mon-3-1-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_2_histograms.png}
-\caption{}
+\caption{Febrero de 2009}
 \label{fig:hist-mon-3-2-2009}
 \end{subfigure}
 \caption{}
@@ -1584,13 +4100,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_3_histograms.png}
-\caption{}
+\caption{Marzo de 2009}
 \label{fig:hist-mon-3-3-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_4_histograms.png}
-\caption{}
+\caption{Abril de 2009}
 \label{fig:hist-mon-3-4-2009}
 \end{subfigure}
 \caption{}
@@ -1600,13 +4116,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_5_histograms.png}
-\caption{}
+\caption{Mayo de 2009}
 \label{fig:hist-mon-3-5-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_6_histograms.png}
-\caption{}
+\caption{Junio de 2009}
 \label{fig:hist-mon-3-6-2009}
 \end{subfigure}
 \caption{}
@@ -1618,13 +4134,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_7_histograms.png}
-\caption{}
+\caption{Julio de 2009}
 \label{fig:hist-mon-3-7-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_8_histograms.png}
-\caption{}
+\caption{Agosto de 2009}
 \label{fig:hist-mon-3-8-2009}
 \end{subfigure}
 \caption{}
@@ -1634,13 +4150,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2009}
 \label{fig:hist-mon-3-9-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_10_histograms.png}
-\caption{}
+\caption{Octubre de 2009}
 \label{fig:hist-mon-3-10-2009}
 \end{subfigure}
 \caption{}
@@ -1650,13 +4166,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2009}
 \label{fig:hist-mon-3-11-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2009_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2009}
 \label{fig:hist-mon-3-12-2009}
 \end{subfigure}
 \caption{}
@@ -1668,13 +4184,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_1_histograms.png}
-\caption{}
+\caption{Enero de 2010}
 \label{fig:hist-mon-3-1-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_2_histograms.png}
-\caption{}
+\caption{Febrero de 2010}
 \label{fig:hist-mon-3-2-2010}
 \end{subfigure}
 \caption{}
@@ -1684,13 +4200,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_3_histograms.png}
-\caption{}
+\caption{Marzo de 2010}
 \label{fig:hist-mon-3-3-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_4_histograms.png}
-\caption{}
+\caption{Abril de 2010}
 \label{fig:hist-mon-3-4-2010}
 \end{subfigure}
 \caption{}
@@ -1700,13 +4216,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_5_histograms.png}
-\caption{}
+\caption{Mayo de 2010}
 \label{fig:hist-mon-3-5-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_6_histograms.png}
-\caption{}
+\caption{Junio de 2010}
 \label{fig:hist-mon-3-6-2010}
 \end{subfigure}
 \caption{}
@@ -1718,13 +4234,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_7_histograms.png}
-\caption{}
+\caption{Julio de 2010}
 \label{fig:hist-mon-3-7-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_8_histograms.png}
-\caption{}
+\caption{Agosto de 2010}
 \label{fig:hist-mon-3-8-2010}
 \end{subfigure}
 \caption{}
@@ -1734,13 +4250,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2010}
 \label{fig:hist-mon-3-9-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_10_histograms.png}
-\caption{}
+\caption{Octubre de 2010}
 \label{fig:hist-mon-3-10-2010}
 \end{subfigure}
 \caption{}
@@ -1750,13 +4266,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2010}
 \label{fig:hist-mon-3-11-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2010_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2010}
 \label{fig:hist-mon-3-12-2010}
 \end{subfigure}
 \caption{}
@@ -1768,13 +4284,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_1_histograms.png}
-\caption{}
+\caption{Enero de 2011}
 \label{fig:hist-mon-3-1-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_2_histograms.png}
-\caption{}
+\caption{Febrero de 2011}
 \label{fig:hist-mon-3-2-2011}
 \end{subfigure}
 \caption{}
@@ -1784,13 +4300,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_3_histograms.png}
-\caption{}
+\caption{Marzo de 2011}
 \label{fig:hist-mon-3-3-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_4_histograms.png}
-\caption{}
+\caption{Abril de 2011}
 \label{fig:hist-mon-3-4-2011}
 \end{subfigure}
 \caption{}
@@ -1800,13 +4316,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_5_histograms.png}
-\caption{}
+\caption{Mayo de 2011}
 \label{fig:hist-mon-3-5-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_6_histograms.png}
-\caption{}
+\caption{Junio de 2011}
 \label{fig:hist-mon-3-6-2011}
 \end{subfigure}
 \caption{}
@@ -1818,13 +4334,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_7_histograms.png}
-\caption{}
+\caption{Julio de 2011}
 \label{fig:hist-mon-3-7-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_8_histograms.png}
-\caption{}
+\caption{Agosto de 2011}
 \label{fig:hist-mon-3-8-2011}
 \end{subfigure}
 \caption{}
@@ -1834,13 +4350,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2011}
 \label{fig:hist-mon-3-9-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_10_histograms.png}
-\caption{}
+\caption{Octubre de 2011}
 \label{fig:hist-mon-3-10-2011}
 \end{subfigure}
 \caption{}
@@ -1850,13 +4366,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2011}
 \label{fig:hist-mon-3-11-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm10_2011_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2011}
 \label{fig:hist-mon-3-12-2011}
 \end{subfigure}
 \caption{}
@@ -1871,13 +4387,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_1_histograms.png}
-\caption{}
+\caption{Enero de 2007}
 \label{fig:hist-mon-4-1-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_2_histograms.png}
-\caption{}
+\caption{Febrero de 2007}
 \label{fig:hist-mon-4-2-2007}
 \end{subfigure}
 \caption{}
@@ -1887,13 +4403,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_3_histograms.png}
-\caption{}
+\caption{Marzo de 2007}
 \label{fig:hist-mon-4-3-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_4_histograms.png}
-\caption{}
+\caption{Abril de 2007}
 \label{fig:hist-mon-4-4-2007}
 \end{subfigure}
 \caption{}
@@ -1903,13 +4419,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_5_histograms.png}
-\caption{}
+\caption{Mayo de 2007}
 \label{fig:hist-mon-4-5-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_6_histograms.png}
-\caption{}
+\caption{Junio de 2007}
 \label{fig:hist-mon-4-6-2007}
 \end{subfigure}
 \caption{}
@@ -1921,13 +4437,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_7_histograms.png}
-\caption{}
+\caption{Julio de 2007}
 \label{fig:hist-mon-4-7-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_8_histograms.png}
-\caption{}
+\caption{Agosto de 2007}
 \label{fig:hist-mon-4-8-2007}
 \end{subfigure}
 \caption{}
@@ -1937,13 +4453,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2007}
 \label{fig:hist-mon-4-9-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_10_histograms.png}
-\caption{}
+\caption{Octubre de 2007}
 \label{fig:hist-mon-4-10-2007}
 \end{subfigure}
 \caption{}
@@ -1953,13 +4469,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2007}
 \label{fig:hist-mon-4-11-2007}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2007_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2007}
 \label{fig:hist-mon-4-12-2007}
 \end{subfigure}
 \caption{}
@@ -1971,13 +4487,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_1_histograms.png}
-\caption{}
+\caption{Enero de 2008}
 \label{fig:hist-mon-4-1-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_2_histograms.png}
-\caption{}
+\caption{Febrero de 2008}
 \label{fig:hist-mon-4-2-2008}
 \end{subfigure}
 \caption{}
@@ -1987,13 +4503,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_3_histograms.png}
-\caption{}
+\caption{Marzo de 2008}
 \label{fig:hist-mon-4-3-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_4_histograms.png}
-\caption{}
+\caption{Abril de 2008}
 \label{fig:hist-mon-4-4-2008}
 \end{subfigure}
 \caption{}
@@ -2003,13 +4519,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_5_histograms.png}
-\caption{}
+\caption{Mayo de 2008}
 \label{fig:hist-mon-4-5-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_6_histograms.png}
-\caption{}
+\caption{Junio de 2008}
 \label{fig:hist-mon-4-6-2008}
 \end{subfigure}
 \caption{}
@@ -2021,13 +4537,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_7_histograms.png}
-\caption{}
+\caption{Julio de 2008}
 \label{fig:hist-mon-4-7-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_8_histograms.png}
-\caption{}
+\caption{Agosto de 2008}
 \label{fig:hist-mon-4-8-2008}
 \end{subfigure}
 \caption{}
@@ -2037,13 +4553,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2008}
 \label{fig:hist-mon-4-9-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_10_histograms.png}
-\caption{}
+\caption{Octubre de 2008}
 \label{fig:hist-mon-4-10-2008}
 \end{subfigure}
 \caption{}
@@ -2053,13 +4569,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2008}
 \label{fig:hist-mon-4-11-2008}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2008_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2008}
 \label{fig:hist-mon-4-12-2008}
 \end{subfigure}
 \caption{}
@@ -2071,13 +4587,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_1_histograms.png}
-\caption{}
+\caption{Enero de 2009}
 \label{fig:hist-mon-4-1-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_2_histograms.png}
-\caption{}
+\caption{Febrero de 2009}
 \label{fig:hist-mon-4-2-2009}
 \end{subfigure}
 \caption{}
@@ -2087,13 +4603,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_3_histograms.png}
-\caption{}
+\caption{Marzo de 2009}
 \label{fig:hist-mon-4-3-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_4_histograms.png}
-\caption{}
+\caption{Abril de 2009}
 \label{fig:hist-mon-4-4-2009}
 \end{subfigure}
 \caption{}
@@ -2103,13 +4619,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_5_histograms.png}
-\caption{}
+\caption{Mayo de 2009}
 \label{fig:hist-mon-4-5-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_6_histograms.png}
-\caption{}
+\caption{Junio de 2009}
 \label{fig:hist-mon-4-6-2009}
 \end{subfigure}
 \caption{}
@@ -2121,13 +4637,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_7_histograms.png}
-\caption{}
+\caption{Julio de 2009}
 \label{fig:hist-mon-4-7-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_8_histograms.png}
-\caption{}
+\caption{Agosto de 2009}
 \label{fig:hist-mon-4-8-2009}
 \end{subfigure}
 \caption{}
@@ -2137,13 +4653,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2009}
 \label{fig:hist-mon-4-9-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_10_histograms.png}
-\caption{}
+\caption{Octubre de 2009}
 \label{fig:hist-mon-4-10-2009}
 \end{subfigure}
 \caption{}
@@ -2153,13 +4669,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2009}
 \label{fig:hist-mon-4-11-2009}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2009_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2009}
 \label{fig:hist-mon-4-12-2009}
 \end{subfigure}
 \caption{}
@@ -2171,13 +4687,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_1_histograms.png}
-\caption{}
+\caption{Enero de 2010}
 \label{fig:hist-mon-4-1-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_2_histograms.png}
-\caption{}
+\caption{Febrero de 2010}
 \label{fig:hist-mon-4-2-2010}
 \end{subfigure}
 \caption{}
@@ -2187,13 +4703,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_3_histograms.png}
-\caption{}
+\caption{Marzo de 2010}
 \label{fig:hist-mon-4-3-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_4_histograms.png}
-\caption{}
+\caption{Abril de 2010}
 \label{fig:hist-mon-4-4-2010}
 \end{subfigure}
 \caption{}
@@ -2203,13 +4719,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_5_histograms.png}
-\caption{}
+\caption{Mayo de 2010}
 \label{fig:hist-mon-4-5-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_6_histograms.png}
-\caption{}
+\caption{Junio de 2010}
 \label{fig:hist-mon-4-6-2010}
 \end{subfigure}
 \caption{}
@@ -2221,13 +4737,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_7_histograms.png}
-\caption{}
+\caption{Julio de 2010}
 \label{fig:hist-mon-4-7-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_8_histograms.png}
-\caption{}
+\caption{Agosto de 2010}
 \label{fig:hist-mon-4-8-2010}
 \end{subfigure}
 \caption{}
@@ -2237,13 +4753,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2010}
 \label{fig:hist-mon-4-9-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_10_histograms.png}
-\caption{}
+\caption{Octubre de 2010}
 \label{fig:hist-mon-4-10-2010}
 \end{subfigure}
 \caption{}
@@ -2253,13 +4769,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2010}
 \label{fig:hist-mon-4-11-2010}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2010_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2010}
 \label{fig:hist-mon-4-12-2010}
 \end{subfigure}
 \caption{}
@@ -2271,13 +4787,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_1_histograms.png}
-\caption{}
+\caption{Enero de 2011}
 \label{fig:hist-mon-4-1-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_2_histograms.png}
-\caption{}
+\caption{Febrero de 2011}
 \label{fig:hist-mon-4-2-2011}
 \end{subfigure}
 \caption{}
@@ -2287,13 +4803,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_3_histograms.png}
-\caption{}
+\caption{Marzo de 2011}
 \label{fig:hist-mon-4-3-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_4_histograms.png}
-\caption{}
+\caption{Abril de 2011}
 \label{fig:hist-mon-4-4-2011}
 \end{subfigure}
 \caption{}
@@ -2303,13 +4819,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_5_histograms.png}
-\caption{}
+\caption{Mayo de 2011}
 \label{fig:hist-mon-4-5-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_6_histograms.png}
-\caption{}
+\caption{Junio de 2011}
 \label{fig:hist-mon-4-6-2011}
 \end{subfigure}
 \caption{}
@@ -2321,13 +4837,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_7_histograms.png}
-\caption{}
+\caption{Julio de 2011}
 \label{fig:hist-mon-4-7-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_8_histograms.png}
-\caption{}
+\caption{Agosto de 2011}
 \label{fig:hist-mon-4-8-2011}
 \end{subfigure}
 \caption{}
@@ -2337,13 +4853,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_9_histograms.png}
-\caption{}
+\caption{Septiembre de 2011}
 \label{fig:hist-mon-4-9-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_10_histograms.png}
-\caption{}
+\caption{Octubre de 2011}
 \label{fig:hist-mon-4-10-2011}
 \end{subfigure}
 \caption{}
@@ -2353,13 +4869,13 @@ Introducir aquí los diagramas de caja y bigotes
 \centering
 \begin{subfigure}[h]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_11_histograms.png}
-\caption{}
+\caption{Noviembre de 2011}
 \label{fig:hist-mon-4-11-2011}
 \end{subfigure}
 %
 \begin{subfigure}[H]{0.45\textwidth}
 \includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/monthly/pm2p5_2011_12_histograms.png}
-\caption{}
+\caption{Diciembre de 2011}
 \label{fig:hist-mon-4-12-2011}
 \end{subfigure}
 \caption{}

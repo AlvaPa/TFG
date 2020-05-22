@@ -76,14 +76,16 @@ def boxplot(complete_pollution, name, big_name, years, username):
     elif name == pm_10:
         ax.set_ylim(15, 40)
     else:
-        ax.set_ylim(5, 80)
+        ax.set_ylim(5, 35)
     # We plot the box and whiskers
     ax.boxplot(dictionary.values())
     # We save the file
     plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot.tiff'
                 % (username, name), bbox_inches='tight', dpi=300)
     plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot.png'
-                % (username, name), bbox_inches='tight', dpi=300)
+                % (username, name), bbox_inches='tight', dpi=90)
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot.jpg'
+                % (username, name), bbox_inches='tight', quality=10)
     # We close the figure
     plt.close(5)
 

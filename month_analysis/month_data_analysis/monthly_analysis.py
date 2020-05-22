@@ -28,8 +28,14 @@ def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant,
     lat = np.array([0] * size, dtype=float)
     # Month
     month = np.array([0] * size, dtype=int)
-    # Monthly median of the pollutant's concentration of each location [ug/m^3]
+    # Monthly mean of the pollutant's concentration of each location [ug/m^3]
     pollution = np.array([0] * size, dtype=float)
+    # Monthly iqr of the pollutant's concentration of each location [ug/m^3]
+    pollution_iqr = np.array([0] * size, dtype=float)
+    # Monthly Yule-Kendall index of the pollutant's concentration of each location [ug/m^3]
+    pollution_yule_kendall = np.array([0] * size, dtype=float)
+    # Monthly kurtosis of the pollutant's concentration of each location [ug/m^3]
+    pollution_kurtosis = np.array([0] * size, dtype=float)
     # Array that contains the pollutant of each day
     monthly_pollution = np.array([np.nan] * 31)
     m = 0
@@ -45,6 +51,12 @@ def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant,
     sorted_month = np.array([0] * size, dtype=int)
     # Sorted pollution [ug/m^3]
     sorted_pollution = np.array([0] * size, dtype=float)
+    # Sorted iqr of the pollution [ug/m^3]
+    sorted_pollution_iqr = np.array([0] * size, dtype=float)
+    # Sorted Yule-Kendall index of the pollution [ug/m^3]
+    sorted_pollution_yule_kendall = np.array([0] * size, dtype=float)
+    # Sorted kurtosis of the pollution [ug/m^3]
+    sorted_pollution_kurtosis = np.array([0] * size, dtype=float)
     # We initialize the statistical variables to be computed
     # Median
     monthly_median = np.array([0] * 12, dtype=float)
@@ -54,39 +66,46 @@ def monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant,
     monthly_yule_kendall = np.array([0] * 12, dtype=float)
     # Robust kurtosis
     monthly_robust_kurtosis = np.array([0] * 12, dtype=float)
-    # Median of the pollution for every location for each month [ug/m^3]
+    # Mean of the pollution for every location for each month [ug/m^3]
     statistical_pollution = np.array([0] * int(len(data_month) / days), dtype=float)
 
     "Sorting data through months and obtaining the median of each month"
     for i in range(0, int(len(data_index) / days)):
         # We separate the data for every location
-        index, lon, lat, month, pollution, m = \
-            monthly_separation(index, lon, lat, month, pollution, monthly_pollution, data_index, data_lon, data_lat,
-                               data_month, data_pollutant, i, m, days)
+        index, lon, lat, month, pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, m = \
+            monthly_separation(index, lon, lat, month, pollution, pollution_iqr, pollution_yule_kendall,
+                               pollution_kurtosis, monthly_pollution, data_index, data_lon, data_lat, data_month,
+                               data_pollutant, i, m, days)
 
     "Location statistical analysis"
     # We compute the statistical variables
-    sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
-        monthly_yule_kendall, monthly_robust_kurtosis = \
-        monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median,
+    sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, sorted_pollution_iqr, \
+        sorted_pollution_yule_kendall, sorted_pollution_kurtosis,  monthly_median, monthly_iqr, monthly_yule_kendall, \
+        monthly_robust_kurtosis = \
+        monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, sorted_pollution_iqr,
+                           sorted_pollution_yule_kendall, sorted_pollution_kurtosis, monthly_median,
                            monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis, statistical_pollution,
-                           index, lon, lat, month, pollution)
+                           index, lon, lat, month, pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis)
 
-    return (sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr,
+    return (sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, sorted_pollution_iqr,
+            sorted_pollution_yule_kendall, sorted_pollution_kurtosis, monthly_median, monthly_iqr,
             monthly_yule_kendall, monthly_robust_kurtosis)
 
 
 @numba.njit()
-def monthly_separation(index, lon, lat, month, pollution, monthly_pollution, data_index, data_lon, data_lat, data_month,
-                       data_pollutant, i, m, days):
+def monthly_separation(index, lon, lat, month, pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis,
+                       monthly_pollution, data_index, data_lon, data_lat, data_month, data_pollutant, i, m, days):
     """
-    This function returns the annual median of the pollutant's concentration for every given location, allowing us
+    This function returns the monthly mean of the pollutant's concentration for every given location, allowing us
     to later perform an statistical analysis of the location.
     :param index:
     :param lon:
     :param lat:
     :param month:
     :param pollution:
+    :param pollution_iqr:
+    :param pollution_yule_kendall:
+    :param pollution_kurtosis:
     :param monthly_pollution:
     :param data_index: Index to identify each location (longitude and latitude)
     :param data_lon: Longitude
@@ -126,6 +145,14 @@ def monthly_separation(index, lon, lat, month, pollution, monthly_pollution, dat
         lat[m] = data_lat[l + j + n]
         month[m] = data_month[l + j + n]
         pollution[m] = round(np.nanmean(monthly_pollution), 4)
+        pollution_iqr[m] = round((np.nanquantile(monthly_pollution, 0.75) - (np.nanquantile(monthly_pollution, 0.25))),
+                                 4)
+        pollution_yule_kendall[m] = \
+            round(((np.nanquantile(monthly_pollution, 0.75) + np.nanquantile(monthly_pollution, 0.25) -
+                   2 * np.nanmedian(monthly_pollution)) / pollution_iqr[m]), 4)
+        pollution_kurtosis[m] = \
+            round((pollution_iqr[m] / (2 * (np.nanquantile(monthly_pollution, 0.90) -
+                                            np.nanquantile(monthly_pollution, 0.10)))), 4)
 
         # If the year has ended, we stop the while loop
         if data_month[l + n] == 12:
@@ -137,12 +164,13 @@ def monthly_separation(index, lon, lat, month, pollution, monthly_pollution, dat
         for z in range(0, len(monthly_pollution)):
             monthly_pollution[z] = np.nan
 
-    return index, lon, lat, month, pollution, m
+    return index, lon, lat, month, pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, m
 
 
-def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median,
+def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution,
+                       sorted_pollution_iqr, sorted_pollution_yule_kendall, sorted_pollution_kurtosis, monthly_median,
                        monthly_iqr, monthly_yule_kendall, monthly_robust_kurtosis, statistical_pollution,
-                       index, lon, lat, month, pollution):
+                       index, lon, lat, month, pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis):
     """
     This function sorts all the arrays gathered from month separation by month, and also computes the statistical
     variables for each pollution concentration per month for every location.
@@ -151,6 +179,9 @@ def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorte
     :param sorted_lat:
     :param sorted_month:
     :param sorted_pollution:
+    :param sorted_pollution_iqr:
+    :param sorted_pollution_yule_kendall:
+    :param sorted_pollution_kurtosis:
     :param monthly_median:
     :param monthly_iqr:
     :param monthly_yule_kendall:
@@ -161,6 +192,9 @@ def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorte
     :param lat: Latitude of the location
     :param month: Month
     :param pollution: Monthly median of the pollutant's concentration of each location [ug/m^3]
+    :param pollution_iqr:
+    :param pollution_yule_kendall:
+    :param pollution_kurtosis:
     :return: sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
         monthly_yule_kendall, monthly_robust_kurtosis
     """
@@ -179,6 +213,9 @@ def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorte
             sorted_lat[k + j] = lat[12 * k + m]
             sorted_month[k + j] = month[12 * k + m]
             sorted_pollution[k + j] = pollution[12 * k + m]
+            sorted_pollution_iqr[k + j] = pollution_iqr[12 * k + m]
+            sorted_pollution_yule_kendall[k + j] = pollution_yule_kendall[12 * k + m]
+            sorted_pollution_kurtosis[k + j] = pollution_kurtosis[12 * k + m]
             statistical_pollution[k] = pollution[12 * k + m]
             i += 1
 
@@ -193,5 +230,6 @@ def monthly_statistics(sorted_index, sorted_lon, sorted_lat, sorted_month, sorte
         j += i
         i = 0
 
-    return (sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr,
-            monthly_yule_kendall, monthly_robust_kurtosis)
+    return (sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, sorted_pollution_iqr,
+            sorted_pollution_yule_kendall, sorted_pollution_kurtosis, monthly_median, monthly_iqr, monthly_yule_kendall,
+            monthly_robust_kurtosis)

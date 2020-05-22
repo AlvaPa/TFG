@@ -42,7 +42,7 @@ def quartic_kernel(pollution, monthly_iqr, h, quartic_function):
             for k in range(0, len(pollution[i, ::])):
                 t = (pollution[i, j] - pollution[i, k])
                 if abs(t) < 1.0 and j != k:
-                    k_t = k_t + 0.9375 * (1 - t ** 2) ** 2
+                    k_t = k_t + 0.75 * (1 - t ** 2)
             quartic_function[i, j] = k_t / (h[i] * len(pollution[i, ::]))
             k_t = 0
 

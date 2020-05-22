@@ -3,28 +3,48 @@
 \contentsline {section}{\numberline {}Una breve introducci\IeC {\'o}n}{\es@scroman {ii}}{section*.4}% 
 \contentsline {section}{\numberline {1}Descripci\IeC {\'o}n te\IeC {\'o}rica}{1}{section.1}% 
 \contentsline {section}{\numberline {2}M\IeC {\'e}todo de an\IeC {\'a}lisis de datos}{2}{section.2}% 
-\contentsline {section}{\numberline {3}Resultados obtenidos}{3}{section.3}% 
-\contentsline {section}{\numberline {4}Conclusiones}{4}{section.4}% 
-\contentsline {section}{\numberline {5}Futuras l\IeC {\'\i }neas de estudio}{5}{section.5}% 
-\contentsline {section}{\numberline {6}Bibliograf\IeC {\'\i }a}{6}{section.6}% 
-\contentsline {section}{\numberline {}Anexo I: Mapas de contaminaci\IeC {\'o}n de contaminantes}{I}{section*.5}% 
-\contentsline {section}{\numberline {}Anexo II: Diagramas de caja y bigotes}{II}{section*.6}% 
-\contentsline {section}{\numberline {}Anexo III: Histogramas y curvas param\IeC {\'e}tricas}{III}{section*.7}% 
-\contentsline {subsection}{\numberline {}Gr\IeC {\'a}ficas anuales}{III}{section*.8}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{III}{section*.9}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{IV}{section*.13}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{V}{section*.17}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{VI}{section*.21}% 
-\contentsline {subsection}{\numberline {}Gr\IeC {\'a}ficas mensuales}{VII}{section*.25}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{VII}{section*.26}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{XVII}{section*.57}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{XXVII}{section*.88}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{XXXVII}{section*.119}% 
-\contentsline {section}{\numberline {}Anexo IV: Tablas de superficie}{XLVII}{section*.150}% 
-\contentsline {subsection}{\numberline {}Valores anuales}{XLVII}{section*.151}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{XLVII}{section*.152}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{XLVII}{section*.154}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{XLVII}{section*.156}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{XLVIII}{section*.158}% 
-\contentsline {subsection}{\numberline {}Valores mensuales}{XLVIII}{section*.160}% 
-\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{XLVIII}{section*.161}% 
+\contentsline {subsection}{\numberline {2.1}Archivos con la media anual de contaminaci\IeC {\'o}n}{2}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.2}Archivos con la media diaria de contaminaci\IeC {\'o}n}{2}{subsection.2.2}% 
+\contentsline {subsection}{\numberline {2.3}An\IeC {\'a}lisis de la distribuci\IeC {\'o}n de concentraci\IeC {\'o}n de contaminantes}{4}{subsection.2.3}% 
+\contentsline {subsection}{\numberline {2.4}Metodolog\IeC {\'\i }a de an\IeC {\'a}lisis de datos}{5}{subsection.2.4}% 
+\contentsline {section}{\numberline {3}Resultados obtenidos}{6}{section.3}% 
+\contentsline {section}{\numberline {4}Conclusiones}{7}{section.4}% 
+\contentsline {section}{\numberline {5}Futuras l\IeC {\'\i }neas de estudio}{8}{section.5}% 
+\contentsline {section}{\numberline {6}Bibliograf\IeC {\'\i }a}{9}{section.6}% 
+\contentsline {section}{\numberline {}Anexo I: Mapas de concentraci\IeC {\'o}n de contaminantes}{I}{section*.9}% 
+\contentsline {subsection}{\numberline {}Mapas anuales}{I}{section*.10}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{I}{section*.11}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{II}{section*.15}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{IV}{section*.19}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{V}{section*.23}% 
+\contentsline {subsection}{\numberline {}Mapas mensuales}{VI}{section*.27}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{VI}{section*.28}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{XVII}{section*.59}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{XXVII}{section*.90}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{XXXVII}{section*.121}% 
+\contentsline {section}{\numberline {}Anexo II: Diagramas de caja y bigotes}{XLVII}{section*.152}% 
+\contentsline {subsection}{\numberline {}Diagramas completos}{XLVII}{section*.153}% 
+\contentsline {subsection}{\numberline {}Diagramas anuales}{XLIX}{section*.158}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{XLIX}{section*.159}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{LII}{section*.165}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{LV}{section*.171}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{LVIII}{section*.177}% 
+\contentsline {section}{\numberline {}Anexo III: Histogramas y curvas param\IeC {\'e}tricas}{LXI}{section*.183}% 
+\contentsline {subsection}{\numberline {}Gr\IeC {\'a}ficas anuales}{LXI}{section*.184}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{LXI}{section*.185}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{LXII}{section*.189}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{LXIII}{section*.193}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{LXIV}{section*.197}% 
+\contentsline {subsection}{\numberline {}Gr\IeC {\'a}ficas mensuales}{LXV}{section*.201}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{LXV}{section*.202}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{LXXV}{section*.233}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{LXXXV}{section*.264}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{XCV}{section*.295}% 
+\contentsline {section}{\numberline {}Anexo IV: Tablas de superficie}{CV}{section*.326}% 
+\contentsline {subsection}{\numberline {}Valores anuales}{CV}{section*.327}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{CV}{section*.328}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Ozono}{CV}{section*.330}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de diez micras de di\IeC {\'a}metro}{CV}{section*.332}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Part\IeC {\'\i }culas de menos de dos micras y media de di\IeC {\'a}metro}{CVI}{section*.334}% 
+\contentsline {subsection}{\numberline {}Valores mensuales}{CVI}{section*.336}% 
+\contentsline {subsection}{\numberline {}\hspace {6mm} Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{CVI}{section*.337}% 
