@@ -62,12 +62,12 @@ def boxplot(complete_pollution, name, big_name, years, username):
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
                   alpha=0.5)
     ax.set_axisbelow(True)
-    # Title
-    ax.set_title('Location boxplots of the annual concentrations of %s during the period 2007-2011' % big_name)
     # Labels
-    ax.set_xlabel('Years')
-    ax.set_ylabel(r'Concentration / $\frac{{\mu}g}{m^{3}}$')
-    ax.set_xticklabels([years])
+    ax.set_xlabel('Años', size=50)
+    ax.set_ylabel(r'Concentración ($\frac{{\mu}g}{m^{3}}$)', size=50)
+    ax.tick_params(axis='both', which='major', labelsize=36)
+    ax.tick_params(axis='both', which='minor', labelsize=36)
+    ax.set_xticklabels(years)
     # We establish the range of the plot
     if name == no2:
         ax.set_ylim(10, 80)
@@ -80,11 +80,11 @@ def boxplot(complete_pollution, name, big_name, years, username):
     # We plot the box and whiskers
     ax.boxplot(dictionary.values())
     # We save the file
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot.tiff'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot_spanish.tiff'
                 % (username, name), bbox_inches='tight', dpi=300)
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot.png'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot_spanish.png'
                 % (username, name), bbox_inches='tight', dpi=90)
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot.jpg'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\annual\annual_%s_boxplot_spanish.jpg'
                 % (username, name), bbox_inches='tight', quality=10)
     # We close the figure
     plt.close(5)
@@ -111,13 +111,8 @@ def histogram(complete_pollution, name, big_name, years, quadratic_function, use
 
     for i in range(0, 5):
         # We compute the width of the bins
-        # Number of bins, according to the pollutant
-        if name == no2:
-            n_bins = 270
-        elif name == pm_2p5:
-            n_bins = 200
-        else:
-            n_bins = 130
+        # Number of bins
+        n_bins = 130
         pollution_range = np.max(complete_pollution[i, ::]) - np.min(complete_pollution[i, ::])
         width = float(pollution_range / (n_bins + 1))
         # We establish the year we are analyzing
@@ -131,20 +126,20 @@ def histogram(complete_pollution, name, big_name, years, quadratic_function, use
                       alpha=0.5)
         ax.set_axisbelow(True)
         fig.tight_layout()
-        # Title
-        ax.set_title('Location histogram and Epanechnikov density smoothing of the concentration of %s in %s'
-                     % (big_name, year))
         # Labels
-        ax.set_xlabel(r'Concentration / $\frac{{\mu}g}{m^{3}}$')
-        ax.set_ylabel('Probability density')
+        ax.set_xlabel(r'Concentración ($\frac{{\mu}g}{m^{3}}$)', size=25)
+        ax.set_ylabel('Densidad de probabilidad', size=25)
+        ax.tick_params(axis='both', which='major', labelsize=18)
+        ax.tick_params(axis='both', which='minor', labelsize=18)
         # We plot the histogram and the parametric curve
         output = ax.hist(complete_pollution[i, ::], bins=n_bins, density=True)  # Histogram
         ax.plot(complete_pollution[i, ::], quadratic_function[i, ::], '--', lw=1.5)     # Parametric curve
-        ax.text(0.7, 0.95, r'Bin width = %f $\frac{{\mu}g}{m^{3}}$' % width, transform=ax.transAxes)
+        ax.text(0.55, 0.95, r'Anchura de la banda = %f $\frac{{\mu}g}{m^{3}}$' % width,
+                transform=ax.transAxes, size=13)
         # We save the file
-        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\annual\annual_%s_%s_histogram.tiff'
+        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\annual\annual_%s_%s_histogram_spanish.tiff'
                     % (username, name, year), bbox_inches='tight', dpi=300)
-        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\annual\annual_%s_%s_histogram.png'
+        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\annual\annual_%s_%s_histogram_spanish.png'
                     % (username, name, year), bbox_inches='tight', dpi=300)
         # We assign the bar probability values
         # We convert the output to array

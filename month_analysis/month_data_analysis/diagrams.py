@@ -2,7 +2,6 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import numba
 import os
 from constants import *
 
@@ -29,10 +28,10 @@ def diagrams_representation(sorted_pollution, sorted_pollution_iqr, sorted_pollu
                                    [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
                                    [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::])], dtype=float)
     # We compute the quadratic function
-    quadratic_function = quadratic_kernel(pollution_histogram, h, quadratic_function)
+    # quadratic_function = quadratic_kernel(pollution_histogram, h, quadratic_function)
 
     # We plot the histogram and the kernel density smoothing
-    bar_values = histogram(pollution_histogram, name, big_name, year, quadratic_function, username)
+    # bar_values = histogram(pollution_histogram, name, big_name, year, quadratic_function, username)
 
     # We initialize the coefficients to determine the efficiency of the parametric curves
     pearson_coefficient = np.array([0] * 12, dtype=float)
@@ -40,11 +39,6 @@ def diagrams_representation(sorted_pollution, sorted_pollution_iqr, sorted_pollu
     e_coefficient = np.array([0] * 12, dtype=float)
     d_mod_coefficient = np.array([0] * 12, dtype=float)
     e_mod_coefficient = np.array([0] * 12, dtype=float)
-
-    # We compute the efficiency coefficients
-    pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient = \
-        efficiency_criteria(bar_values, quadratic_function, pearson_coefficient, d_coefficient, e_coefficient,
-                            d_mod_coefficient, e_mod_coefficient)
 
     return (pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, longitude, latitude,
             pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient)
@@ -158,37 +152,63 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     # We select the range of plot
     if name == no2:
         ax.set_ylim(0, 100)
+        ax.yaxis.set_ticks(np.arange(0, 100, 10))
     elif name == ozone:
         ax.set_ylim(0, 140)
+        ax.yaxis.set_ticks(np.arange(0, 140, 10))
     elif name == pm_10:
-        ax.set_ylim(0, 35)
+        ax.set_ylim(0, 45)
+        ax.yaxis.set_ticks(np.arange(0, 45, 2.5))
     else:
         ax.set_ylim(0, 40)
-    # We plot the box and whiskers
-    ax.boxplot(dictionary.values())
+        ax.yaxis.set_ticks(np.arange(0, 40, 2.5))
+    # We plot the violin plot
+    parts = ax.violinplot(dictionary.values(), showmedians=False, showextrema=False)
+    for pc in parts['bodies']:
+        pc.set_facecolor('#D43F3A')
+        pc.set_edgecolor('blue')
+        pc.set_alpha(1)
+
     # We change the name of the labels in the x axis
-    x_tick_labels = ax.get_xticks().tolist()
-    x_tick_labels[0] = 'January'
-    x_tick_labels[1] = 'February'
-    x_tick_labels[2] = 'March'
-    x_tick_labels[3] = 'April'
-    x_tick_labels[4] = 'May'
-    x_tick_labels[5] = 'June'
-    x_tick_labels[6] = 'July'
-    x_tick_labels[7] = 'August'
-    x_tick_labels[8] = 'September'
-    x_tick_labels[9] = 'October'
-    x_tick_labels[10] = 'November'
-    x_tick_labels[11] = 'December'
-    ax.set_xticklabels(x_tick_labels)
-    ax.set_ylabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)', size=20)
-    ax.set_xlabel('Months', size=20)
+    labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+              'November', 'December']
+    labels_spanish = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+                      'Noviembre', 'Diciembre']
+    ax.get_xaxis().set_tick_params(direction='out')
+    ax.xaxis.set_ticks_position('bottom')
+    ax.set_xticks(np.arange(1, len(labels) + 1))
+    ax.set_xticklabels(labels_spanish)
+    ax.set_ylabel(r'Concentración ($\frac{{\mu}g}{m^{3}}$)', size=50)
+    ax.set_xlabel('Meses', size=50)
+    ax.tick_params(axis='both', which='major', labelsize=36)
+    ax.tick_params(axis='both', which='minor', labelsize=36)
+    ax.tick_params(axis='x', rotation=45)
+
+    # We compute the medians, iqr and whiskers
+    lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians, upper_extrema, \
+    lower_extrema = boxplots_parameters(pollution)
+    positions = np.arange(1, len(medians) + 1)
+    positions_extrema = np.array([[1] * len(pollution[0]), [2] * len(pollution[0]), [3] * len(pollution[0]),
+                                  [4] * len(pollution[0]), [5] * len(pollution[0]), [6] * len(pollution[0]),
+                                  [7] * len(pollution[0]), [8] * len(pollution[0]), [9] * len(pollution[0]),
+                                  [10] * len(pollution[0]), [11] * len(pollution[0]), [12] * len(pollution[0])],
+                                 dtype=int)
+    # Medians
+    ax.scatter(positions, medians, marker='o', color='white', s=30, zorder=3)
+    # IQR
+    ax.vlines(positions, inferior_quartile, superior_quartile, color='k', linestyle='-', lw=5)
+    # Whiskers
+    ax.vlines(positions, lower_adjacent_value, upper_adjacent_value, color='k', linestyle='-', lw=1)
+    # Extrema
+    # ax.scatter(positions_extrema, upper_extrema, marker='.', color='green', s=0.005, zorder=3)
+    # ax.scatter(positions_extrema, lower_extrema, marker='.', color='green', s=0.005, zorder=3)
+
     # We save the file
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.tiff'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_spanish.tiff'
                 % (username, name, year), bbox_inches='tight', dpi=300)
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.png'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_spanish.png'
                 % (username, name, year), bbox_inches='tight', dpi=90)
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive.jpg'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_spanish.jpg'
                 % (username, name, year), bbox_inches='tight', quality=10)
     # We close the figure
     plt.close(12)
@@ -197,68 +217,54 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
             latitude)
 
 
-def histogram(pollution, name, big_name, year, quadratic_function, username):
-    """
-    This function represents the histogram and the parametric plot of the probabilities of the concentrations in the
-    same diagram per month
-    :param pollution:
-    :param name:
-    :param big_name:
-    :param year:
-    :param quadratic_function:
-    :param username:
-    :return: bar_values
-    """
-    # We initialize the array which will contain the probability of the bars of the histogram
-    bar_values = np.array([[0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                           [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                           [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                           [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                           [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                           [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::])], dtype=float)
+def boxplots_parameters(pollution):
+    """"""
 
-    for i in range(0, 12):
-        # We compute the width of the bins
-        if name == no2:
-            n_bins = 270
-        elif name == pm_2p5:
-            n_bins = 250
-        else:
-            n_bins = 130
-        pollution_range = np.max(pollution[i, ::]) - np.min(pollution[i, ::])
-        width = float(pollution_range / (n_bins + 1))
-        # We start plotting the histogram
-        month = month_selector(i)
-        fig = plt.figure(i, figsize=(9, 6))
-        ax = fig.add_subplot(111)
-        ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
-                      alpha=0.5)
-        ax.set_axisbelow(True)
-        ax.set_xlabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)', size=20)
-        ax.set_ylabel('Probability density', size=20)
-        output = ax.hist(pollution[i, ::], bins=n_bins, density=True)
-        ax.plot(pollution[i, ::], quadratic_function[i, ::], '--', lw=1.5)
-        ax.text(0.7, 0.95, r'Bin width = %f $\frac{{\mu}g}{m^{3}}$' % width, transform=ax.transAxes)
-        fig.tight_layout()
-        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.tiff'
-                    % (username, name, year, str(i + 1)), bbox_inches='tight', dpi=300)
-        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.png'
-                    % (username, name, year, str(i + 1)), bbox_inches='tight', dpi=90)
-        plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\histograms\monthly\%s_%s_%s_histograms.jpg'
-                    % (username, name, year, str(i + 1)), bbox_inches='tight', quality=10)
-        # We assign the bar probability values
-        # We convert the output to array
-        n = np.asarray(output[0])
-        interval_elements = int((len(pollution[0]) / n_bins) + 1)  # Number of elements each interval has
-        for j in range(0, len(n)):
-            for k in range(0, interval_elements):
-                m = j * interval_elements + k
-                if m >= len(bar_values[0]):
-                    break
-                bar_values[i, m] = n[j]
-        plt.close(i)
+    # We initialize the adjacent values
+    upper_adjacent_value = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+    lower_adjacent_value = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
 
-    return bar_values
+    # We initialize the superior quartile, the inferior quartile and the median
+    superior_quartile = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+    inferior_quartile = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+    medians = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+
+    # We initialize the inferior and superior extreme values
+    lower_extrema = np.array([[0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
+                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
+                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
+                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0])],
+                             dtype=float)
+
+    upper_extrema = np.array([[0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
+                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
+                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
+                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0])],
+                             dtype=float)
+
+    for i in range(0, len(pollution)):
+        # We compute the superior and inferior quartiles
+        sorted_data = np.sort(pollution[i])
+        superior_quartile[i] = np.quantile(sorted_data, 0.75)
+        inferior_quartile[i] = np.quantile(sorted_data, 0.25)
+        medians[i] = np.median(sorted_data)
+
+        # We compute the upper and lower adjacent values
+        upper_adjacent_value[i] = superior_quartile[i] + (superior_quartile[i] - inferior_quartile[i]) * 1.5
+        upper_adjacent_value[i] = np.clip(upper_adjacent_value[i], superior_quartile[i], sorted_data[-1])
+
+        lower_adjacent_value[i] = inferior_quartile[i] - (superior_quartile[i] - inferior_quartile[i]) * 1.5
+        lower_adjacent_value[i] = np.clip(lower_adjacent_value[i], sorted_data[0], inferior_quartile[i])
+
+        # We compute the upper and lower extrema
+        upper_extrema[i, ::] = sorted_data
+        upper_extrema[i] = np.clip(upper_extrema[i], upper_adjacent_value[i], sorted_data[-1])
+
+        lower_extrema[i] = sorted_data
+        lower_extrema[i] = np.clip(lower_extrema[i], sorted_data[0], lower_adjacent_value[i])
+
+    return (lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians, upper_extrema,
+            lower_extrema)
 
 
 def month_selector(i):
@@ -290,70 +296,3 @@ def month_selector(i):
         month = 'December'
 
     return month
-
-
-@numba.jit(nopython=True)
-def quadratic_kernel(pollution, h, quadratic_function):
-    """"""
-
-    # We start computing the functions
-    k_t = 0
-    for i in range(0, 12):
-        # Standard deviation
-        s = np.std(pollution[i, ::])
-        # Number of elements
-        n = len(pollution[i, ::])
-        # Bandwidth
-        h[i] = 0.9 * s / (n ** 0.2)
-        divisor = 1.0 / h[i]
-        pollution[i, ::] = np.sort(pollution[i, ::])
-        for j in range(0, n):
-            for k in range(0, n):
-                t = (pollution[i, j] - pollution[i, k]) * divisor
-                if abs(t) < 1.0 and j != k:
-                    k_t += 0.75 * (1 - t ** 2)
-                if t > 1.0:
-                    continue
-            constant = h[i] * n
-            quadratic_function[i, j] = k_t / constant
-            k_t = 0
-
-    return quadratic_function
-
-
-def efficiency_criteria(bar_values, quadratic_function, pearson_coefficient, d_coefficient, e_coefficient,
-                        d_mod_coefficient, e_mod_coefficient):
-    """"""
-
-    # We perform the calculations
-    for i in range(0, 12):
-        # We initialize some variables to perform to calculations
-        num_r = 0.0
-        den_r_poll = 0.0
-        den_r_quar = 0.0
-        num_d = 0.0
-        den_d = 0.0
-        num_d_mod = 0.0
-        den_d_mod = 0.0
-        den_e_mod = 0.0
-        # We compute the iterations needed
-        for j in range(0, len(bar_values)):
-            num_r = num_r + ((bar_values[i, j] - np.mean(bar_values[i])) * (quadratic_function[i, j] -
-                                                                            np.mean(quadratic_function[i])))
-            den_r_poll = den_r_poll + (bar_values[i, j] - np.mean(bar_values[i])) ** 2
-            den_r_quar = den_r_quar + (quadratic_function[i, j] - np.mean(quadratic_function[i])) ** 2
-            num_d = num_d + (bar_values[i, j] - quadratic_function[i, j]) ** 2
-            den_d = den_d + (np.abs(quadratic_function[i, j] - np.mean(bar_values[i])) +
-                             np.abs(bar_values[i, j] - np.mean(bar_values[i]))) ** 2
-            num_d_mod = num_d_mod + np.abs(bar_values[i, j] - quadratic_function[i, j])
-            den_d_mod = den_d_mod + (np.abs(quadratic_function[i, j] - np.mean(bar_values[i])) +
-                                     np.abs(bar_values[i, j] - np.mean(bar_values[i])))
-            den_e_mod = den_e_mod + np.abs(bar_values[i, j] - np.mean(bar_values[i]))
-        # We compute the efficiency coefficients of each month
-        pearson_coefficient[i] = round((num_r / (np.sqrt(den_r_poll) * np.sqrt(den_r_quar))) ** 2, 4)
-        d_coefficient[i] = round(1 - (num_d / den_d), 4)
-        e_coefficient[i] = round(1 - (num_d / den_r_poll), 4)
-        d_mod_coefficient[i] = round(1 - (num_d_mod / den_d_mod), 4)
-        e_mod_coefficient[i] = round(1 - (num_d_mod / den_e_mod), 4)
-
-    return pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient

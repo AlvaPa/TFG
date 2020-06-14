@@ -74,7 +74,7 @@ def pm2p5_output(total_surface_percentage, name, years, username):
 
     # We generate the data frame to output
     df = pd.DataFrame({'year': years, '(0 - 10)': total_surface_percentage[0],
-                       '(10 - 20)': total_surface_percentage[1], '(20 and more)': total_surface_percentage[2]})
+                       '(10 - 25)': total_surface_percentage[1], '(25 and more)': total_surface_percentage[2]})
 
     with open(r'C:\Users\%s\Desktop\practicas_alvaro\output_data\surface\%s_surface_percentage.txt'
               % (username, name), 'w+') as file:

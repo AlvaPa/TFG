@@ -12,13 +12,13 @@ def statistics(pollution):
 
     # We compute the statistical variables
     # Median [ug/m^3]
-    median = np.median(pollution)
+    median = round(np.median(pollution), 2)
     # Interquartile range [ug/m^3]
-    iqr = np.quantile(pollution, 0.75) - np.quantile(pollution, 0.25)
+    iqr = round(np.quantile(pollution, 0.75) - np.quantile(pollution, 0.25), 2)
     # Yule-Kendall index
     yule_kendall = \
-        (np.quantile(pollution, 0.75) + np.quantile(pollution, 0.25) - 2 * np.median(pollution)) / iqr
+        round((np.quantile(pollution, 0.75) + np.quantile(pollution, 0.25) - 2 * np.median(pollution)) / iqr, 2)
     # Robust kurtosis
-    robust_kurtosis = iqr / (2 * (np.quantile(pollution, 0.9) - np.quantile(pollution, 0.1)))
+    robust_kurtosis = round(iqr / (2 * (np.quantile(pollution, 0.9) - np.quantile(pollution, 0.1))), 2)
 
     return median, iqr, yule_kendall, robust_kurtosis

@@ -189,7 +189,7 @@ def pm2p5_counting(pollution, counter_array):
     for i in range(0, len(pollution)):
         if pollution[i] < 10.0:
             counter_array[0] += 1
-        elif 10.0 <= pollution[i] < 20.0:
+        elif 10.0 <= pollution[i] < 25.0:
             counter_array[1] += 1
         else:
             counter_array[2] += 1
@@ -211,7 +211,7 @@ def pm2p5_coordinates_classification(lon, lat, pollution, classified_lon, classi
             classified_lon[0][a] = lon[alpha]
             classified_lat[0][a] = lat[alpha]
             a += 1
-        elif 10.0 <= pollution[alpha] < 20.0:
+        elif 10.0 <= pollution[alpha] < 25.0:
             classified_lon[1][b] = lon[alpha]
             classified_lat[1][b] = lat[alpha]
             b += 1
@@ -228,6 +228,6 @@ def surface_percentage_calculation(pollution, counter_array, surface_percentage)
 
     # We compute the percentage of surface for each pollutant's concentration
     for i in range(0, len(counter_array)):
-        surface_percentage[i] = round(100.0 * (float(counter_array[i]) / float(len(pollution))), 4)
+        surface_percentage[i] = round(100.0 * (float(counter_array[i]) / float(len(pollution))), 2)
 
     return surface_percentage

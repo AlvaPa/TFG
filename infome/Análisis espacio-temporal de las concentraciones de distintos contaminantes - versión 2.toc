@@ -1,33 +1,34 @@
 \babel@toc {spanish}{}
-\contentsline {section}{\numberline {}Abstract/Resumen}{\es@scroman {i}}{section*.2}% 
+\contentsline {section}{\numberline {}Resumen/Abstract}{\es@scroman {i}}{section*.2}% 
 \contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{1}{section.1}% 
 \contentsline {subsection}{\numberline {1.1}Antecedentes}{1}{subsection.1.1}% 
 \contentsline {subsection}{\numberline {1.2}Contaminantes}{1}{subsection.1.2}% 
 \contentsline {subsubsection}{\numberline {1.2.1}\IeC {\'O}xidos de nitr\IeC {\'o}geno}{1}{subsubsection.1.2.1}% 
 \contentsline {subsubsection}{\numberline {1.2.2}Ozono}{2}{subsubsection.1.2.2}% 
 \contentsline {subsubsection}{\numberline {1.1.3}Part\IeC {\'\i }culas $PM_{10}$ y $PM_{2,5}$}{3}{section*.4}% 
-\contentsline {subsection}{\numberline {1.3}Normativa}{4}{subsection.1.3}% 
-\contentsline {section}{\numberline {2}Objetivos}{6}{section.2}% 
-\contentsline {section}{\numberline {3}Datos y metodolog\IeC {\'\i }a}{7}{section.3}% 
-\contentsline {subsection}{\numberline {3.1}An\IeC {\'a}lisis estad\IeC {\'\i }stico}{7}{subsection.3.1}% 
-\contentsline {subsubsection}{\numberline {3.1.1}Cuantiles}{7}{subsubsection.3.1.1}% 
-\contentsline {subsubsection}{\numberline {3.1.2}Posici\IeC {\'o}n}{7}{subsubsection.3.1.2}% 
-\contentsline {subsubsection}{\numberline {3.1.3}Dispersi\IeC {\'o}n}{8}{subsubsection.3.1.3}% 
-\contentsline {subsubsection}{\numberline {3.1.4}Simetr\IeC {\'\i }a}{8}{subsubsection.3.1.4}% 
-\contentsline {subsubsection}{\numberline {3.1.5}Aplanamiento}{9}{subsubsection.3.1.5}% 
-\contentsline {subsubsection}{\numberline {3.1.6}Archivos con la media anual de concentraci\IeC {\'o}n}{9}{subsubsection.3.1.6}% 
-\contentsline {subsubsection}{\numberline {3.1.7}Archivos con la media diaria de contaminaci\IeC {\'o}n}{10}{subsubsection.3.1.7}% 
-\contentsline {subsection}{\numberline {3.2}An\IeC {\'a}lisis gr\IeC {\'a}fico}{11}{subsection.3.2}% 
-\contentsline {subsubsection}{\numberline {3.2.1}Diagramas de caja y bigotes}{11}{subsubsection.3.2.1}% 
-\contentsline {subsubsection}{\numberline {3.2.2}Histogramas}{12}{subsubsection.3.2.2}% 
-\contentsline {subsubsection}{\numberline {3.2.3}Suavizados de histogramas}{13}{subsubsection.3.2.3}% 
-\contentsline {subsubsection}{\numberline {3.2.4}Mapas}{14}{subsubsection.3.2.4}% 
-\contentsline {subsection}{\numberline {3.3}Software complementario}{15}{subsection.3.3}% 
-\contentsline {section}{\numberline {4}Resultados}{17}{section.4}% 
-\contentsline {subsection}{\numberline {4.1}Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{17}{subsection.4.1}% 
-\contentsline {subsection}{\numberline {4.2}Ozono}{20}{subsection.4.2}% 
-\contentsline {subsection}{\numberline {4.3.}Part\IeC {\'\i }culas $PM_{10}$}{23}{section*.29}% 
-\contentsline {subsection}{\numberline {4.4.}Part\IeC {\'\i }culas $PM_{2,5}$}{27}{section*.38}% 
-\contentsline {section}{\numberline {5}Conclusiones}{30}{section.5}% 
-\contentsline {section}{\numberline {6}Futuras l\IeC {\'\i }neas de estudio}{31}{section.6}% 
-\contentsline {section}{\numberline {7}Bibliograf\IeC {\'\i }a}{32}{section.7}% 
+\contentsline {subsection}{\numberline {1.3}Normativa}{5}{subsection.1.3}% 
+\contentsline {section}{\numberline {2}Objetivos}{7}{section.2}% 
+\contentsline {section}{\numberline {3}Datos y metodolog\IeC {\'\i }a}{8}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}An\IeC {\'a}lisis estad\IeC {\'\i }stico}{8}{subsection.3.1}% 
+\contentsline {subsubsection}{\numberline {3.1.1}Cuantiles}{8}{subsubsection.3.1.1}% 
+\contentsline {subsubsection}{\numberline {3.1.2}Posici\IeC {\'o}n}{8}{subsubsection.3.1.2}% 
+\contentsline {subsubsection}{\numberline {3.1.3}Dispersi\IeC {\'o}n}{9}{subsubsection.3.1.3}% 
+\contentsline {subsubsection}{\numberline {3.1.4}Simetr\IeC {\'\i }a}{9}{subsubsection.3.1.4}% 
+\contentsline {subsubsection}{\numberline {3.1.5}Aplanamiento}{10}{subsubsection.3.1.5}% 
+\contentsline {subsubsection}{\numberline {3.1.6}Archivos con la media anual de concentraci\IeC {\'o}n}{10}{subsubsection.3.1.6}% 
+\contentsline {subsubsection}{\numberline {3.1.7}Archivos con la media diaria de contaminaci\IeC {\'o}n}{11}{subsubsection.3.1.7}% 
+\contentsline {subsection}{\numberline {3.2}An\IeC {\'a}lisis gr\IeC {\'a}fico}{12}{subsection.3.2}% 
+\contentsline {subsubsection}{\numberline {3.2.1}Diagramas de caja y bigotes}{13}{subsubsection.3.2.1}% 
+\contentsline {subsubsection}{\numberline {3.2.2}Histogramas}{14}{subsubsection.3.2.2}% 
+\contentsline {subsubsection}{\numberline {3.2.3}Suavizados de histogramas}{14}{subsubsection.3.2.3}% 
+\contentsline {subsubsection}{\numberline {3.2.4}Coeficientes de eficiencia}{16}{subsubsection.3.2.4}% 
+\contentsline {subsubsection}{\numberline {3.2.5}Zona de estudio}{17}{subsubsection.3.2.5}% 
+\contentsline {subsection}{\numberline {3.3}Software complementario}{19}{subsection.3.3}% 
+\contentsline {section}{\numberline {4}Resultados}{20}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}Di\IeC {\'o}xido de nitr\IeC {\'o}geno}{20}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.2}Ozono}{25}{subsection.4.2}% 
+\contentsline {subsection}{\numberline {4.3.}Part\IeC {\'\i }culas $PM_{10}$}{31}{section*.36}% 
+\contentsline {subsection}{\numberline {4.4.}Part\IeC {\'\i }culas $PM_{2,5}$}{36}{section*.48}% 
+\contentsline {section}{\numberline {5}Conclusiones}{42}{section.5}% 
+\contentsline {section}{\numberline {6}Futuras l\IeC {\'\i }neas de estudio}{43}{section.6}% 
+\contentsline {section}{\numberline {7}Bibliograf\IeC {\'\i }a}{44}{section.7}% 
