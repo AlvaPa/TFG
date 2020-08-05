@@ -158,10 +158,10 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
         ax.yaxis.set_ticks(np.arange(0, 140, 10))
     elif name == pm_10:
         ax.set_ylim(0, 45)
-        ax.yaxis.set_ticks(np.arange(0, 45, 2.5))
+        ax.yaxis.set_ticks(np.arange(0, 45, 5))
     else:
         ax.set_ylim(0, 40)
-        ax.yaxis.set_ticks(np.arange(0, 40, 2.5))
+        ax.yaxis.set_ticks(np.arange(0, 40, 5))
     # We plot the violin plot
     parts = ax.violinplot(dictionary.values(), showmedians=False, showextrema=False)
     for pc in parts['bodies']:

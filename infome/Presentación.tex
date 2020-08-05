@@ -1,0 +1,3105 @@
+% Presentación para la defensa del TFG
+% Declaramos variables e importamos paquetes
+
+\documentclass[12pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{graphicx}
+\usepackage{caption}
+\captionsetup[table]{name=Tabla}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\usepackage{tabularx,booktabs}
+
+\mode<presentation>{\usetheme{Marburg}}
+\usefonttheme{professionalfonts}
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Índice}
+    \footnotesize
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\title{Análisis espacio-temporal de las concentraciones de distintos contaminantes}
+\author{Álvaro Patricio Prieto Pérez}
+\date{}
+
+\begin{document}
+%Title page
+\begin{frame}[squeeze]
+%Corporation's logo
+\begin{center}
+
+\begin{minipage}[c]{128mm}
+\includegraphics[scale=0.35]{logo_uva} \hspace{3cm}
+\includegraphics[scale=0.18]{logotipo-3-3}
+
+\hspace{0.5mm} \scriptsize Facultad de ciencias
+\end{minipage}
+
+\end{center}
+%Title, author and date
+\begin{center}
+\vspace{1cm}
+{\Large \textbf{Análisis espacio-temporal de las concentraciones de distintos contaminantes}} \\
+\vspace{0.5cm}
+\normalsize \textbf{Autor: Álvaro Patricio Prieto Pérez} \\
+\vspace{0.25cm}
+\textbf{Tutor/es: Isidro Pérez Bartolomé \\ María Ángeles García Pérez}
+
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Índice}
+\footnotesize
+\tableofcontents
+\end{frame}
+
+\section{Introducción}
+\subsection{Antecedentes}
+\begin{frame}
+\frametitle{Antecedentes}
+\begin{itemize}
+\item<1-> Los contaminantes tienen efecto no solo en la salud humana, sino que también tienen impacto en los ecosistemas, bienes materiales y en el cambio climático.
+\item<2-> Es por ello que la monitorización de la concentración de contaminantes es importante para conocer la calidad del aire.
+\item<3-> La \textbf{M}edical \& \textbf{E}nvironmental \textbf{D}ata \textbf{M}ash-up \textbf{I}nfrastructure projects (\textbf{MEDMI}) ha estimado concentraciones de $NO_{2}$, $O_{3}$, $PM_{10}$ y $PM_{2,5}$ en todo el territorio de Inglaterra y Gales.
+\end{itemize}
+\end{frame}
+
+\subsection{Contaminantes}
+\begin{frame}
+\frametitle{Óxidos de nitrógeno}
+\begin{itemize}
+\item<1-> Los óxidos de nitrógeno ($NO_{x}$) engloban al monóxido de nitrógeno ($NO$) y al dióxido de nitrógeno ($NO_{2}$).
+\item<2-> Fuentes naturales: Intrusión de $NO_{x}$ de la estratosfera, actividad volcánica y bacterial, etc.
+\item<3-> Fuentes antropogénicas: Procesos de combustión de fuentes estacionarias (industria, generación de energía, etc.) y móviles (combustión interna de vehículos).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Óxidos de nitrógeno}
+\begin{block}{Conversión de $NO$ a $NO_{2}$}
+\begin{equation}
+NO + O_{3} \rightarrow NO_{2} + O_{2}
+\label{eq:no_to_no2}
+\end{equation}
+\end{block}
+
+\pause
+
+\begin{block}{Conversión de $NO_{2}$ a $NO$}
+\begin{equation}
+\begin{cases}
+NO_{2} + h\upsilon \rightarrow NO + O &\text{($\upsilon \geq 697.67$ THz)}\\
+O_{2} + O \rightarrow O_{3} & 
+\end{cases} 
+\label{eq:no2_to_no}
+\end{equation}
+\end{block}
+
+\pause
+
+Hay equilibrio entre las concentraciones de $NO$ y $NO_{2}$ a través de las reacciones \ref{eq:no_to_no2} y \ref{eq:no2_to_no}.
+\end{frame}
+
+\begin{frame}
+\frametitle{Ozono}
+\begin{itemize}
+\item<1-> La mayor parte del ozono se encuentra en la estratosfera (sólo un 10\% es troposférico).
+\item<2-> Una fuente de ozono es la intrusión de ozono estratosférico a la troposfera.
+\item<3-> Gases como el NO o el CO y compuestos orgánicos pueden generar ozono por reacciones fotoquímicas.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ozono}
+\begin{block}{Factores que afectan a la concentración de ozono}
+\begin{itemize}
+\item<1-> La temperatura, la duración de la luz solar y su intensidad favorecen la concentración de ozono.
+\item<2-> El ciclo solar de once años influye en la concentración de ozono.
+\item<3-> Otros contaminantes tienen impacto en la concentración.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Partículas $PM_{10}$ y $PM_{2,5}$}
+\begin{itemize}
+\item<1-> Las partículas PM son una mezcla de partículas sólidas y líquidas en suspensión en el aire.
+\item<2-> Suelen ser clasificadas por su propiedades aerodinámicas. En particular, se clasifican por su diámetro aerodinámico.
+\item<3-> El $PM_{10}$ son las partículas de menos de 10 $\mu m$ de diámetro.
+\item<4-> Las partículas entre 2,5 y 10 $\mu m$ se denominan fracción gruesa.
+\item<5-> Son formadas principalmente por levantamiento de polvo debido al viento, por procesos industriales o biológicos.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Partículas $PM_{10}$ y $PM_{2,5}$}
+\begin{itemize}
+\item<1-> El $PM_{2,5}$ son partículas de menos de 2,5 $\mu m$.
+\item<2-> Se forma por la condensación de metales y compuestos orgánicos vaporizados por procesos de combustión o de gases producto de reacciones químicas en la atmósfera.
+\item<3-> Los nitratos también pueden ser precursores de $PM_{2,5}$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Partículas $PM_{10}$ y $PM_{2,5}$}
+\begin{block}{Factores que afectan a la concentración de PM}
+\begin{itemize}
+\item<1-> Fuertes vientos favorecen la formación de PM, pero también favorecen su transporte y dispersión.
+\item<2-> Ambientes fríos con alta humedad relativa pueden favorecer la formación de PM por condensación.
+\item<3-> Las temperaturas, velocidad del viento y las precipitaciones están inversamente relacionadas con la concentración de PM.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Efectos de los contaminantes}
+\begin{block}{Efectos en la salud}
+\begin{itemize}
+\item Estos contaminantes afectan, sobre todo, a los aparatos respiratorio y circulatorio: inflamación pulmonar, aumento de síntomas de asma, infartos de miocardio, etc.
+\end{itemize}
+\end{block}
+\pause
+\begin{block}{Efectos en el planeta}
+\begin{itemize}
+\item Eutrofización de ecosistemas debido a nitratos, reducción en el ritmo de crecimiento de vegetales, calentamiento o enfriamiento global, etc.
+\end{itemize}
+\end{block}
+\pause
+\begin{block}{Efectos en bienes materiales}
+\begin{itemize}
+\item Ensuciamiento de pidra caliza y vidrio, desvanecimiento de colores, etc.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\subsection{Normativa}
+\begin{frame}
+\frametitle{Normativa}
+% Table
+\begin{table}[H]
+\caption{Valores límite de concentración de contaminantes establecidos por la OMS y la UE.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{2}{>{\centering\arraybackslash}X|}}
+\hline
+Contaminante & Normativa OMS & Normativa UE \\
+ \hline
+ $NO_{2}$ & 40 $\nicefrac{\mu g}{m^{3}}$ media anual & 40 $\nicefrac{\mu g}{m^{3}}$ media anual \\
+ \hline
+ $O_{3}$ & 100 $\nicefrac{\mu g}{m^{3}}$ media octohoraria & 120 $\nicefrac{\mu g}{m^{3}}$ media octohoraria \\
+ \hline
+ $PM_{10}$ & 20 $\nicefrac{\mu g}{m^{3}}$ media anual & 40 $\nicefrac{\mu g}{m^{3}}$ media anual \\
+ \hline
+ $PM_{2,5}$ & 10 $\nicefrac{\mu g}{m^{3}}$ media anual & 25 $\nicefrac{\mu g}{m^{3}}$ media anual \\
+ \hline
+\end{tabularx}
+\label{table:pollutant_guideline}
+\end{table}
+\end{frame}
+
+\section{Objetivos}
+\begin{frame}
+\frametitle{Objetivos}
+\begin{itemize}
+\item<1-> Estudiar la distribución espacial de la media mensual de concentración de contaminantes a lo largo de un año, de cara a encontrar patrones en su distribución y explicarlos.
+\item<2-> Estudiar la distribución espacial de la media anual de concentración de contaminantes para establecer si, en el período 2007-2011, se cumplió la normativa de la OMS y de la UE.
+\item<3-> Estudiar la distribución espacial de la media anual de concentración de contaminantes con el objetivo de encontrar tendencias en su evolución a lo largo del período 2007-2011.
+\end{itemize}
+\end{frame}
+
+\section{Datos y metodología}
+\subsection{Análisis estadístico}
+\begin{frame}
+\frametitle{Análisis estadístico}
+\begin{itemize}
+\item<1-> A partir de los datos disponibles, hemos realizado un análisis estadístico de ellos.
+\item<2-> Hemos hallado estadísticos de posición, dispersión, simetría y aplanamiento.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Análisis estadístico}
+\begin{block}{Estadísticos de posición}
+\begin{itemize}
+\item Media.
+\item Mediana.
+\end{itemize}
+\end{block}
+\pause
+\begin{block}{Estadísticos de dispersión}
+\begin{itemize}
+\item<1-> Rango intercuartílico.
+\end{itemize}
+\end{block}
+\pause
+\begin{block}{Estadísticos de simetría}
+\begin{itemize}
+\item<1-> Índice de Yule-Kendall.
+\end{itemize}
+\end{block}
+\pause
+\begin{block}{Estadísticos de aplanamiento}
+\begin{itemize}
+\item<1-> Curtosis robusta.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\subsection{Análisis gráfico}
+\begin{frame}
+\frametitle{Diagramas de caja y bigotes}
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_no2_boxplot_spanish.png}
+\caption{Diagrama de caja y bigotes para cada año del $NO_{2}$.}
+\label{fig:box-ejem-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2007_boxplot_definitive_spanish.png}
+\caption{Diagrama de violín de los meses del 2007 para el $NO_{2}$.}
+\label{fig:box-ejem-2}
+\end{subfigure}
+\caption{Ejemplos de diagramas de caja y bigotes y de violín.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\tiny
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.90\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2007_histogram_spanish.png}
+\caption{Histrograma y su respectivo suavizado de la concentración anual de $O_{3}$ en el año 2007.}
+\label{fig:hist-ejem-1}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Coeficientes de eficiencia}
+\begin{itemize}
+\item<1-> Coeficiente de determinación $r^{2}$
+\item<2-> Coeficiente de Nash-Sutcliffe $E$
+\item<3-> Índice de concordancia $d$
+\item<4-> Coeficiente de Nash-Sutcliffe modificado $E_{j}$
+\item<5-> Índice de concordancia modificado $d_{j}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Zona de estudio}
+\tiny
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.90\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/city_map.png}
+\caption{Contorno de Inglaterra y Gales con sus ciudades más contaminadas en el período de estudio.}
+\label{fig:map-city}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Zona de estudio}
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/anual/pm10_2007_anual_mapa.png}
+\caption{Mapa de concentración anual del $PM_{10}$ en el año 2007.}
+\label{fig:map-ejem-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_3_mapa.png}
+\caption{Mapa de concentración mensual del $PM_{10}$ en marzo del 2007.}
+\label{fig:map-ejem-2}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+\caption{Mapas de concentración anual y mensual del $PM_{10}$.}
+\end{figure}
+\end{frame}
+
+\subsection{Software complementario}
+\begin{frame}
+\frametitle{Software complementario}
+\begin{itemize}
+\item<1-> Anaconda (distribución de Python).
+\item<2-> Surfer.
+\end{itemize}
+\end{frame}
+
+\section{Resultados}
+\subsection{Dióxido de nitrógeno}
+\begin{frame}[squeeze]
+\frametitle{Dióxido de nitrógeno}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2007_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\label{fig:box-no2-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2008_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\label{fig:box-no2-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2009_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\label{fig:box-no2-2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2010_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\label{fig:box-no2-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/no2_2011_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\label{fig:box-no2-2011}
+\end{subfigure}
+\caption{\scriptsize Diagramas de violín de la media mensual de concentración de $NO_{2}$ en el período 2007-2011.}
+\label{fig:box-no2-monthly}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-no2-2007-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-no2-2007-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-no2-2007-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-no2-2007-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-no2-2007-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-no2-2007-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-no2-2007-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-no2-2007-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-no2-2007-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-no2-2007-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-no2-2007-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2007/no2_2007_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-no2-2007-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $NO_{2}$ en el año 2007.}
+\label{fig:map-no2-2007}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-no2-2008-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-no2-2008-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-no2-2008-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-no2-2008-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-no2-2008-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-no2-2008-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-no2-2008-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-no2-2008-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-no2-2008-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-no2-2008-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-no2-2008-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2008/no2_2008_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-no2-2008-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $NO_{2}$ en el año 2008.}
+\label{fig:map-no2-2008}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-no2-2009-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-no2-2009-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-no2-2009-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-no2-2009-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-no2-2009-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-no2-2009-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-no2-2009-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-no2-2009-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-no2-2009-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-no2-2009-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-no2-2009-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2009/no2_2009_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-no2-2009-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $NO_{2}$ en el año 2009.}
+\label{fig:map-no2-2009}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-no2-2010-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-no2-2010-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-no2-2010-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-no2-2010-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-no2-2010-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-no2-2010-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-no2-2010-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-no2-2010-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-no2-2010-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-no2-2010-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-no2-2010-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2010/no2_2010_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-no2-2010-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $NO_{2}$ en el año 2010.}
+\label{fig:map-no2-2010}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-no2-2011-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-no2-2011-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-no2-2011-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-no2-2011-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-no2-2011-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-no2-2011-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-no2-2011-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-no2-2011-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-no2-2011-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-no2-2011-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-no2-2011-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/2011/no2_2011_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-no2-2011-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $NO_{2}$ en el año 2011.}
+\label{fig:map-no2-2011}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_no2_boxplot_spanish.png}
+\caption{\scriptsize Diagramas de caja y bigotes de la media anual de concentración de $NO_{2}$ en el período 2007-2011.}
+\label{fig:box_no2_annual}
+\end{figure}
+
+\begin{figure}[H]
+
+\centering
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/anual/no2_2007_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/anual/no2_2008_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/anual/no2_2009_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/anual/no2_2010_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/anual/no2_2011_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/no2/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media anual de concentración del $NO_{2}$ en el período 2007-2011.}
+\label{fig:map-no2-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{Dióxido de nitrógeno}
+\begin{table}[H]
+\caption{\small Porcentaje de la superficie de Inglaterra y Gales contaminada de acuerdo al rango de concentración de $NO_{2}$.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{2}{>{\centering\arraybackslash}X|}}
+\hline
+ Año & (0, 40) / $\frac{\mu g}{m^{3}}$ & (40, $\infty$) / $\frac{\mu g}{m^{3}}$ \\
+ \hline
+ 2007 & 94,48 & 5,52 \\
+ \hline
+ 2008 & 94,03 & 5,97 \\
+ \hline
+ 2009 & 96,16 & 3,84 \\
+ \hline
+ 2010 & 93,87 & 6,13 \\
+ \hline
+ 2011 & 94,33 & 5,67 \\
+ \hline
+\end{tabularx}
+\label{table:annual_no2}
+\end{table}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{Dióxido de nitrógeno}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2007_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2008_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2009_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2010_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_no2_2011_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\vspace*{-3mm}
+\caption{\scriptsize Histogramas de la media anual de concentración de $NO_{2}$ en el período 2007-2011.}
+\label{fig:hist-no2-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{Dióxido de nitrógeno}
+\small
+\begin{table}[H]
+\caption{\small Coeficientes de eficiencia del suavizado del histograma para el $NO_{2}$.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{5}{>{\centering\arraybackslash}X|}}
+\hline
+ Año & $r$ & $d$ & $E$ & $d_{1}$ & $E_{1}$ \\
+ \hline
+ 2007 & 1,0000 & 0,9892 & 0,9461 & 0,8961 & 0,7681 \\
+ \hline
+ 2008 & 0,9999 & 0,0000 & -5,0220 & 0,0000 & -1,4486 \\
+ \hline
+ 2009 & 1,0000 & 1,0000 & 0,9998 & 0,9950 & 0,9899 \\
+ \hline
+ 2010 & 1,0000 & 0,9989 & 0,9954 & 0,9682 & 0,9344 \\
+ \hline
+ 2011 & 1,0000 & 0,0000 & -0,5338 & 0,0000 & -0,2383 \\
+ \hline
+\end{tabularx}
+\label{tab:efficiency_no2}
+\end{table}
+\end{frame}
+
+\subsection{Ozono}
+\begin{frame}[squeeze]
+\frametitle{Ozono}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2007_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\label{fig:box-ozone-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2008_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\label{fig:box-ozone-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2009_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\label{fig:box-ozone-2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2010_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\label{fig:box-ozone-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/ozone_2011_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\label{fig:box-ozone-2011}
+\end{subfigure}
+\caption{\scriptsize Diagramas de violín de la media mensual de concentración de $O_{3}$ en el período 2007-2011.}
+\label{fig:box-ozone-monthly}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-ozone-2007-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-ozone-2007-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-ozone-2007-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-ozone-2007-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-ozone-2007-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-ozone-2007-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-ozone-2007-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-ozone-2007-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-ozone-2007-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-ozone-2007-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-ozone-2007-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2007/ozone_2007_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-ozone-2007-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $O_{3}$ en el año 2007.}
+\label{fig:map-ozone-2007}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-ozone-2008-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-ozone-2008-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-ozone-2008-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-ozone-2008-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-ozone-2008-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-ozone-2008-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-ozone-2008-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-ozone-2008-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-ozone-2008-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-ozone-2008-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-ozone-2008-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2008/ozone_2008_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-ozone-2008-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $O_{3}$ en el año 2008.}
+\label{fig:map-ozone-2008}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-ozone-2009-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-ozone-2009-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-ozone-2009-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-ozone-2009-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-ozone-2009-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-ozone-2009-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-ozone-2009-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-ozone-2009-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-ozone-2009-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-ozone-2009-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-ozone-2009-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2009/ozone_2009_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-ozone-2009-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $O_{3}$ en el año 2009.}
+\label{fig:map-ozone-2009}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-ozone-2010-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-ozone-2010-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-ozone-2010-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-ozone-2010-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-ozone-2010-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-ozone-2010-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-ozone-2010-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-ozone-2010-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-ozone-2010-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-ozone-2010-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-ozone-2010-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2010/ozone_2010_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-ozone-2010-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $O_{3}$ en el año 2010.}
+\label{fig:map-ozone-2010}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-ozone-2011-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-ozone-2011-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-ozone-2011-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-ozone-2011-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-ozone-2011-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-ozone-2011-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-ozone-2011-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-ozone-2011-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-ozone-2011-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-ozone-2011-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-ozone-2011-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/2011/ozone_2011_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-ozone-2011-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $O_{3}$ en el año 2011.}
+\label{fig:map-ozone-2011}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_ozone_boxplot_spanish.png}
+\caption{\scriptsize Diagramas de caja y bigotes de la media anual de concentración de $O_{3}$ en el período 2007-2011.}
+\label{fig:box_ozone_annual}
+\end{figure}
+
+\begin{figure}[H]
+
+\centering
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/anual/ozone_2007_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/anual/ozone_2008_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/anual/ozone_2009_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/anual/ozone_2010_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/anual/ozone_2011_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/ozone/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media anual de concentración del $O_{3}$ en el período 2007-2011.}
+\label{fig:map-ozone-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{Ozono}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2007_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2008_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2009_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2010_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_ozone_2011_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\vspace*{-3mm}
+\caption{\scriptsize Histogramas de la media anual de concentración de $O_{3}$ en el período 2007-2011.}
+\label{fig:hist-ozone-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{Ozono}
+\small
+\begin{table}[H]
+\caption{Coeficientes de eficiencia del suavizado del histograma para el $O_{3}$.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{5}{>{\centering\arraybackslash}X|}}
+\hline
+ Año & $r$ & $d$ & $E$ & $d_{1}$ & $E_{1}$ \\
+ \hline
+ 2007 & 1,0000 & 1,0000 & 1,0000 & 0,9991 & 0,9982 \\
+ \hline
+ 2008 & 1,0000 & 0,9978 & 0,9901 & 0,9997 & 0,9994 \\
+ \hline
+ 2009 & 1,0000 & 1,0000 & 1,0000 & 0,9997 & 0,9994 \\
+ \hline
+ 2010 & 1,0000 & 1,0000 & 0,9999 & 0,9955 & 0,9910 \\
+ \hline
+ 2011 & 1,0000 & 1,0000 & 1,0000 & 0,9998 & 0,9996 \\
+ \hline
+\end{tabularx}
+\label{tab:efficiency_ozone}
+\end{table}
+\end{frame}
+
+\subsection{$PM_{10}$}
+\begin{frame}[squeeze]
+\frametitle{$PM_{10}$}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2007_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\label{fig:box-pm10-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2008_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\label{fig:box-pm10-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2009_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\label{fig:box-pm10-2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2010_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\label{fig:box-pm10-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm10_2011_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\label{fig:box-pm10-2011}
+\end{subfigure}
+\caption{\scriptsize Diagramas de violín de la media mensual de concentración de $PM_{10}$ en el período 2007-2011.}
+\label{fig:box-pm10-monthly}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm10-2007-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm10-2007-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm10-2007-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm10-2007-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm10-2007-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm10-2007-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm10-2007-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm10-2007-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm10-2007-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm10-2007-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm10-2007-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2007/pm10_2007_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm10-2007-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{10}$ en el año 2007.}
+\label{fig:map-pm10-2007}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm10-2008-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm10-2008-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm10-2008-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm10-2008-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm10-2008-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm10-2008-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm10-2008-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm10-2008-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm10-2008-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm10-2008-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm10-2008-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2008/pm10_2008_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm10-2008-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{10}$ en el año 2008.}
+\label{fig:map-pm10-2008}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm10-2009-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm10-2009-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm10-2009-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm10-2009-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm10-2009-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm10-2009-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm10-2009-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm10-2009-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm10-2009-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm10-2009-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm10-2009-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2009/pm10_2009_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm10-2009-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{10}$ en el año 2009.}
+\label{fig:map-pm10-2009}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm10-2010-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm10-2010-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm10-2010-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm10-2010-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm10-2010-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm10-2010-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm10-2010-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm10-2010-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm10-2010-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm10-2010-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm10-2010-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2010/pm10_2010_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm10-2010-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{10}$ en el año 2010.}
+\label{fig:map-pm10-2010}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm10-2011-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm10-2011-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm10-2011-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm10-2011-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm10-2011-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm10-2011-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm10-2011-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm10-2011-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm10-2011-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm10-2011-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm10-2011-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/2011/pm10_2011_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm10-2011-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{10}$ en el año 2011.}
+\label{fig:map-pm10-2011}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_pm10_boxplot_spanish.png}
+\caption{\scriptsize Diagramas de caja y bigotes de la media anual de concentración de $PM_{10}$ en el período 2007-2011.}
+\label{fig:box_pm10_annual}
+\end{figure}
+
+\begin{figure}[H]
+
+\centering
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/anual/pm10_2007_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/anual/pm10_2008_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/anual/pm10_2009_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/anual/pm10_2010_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/anual/pm10_2011_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm10/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media anual de concentración del $PM_{10}$ en el período 2007-2011.}
+\label{fig:map-pm10-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{$PM_{10}$}
+\begin{table}[H]
+\caption{Porcentaje de la superficie de Inglaterra y Gales contaminada de acuerdo al rango de concentración de $PM_{10}$.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{3}{>{\centering\arraybackslash}X|}}
+\hline
+ Año & (0, 20) / $\frac{\mu g}{m^{3}}$ & (20, 40) / $\frac{\mu g}{m^{3}}$ & (40, $\infty$) / $\frac{\mu g}{m^{3}}$ \\
+ \hline
+ 2007 & 8,16 & 91,84 & 0,00 \\
+ \hline
+ 2008 & 99,96 & 0,04 & 0,00 \\
+ \hline
+ 2009 & 99,99 & 0,01 & 0,00 \\
+ \hline
+ 2010 & 99,89 & 0,11 & 0,00 \\
+ \hline
+ 2011 & 42,33 & 57,67 & 0,00 \\
+ \hline
+\end{tabularx}
+\label{table:annual_pm10}
+\end{table}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{$PM_{10}$}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2007_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2008_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2009_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2010_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm10_2011_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\vspace*{-3mm}
+\caption{\scriptsize Histogramas de la media anual de concentración de $PM_{10}$ en el período 2007-2011.}
+\label{fig:hist-pm10-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{$PM_{10}$}
+\small
+\begin{table}[H]
+\caption{Coeficientes de eficiencia del suavizado del histograma para el $PM_{10}$.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{5}{>{\centering\arraybackslash}X|}}
+\hline
+ Año & $r$ & $d$ & $E$ & $d_{1}$ & $E_{1}$ \\
+ \hline
+ 2007 & 1,0000 & 1,0000 & 1,0000 & 0,9996 & 0,9992 \\
+ \hline
+ 2008 & 1,0000 & 1,0000 & 1,0000 & 0,9999 & 0,9997 \\
+ \hline
+ 2009 & 1,0000 & 1,0000 & 1,0000 & 0,9988 & 0,9975 \\
+ \hline
+ 2010 & 1,0000 & 1,0000 & 1,0000 & 0,9997 & 0,9995 \\
+ \hline
+ 2011 & 1,0000 & 1,0000 & 1,0000 & 0,9989 & 0,9977 \\
+ \hline
+\end{tabularx}
+\label{table:efficiency_pm10}
+\end{table}
+\end{frame}
+
+\subsection{$PM_{2,5}$}
+\begin{frame}[squeeze]
+\frametitle{$PM_{2,5}$}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2007_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\label{fig:box-pm2p5-2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2008_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\label{fig:box-pm2p5-2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2009_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\label{fig:box-pm2p5-2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2010_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\label{fig:box-pm2p5-2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/monthly/pm2p5_2011_boxplot_definitive_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\label{fig:box-pm2p5-2011}
+\end{subfigure}
+\caption{\scriptsize Diagramas de violín de la media mensual de concentración de $PM_{2,5}$ en el período 2007-2011.}
+\label{fig:box-pm2p5-monthly}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm2p5-2007-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm2p5-2007-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm2p5-2007-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm2p5-2007-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm2p5-2007-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm2p5-2007-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm2p5-2007-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm2p5-2007-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm2p5-2007-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm2p5-2007-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm2p5-2007-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2007/pm2p5_2007_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm2p5-2007-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{2,5}$ en el año 2007.}
+\label{fig:map-pm2p5-2007}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm2p5-2008-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm2p5-2008-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm2p5-2008-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm2p5-2008-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm2p5-2008-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm2p5-2008-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm2p5-2008-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm2p5-2008-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm2p5-2008-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm2p5-2008-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm2p5-2008-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2008/pm2p5_2008_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm2p5-2008-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{2,5}$ en el año 2008.}
+\label{fig:map-pm2p5-2008}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm2p5-2009-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm2p5-2009-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm2p5-2009-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm2p5-2009-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm2p5-2009-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm2p5-2009-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm2p5-2009-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm2p5-2009-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm2p5-2009-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm2p5-2009-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm2p5-2009-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2009/pm2p5_2009_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm2p5-2009-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{2,5}$ en el año 2009.}
+\label{fig:map-pm2p5-2009}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm2p5-2010-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm2p5-2010-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm2p5-2010-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm2p5-2010-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm2p5-2010-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm2p5-2010-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm2p5-2010-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm2p5-2010-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm2p5-2010-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm2p5-2010-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm2p5-2010-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2010/pm2p5_2010_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm2p5-2010-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{2,5}$ en el año 2010.}
+\label{fig:map-pm2p5-2010}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\tiny
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_1_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Enero}
+\label{fig:map-pm2p5-2011-1}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_2_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Febrero}
+\label{fig:map-pm2p5-2011-2}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_3_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Marzo}
+\label{fig:map-pm2p5-2011-3}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_4_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Abril}
+\label{fig:map-pm2p5-2011-4}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_5_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Mayo}
+\label{fig:map-pm2p5-2011-5}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_6_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Junio}
+\label{fig:map-pm2p5-2011-6}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_7_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Julio}
+\label{fig:map-pm2p5-2011-7}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_8_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Agosto}
+\label{fig:map-pm2p5-2011-8}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_9_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Septiembre}
+\label{fig:map-pm2p5-2011-9}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_10_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Octubre}
+\label{fig:map-pm2p5-2011-10}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_11_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Noviembre}
+\label{fig:map-pm2p5-2011-11}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.20\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/2011/pm2p5_2011_12_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize Diciembre}
+\label{fig:map-pm2p5-2011-12}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media mensual de concentración del $PM_{2,5}$ en el año 2011.}
+\label{fig:map-pm2p5-2011}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/boxplots/annual/annual_pm2p5_boxplot_spanish.png}
+\caption{\scriptsize Diagramas de caja y bigotes de la media anual de concentración de $PM_{2,5}$ en el período 2007-2011.}
+\label{fig:box_pm2p5_annual}
+\end{figure}
+
+\begin{figure}[H]
+
+\centering
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/anual/pm2p5_2007_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/anual/pm2p5_2008_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/anual/pm2p5_2009_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/anual/pm2p5_2010_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.18\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/anual/pm2p5_2011_anual_mapa.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.45\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/maps/media/pm2p5/color_scale.png}
+\captionsetup{labelformat=empty}
+\caption{}
+\end{subfigure}
+
+\vspace*{-7mm}
+\caption{\scriptsize Media anual de concentración del $PM_{2,5}$ en el período 2007-2011.}
+\label{fig:map-pm2p5-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{$PM_{2,5}$}
+\begin{table}[H]
+\caption{Porcentaje de la superficie de Inglaterra y Gales contaminada de acuerdo al rango de concentración de $PM_{2,5}$.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{3}{>{\centering\arraybackslash}X|}}
+\hline
+ Año & (0, 10) / $\frac{\mu g}{m^{3}}$ & (10, 20) / $\frac{\mu g}{m^{3}}$ & (20, $\infty$) / $\frac{\mu g}{m^{3}}$ \\
+ \hline
+ 2007 & 0,00 & 99,90 & 0,10 \\
+ \hline
+ 2008 & 0,00 & 99,57 & 0,43 \\
+ \hline
+ 2009 & 0,0 & 100,00 & 0,00 \\
+ \hline
+ 2010 & 0,0 & 100,00 & 0,00 \\
+ \hline
+ 2011 & 0,0 & 100,00 & 0,00 \\
+ \hline
+\end{tabularx}
+\label{table:annual_pm2p5}
+\end{table}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{$PM_{2,5}$}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2007_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2007}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2008_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2008}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2009_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2009}
+\end{subfigure}
+
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2010_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2010}
+\end{subfigure}
+%
+\begin{subfigure}[H]{0.32\textwidth}
+\includegraphics[width=\textwidth]{C:/Users/Faraday/Desktop/practicas_alvaro/images/histograms/annual/annual_pm2p5_2011_histogram_spanish.png}
+\captionsetup{labelformat=empty}
+\caption{\scriptsize 2011}
+\end{subfigure}
+
+\vspace*{-3mm}
+\caption{\scriptsize Histogramas de la media anual de concentración de $PM_{2,5}$ en el período 2007-2011.}
+\label{fig:hist-pm2p5-anual}
+\end{figure}
+\end{frame}
+
+\begin{frame}[squeeze]
+\frametitle{$PM_{2,5}$}
+\small
+\begin{table}[H]
+\caption{Coeficientes de eficiencia del suavizado del histograma para el $PM_{2,5}$.}
+\centering
+\begin{tabularx}{\textwidth}{|c| *{5}{>{\centering\arraybackslash}X|}}
+\hline
+ Año & $r$ & $d$ & $E$ & $d_{1}$ & $E_{1}$ \\
+ \hline
+ 2007 & 1,0000 & 1,0000 & 1,0000 & 0,9991 & 0,9983 \\
+ \hline
+ 2008 & 1,0000 & 0,9978 & 0,9901 & 0,9530 & 0,9015 \\
+ \hline
+ 2009 & 1,0000 & 1,0000 & 1,0000 & 0,9986 & 0,9972 \\
+ \hline
+ 2010 & 1,0000 & 1,0000 & 1,0000 & 0,9997 & 0,9994 \\
+ \hline
+ 2011 & 1,0000 & 1,0000 & 1,0000 & 0,9984 & 0,9968 \\
+ \hline
+\end{tabularx}
+\label{tab:efficiency_pm2p5}
+\end{table}
+\end{frame}
+
+\section{Conclusiones}
+\begin{frame}
+\frametitle{Conclusiones}
+\begin{itemize}
+\item<1-> Se ha podido explicar la distribución de las concentraciones de $NO_{2}$ y $O_{3}$ mes a mes durante el período 2007-2011.
+\item<2-> Esto no ha sido posible hacerlo de manera satisfactoria con el $PM_{10}$ y el $PM_{2,5}$.
+\item<3-> Se ha podido analizar la distribución y concentración anual del $NO_2$, $O_3$, $PM_{10}$ y $PM_{2,5}$ durante el período 2007-2011 y hallar el porcentaje del territorio que superan los valores límite establecidos por la OMS y la UE.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusiones}
+\begin{itemize}
+\item<1-> No ha sido posible establecer una tendencia en la evolución de la concentración de contaminantes.
+\item<2-> La mayor limitación en este trabajo ha sido el breve período de tiempo de datos para analizar.
+\end{itemize}
+\end{frame}
+
+\section{Futuras líneas de estudio}
+\begin{frame}
+\frametitle{Futuras líneas de estudio}
+\begin{itemize}
+\item<1-> Disponer de datos como los que hemos analizado durante un período de tiempo mucho más amplio.
+\item<2-> Estudiar el transporte de contaminantes y cómo afecta a sus concentraciones.
+\item<3-> Estudiar qué fracciones de la concentración de contaminantes son debidas a fuentes antropogénicas y naturales, respectivamente.
+\item<4-> Realizar estudios estadísticos de enfermedades vinculadas a exposición de estos contaminantes, impactos en los ecosistemas y actividades agrícolas, etc.
+\end{itemize}
+\end{frame}
+
+\end{document}
