@@ -10,7 +10,7 @@ def read(root, name, year):
     """
     Main function of this script, where all the other functions are called to read the files necessary to perform the
     statistical analysis.
-    :return:
+    :return: data_index, data_lon, data_lat, data_month, data_pollutant
     """
     # We generate the file's name for the pollutant and year
     file_name = 'surface_%s_%s.txt.gz' % (year, name)
@@ -51,7 +51,7 @@ def file_opening(absolute_path, name):
     analysis.
     :param absolute_path: Absolute path of the file to be opened.
     :param name: Pollutant's name
-    :return: index, lon, lat, month, day, pollutant
+    :return: data_index, data_lon, data_lat, data_month, data_pollutant
     """
 
     # We specify the size of the chunk of data loaded at one time

@@ -105,9 +105,9 @@ def ozone_counting(pollution, counter_array):
 
     # We perform the iterations to start counting
     for i in range(0, len(pollution)):
-        if pollution[i] < 100.0:
+        if pollution[i] < 50.0:
             counter_array[0] += 1
-        elif 100.0 <= pollution[i] < 120.0:
+        elif 50.0 <= pollution[i] < 65.0:
             counter_array[1] += 1
         else:
             counter_array[2] += 1
@@ -125,11 +125,11 @@ def ozone_coordinates_classification(lon, lat, pollution, classified_lon, classi
 
     # We start the iteration to classify
     for alpha in range(0, len(pollution)):
-        if pollution[alpha] < 100.0:
+        if pollution[alpha] < 50.0:
             classified_lon[0][a] = lon[alpha]
             classified_lat[0][a] = lat[alpha]
             a += 1
-        elif 100.0 <= pollution[alpha] < 120.0:
+        elif 50.0 <= pollution[alpha] < 65.0:
             classified_lon[1][b] = lon[alpha]
             classified_lat[1][b] = lat[alpha]
             b += 1

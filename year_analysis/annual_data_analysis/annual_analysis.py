@@ -5,7 +5,8 @@ import numpy as np
 
 def statistics(pollution):
     """
-    This function computes the statistical variables of the pollutant.
+    This function computes the statistical variables of the pollutant. It calculates the median, the interquartile
+    range, the Yule-Kendall index and the robust kurtosis.
     :param pollution: Mean of each pollutant per location [ug/m^3]
     :return: median, iqr, yule_kendall, robust_kurtosis
     """

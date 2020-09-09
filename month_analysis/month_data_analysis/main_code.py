@@ -28,7 +28,7 @@ def main_code():
         # Pollutant which is going to be analyzed for the five years of data collected
         name = pollutants_names[x]
         big_name = pollutant_big_name[x]
-        for y in range(0, 5):
+        for y in range(3, 5):
             # We establish the year we are analyzing
             year = years[y]
             # We establish the days we have according to the year being leap or not

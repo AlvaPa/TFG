@@ -151,14 +151,14 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     ax.set_axisbelow(True)
     # We select the range of plot
     if name == no2:
-        ax.set_ylim(0, 100)
-        ax.yaxis.set_ticks(np.arange(0, 100, 10))
+        ax.set_ylim(10, 100)
+        ax.yaxis.set_ticks(np.arange(10, 100, 10))
     elif name == ozone:
-        ax.set_ylim(0, 140)
-        ax.yaxis.set_ticks(np.arange(0, 140, 10))
+        ax.set_ylim(30, 100)
+        ax.yaxis.set_ticks(np.arange(30, 100, 10))
     elif name == pm_10:
-        ax.set_ylim(0, 45)
-        ax.yaxis.set_ticks(np.arange(0, 45, 5))
+        ax.set_ylim(7.5, 27.5)
+        ax.yaxis.set_ticks(np.arange(7.5, 27.5, 2.5))
     else:
         ax.set_ylim(0, 40)
         ax.yaxis.set_ticks(np.arange(0, 40, 5))
@@ -177,9 +177,9 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     ax.get_xaxis().set_tick_params(direction='out')
     ax.xaxis.set_ticks_position('bottom')
     ax.set_xticks(np.arange(1, len(labels) + 1))
-    ax.set_xticklabels(labels_spanish)
-    ax.set_ylabel(r'Concentración ($\frac{{\mu}g}{m^{3}}$)', size=50)
-    ax.set_xlabel('Meses', size=50)
+    ax.set_xticklabels(labels)
+    ax.set_ylabel(r'Concentration ($\frac{{\mu}g}{m^{3}}$)', size=50)
+    ax.set_xlabel('Months', size=50)
     ax.tick_params(axis='both', which='major', labelsize=36)
     ax.tick_params(axis='both', which='minor', labelsize=36)
     ax.tick_params(axis='x', rotation=45)
@@ -204,11 +204,11 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     # ax.scatter(positions_extrema, lower_extrema, marker='.', color='green', s=0.005, zorder=3)
 
     # We save the file
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_spanish.tiff'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_paper.tiff'
                 % (username, name, year), bbox_inches='tight', dpi=300)
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_spanish.png'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_paper.png'
                 % (username, name, year), bbox_inches='tight', dpi=90)
-    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_spanish.jpg'
+    plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_paper.jpg'
                 % (username, name, year), bbox_inches='tight', quality=10)
     # We close the figure
     plt.close(12)

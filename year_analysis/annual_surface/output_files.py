@@ -43,8 +43,8 @@ def ozone_output(total_surface_percentage, name, years, username):
     """"""
 
     # We generate the data frame to output
-    df = pd.DataFrame({'year': years, '(0 - 100)': total_surface_percentage[0],
-                       '(100 - 120)': total_surface_percentage[1], '(120 and more)': total_surface_percentage[2]})
+    df = pd.DataFrame({'year': years, '(0 - 45)': total_surface_percentage[0],
+                       '(45 - 60)': total_surface_percentage[1], '(60 and more)': total_surface_percentage[2]})
 
     with open(r'C:\Users\%s\Desktop\practicas_alvaro\output_data\surface\%s_surface_percentage.txt'
               % (username, name), 'w+') as file:

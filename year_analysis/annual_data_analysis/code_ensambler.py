@@ -10,11 +10,14 @@ from constants import *
 
 
 def main_code():
-    """"""
+    """
+    Main code of the annual analysis program, which ensembles all the functions made and performs the statistical
+    analysis of the data we have.
+    :return:
+    """
 
     # We initialize the variables containing the pollutant's names and years
     pollutants_names = [no2, ozone, pm_10, pm_2p5]
-    pollutant_big_name = [NO2, OZONE, PM10, PM2P5]
     years = [first_year, second_year, third_year, fourth_year, fifth_year]
 
     # We search for the root folder containing the files
@@ -24,7 +27,6 @@ def main_code():
     for x in range(0, 4):  # Number of pollutant's types to analyze
         # Pollutant which is going to be analyzed for the five years of data collected
         name = pollutants_names[x]
-        big_name = pollutant_big_name[x]
 
         print('Analyzing the', name, ' data!\n')
 
@@ -57,12 +59,12 @@ def main_code():
             annual_robust_kurtosis = np.append(annual_robust_kurtosis, round(robust_kurtosis, 4))
 
         # We plot the boxplots and histograms with the parametric curves
-        pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient = \
-            diagrams.diagrams_representation(complete_pollution, name, big_name, years)
+        determination_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient = \
+            diagrams.diagrams_representation(complete_pollution, name, years)
 
         # We write the output files
         output_files.output_and_closing(annual_median, annual_iqr, annual_yule_kendall, annual_robust_kurtosis,
-                                        pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient,
+                                        determination_coefficient, d_coefficient, e_coefficient, d_mod_coefficient,
                                         e_mod_coefficient, name, years)
 
     # We emit a beep when all the data has been analyzed
