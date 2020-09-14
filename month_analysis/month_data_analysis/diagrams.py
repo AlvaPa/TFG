@@ -6,95 +6,49 @@ import os
 from constants import *
 
 
-def diagrams_representation(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall,
-                            sorted_pollution_kurtosis, sorted_lon, sorted_lat, name, big_name, year):
-    """"""
+def diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, year):
+    """
+    Main function of the script. Its purpose is sort the pollutant's concentration by month and, after that, plot the
+    violin plots of the monthly pollution in a single graphic.
+    :param sorted_pollution: Sorted mean monthly pollution
+    :param sorted_lon: Sorted longitude
+    :param sorted_lat: Sorted latitude
+    :param name: Pollutant's name
+    :param year: Year we are analysing
+    :return: pollution, longitude, latitude, dictionary
+    """
 
     # We get the username
     username = os.getlogin()
 
+    # We sort the pollution data, the longitude and the latitude
+    pollution, longitude, latitude, dictionary = sorting_data(sorted_pollution, sorted_lon, sorted_lat)
+
+    # We compute the medians, iqr and whiskers. We also compute the positions where each component goes.
+    lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians, positions = \
+        boxplots_parameters(pollution)
+
     # We make the boxplots of the pollutants
-    pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, pollution_histogram, longitude, latitude = \
-        boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall, sorted_pollution_kurtosis,
-                sorted_lon, sorted_lat, name, big_name, year, username)
+    boxplot(dictionary, lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians,
+            positions, name, year, username)
 
-    # We compute the kernel density smoothing to plot it next to the histograms
-    # We initialize some parameters
-    h = np.array([0] * 12, dtype=float)
-    quadratic_function = np.array([[0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                   [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                   [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                   [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                   [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::]),
-                                   [0] * len(pollution[0, ::]), [0] * len(pollution[0, ::])], dtype=float)
-    # We compute the quadratic function
-    # quadratic_function = quadratic_kernel(pollution_histogram, h, quadratic_function)
-
-    # We plot the histogram and the kernel density smoothing
-    # bar_values = histogram(pollution_histogram, name, big_name, year, quadratic_function, username)
-
-    # We initialize the coefficients to determine the efficiency of the parametric curves
-    pearson_coefficient = np.array([0] * 12, dtype=float)
-    d_coefficient = np.array([0] * 12, dtype=float)
-    e_coefficient = np.array([0] * 12, dtype=float)
-    d_mod_coefficient = np.array([0] * 12, dtype=float)
-    e_mod_coefficient = np.array([0] * 12, dtype=float)
-
-    return (pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, longitude, latitude,
-            pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient)
+    return pollution, longitude, latitude
 
 
-def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall, sorted_pollution_kurtosis,
-            sorted_lon, sorted_lat, name, big_name, year, username):
+def sorting_data(sorted_pollution, sorted_lon, sorted_lat):
     """
-    This function represents the box and whiskers plot for each month of the pollution's concentration in each location.
-    Then it represents all the twelve box and whiskers plot in a single graphic to compare.
-    :param sorted_pollution:
-    :param sorted_pollution_iqr:
-    :param sorted_pollution_yule_kendall:
-    :param sorted_pollution_kurtosis:
-    :param sorted_lon:
-    :param sorted_lat:
-    :param name:
-    :param big_name:
-    :param year:
-    :param username:
-    :return:
+    This function sorts the data according to the month (all the pollution's concentration of each location January
+    are in the first place, and so on).
+    :param sorted_pollution: Sorted mean monthly pollution
+    :param sorted_lon: Sorted longitude
+    :param sorted_lat: Sorted latitude
+    :return: pollution, longitude, latitude, dictionary
     """
 
     # Initialize array for months and dictionary, also the longitude and latitude
     dictionary = {}
     # Pollution for the output
     pollution = \
-        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
-    pollution_iqr = \
-        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
-    pollution_yule_kendall = \
-        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
-    pollution_kurtosis = \
-        np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
-                  [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12)], dtype=float)
-    # Pollution for the histogram
-    pollution_histogram = \
         np.array([[0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
                   [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
                   [0] * int(len(sorted_pollution) / 12), [0] * int(len(sorted_pollution) / 12),
@@ -127,10 +81,6 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     for i in range(0, 12):
         for j in range(0, int(len(sorted_pollution) / 12)):
             pollution[i, j] = sorted_pollution[j + n]
-            pollution_iqr[i, j] = sorted_pollution_iqr[j + n]
-            pollution_yule_kendall[i, j] = sorted_pollution_yule_kendall[j + n]
-            pollution_kurtosis[i, j] = sorted_pollution_kurtosis[j + n]
-            pollution_histogram[i, j] = sorted_pollution[j + n]
             longitude[i, j] = sorted_lon[j + n]
             latitude[i, j] = sorted_lat[j + n]
             k += 1
@@ -138,7 +88,66 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
         n += k
         k = 0
         # We add the month's pollution to the dictionary to plot all the months later
-        dictionary['month_%s' % str(i + 1)] = pollution_histogram[i, ::]
+        dictionary['month_%s' % str(i + 1)] = pollution[i, ::]
+
+    return pollution, longitude, latitude, dictionary
+
+
+def boxplots_parameters(pollution):
+    """
+    This function computes all the elements necessary to plot the violin plot: the superior and inferior quartiles, the
+    medians and the upper and lower adjacent values. We also compute the positions where each violin plot will be
+    represented (in order to depict all the violin plots in a single graphic).
+    :param pollution: Sorted mean monthly pollution by month
+    :return: lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians, positions
+    """
+
+    # We initialize the adjacent values
+    upper_adjacent_value = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+    lower_adjacent_value = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+
+    # We initialize the superior quartile, the inferior quartile and the median
+    superior_quartile = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+    inferior_quartile = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+    medians = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
+
+    # We compute the positions
+    positions = np.arange(1, len(medians) + 1)
+
+    for i in range(0, len(pollution)):
+        # We compute the superior and inferior quartiles
+        sorted_data = np.sort(pollution[i])
+        superior_quartile[i] = np.quantile(sorted_data, 0.75)
+        inferior_quartile[i] = np.quantile(sorted_data, 0.25)
+        medians[i] = np.median(sorted_data)
+
+        # We compute the upper and lower adjacent values
+        upper_adjacent_value[i] = superior_quartile[i] + (superior_quartile[i] - inferior_quartile[i]) * 1.5
+        upper_adjacent_value[i] = np.clip(upper_adjacent_value[i], superior_quartile[i], sorted_data[-1])
+
+        lower_adjacent_value[i] = inferior_quartile[i] - (superior_quartile[i] - inferior_quartile[i]) * 1.5
+        lower_adjacent_value[i] = np.clip(lower_adjacent_value[i], sorted_data[0], inferior_quartile[i])
+
+    return lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians, positions
+
+
+def boxplot(dictionary, lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians,
+            positions, name, year, username):
+    """
+    This function represents the violin plots of each month of the pollution's concentration in each location in a
+    single image.
+    :param dictionary: Dictionary which holds all the mean monthly concentrations in different keys.
+    :param lower_adjacent_value: Lower adjacent value
+    :param upper_adjacent_value: Upper adjacent value
+    :param superior_quartile: Superior quartile
+    :param inferior_quartile: Inferior quartile
+    :param medians: Medians
+    :param positions: Position of each violin plot
+    :param name: Pollutant's name
+    :param year: Year we are analysing
+    :param username: Username
+    :return:
+    """
 
     # We plot the box and whiskers plot for the whole year
 
@@ -172,8 +181,6 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     # We change the name of the labels in the x axis
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
               'November', 'December']
-    labels_spanish = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
-                      'Noviembre', 'Diciembre']
     ax.get_xaxis().set_tick_params(direction='out')
     ax.xaxis.set_ticks_position('bottom')
     ax.set_xticks(np.arange(1, len(labels) + 1))
@@ -184,24 +191,12 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     ax.tick_params(axis='both', which='minor', labelsize=36)
     ax.tick_params(axis='x', rotation=45)
 
-    # We compute the medians, iqr and whiskers
-    lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians, upper_extrema, \
-    lower_extrema = boxplots_parameters(pollution)
-    positions = np.arange(1, len(medians) + 1)
-    positions_extrema = np.array([[1] * len(pollution[0]), [2] * len(pollution[0]), [3] * len(pollution[0]),
-                                  [4] * len(pollution[0]), [5] * len(pollution[0]), [6] * len(pollution[0]),
-                                  [7] * len(pollution[0]), [8] * len(pollution[0]), [9] * len(pollution[0]),
-                                  [10] * len(pollution[0]), [11] * len(pollution[0]), [12] * len(pollution[0])],
-                                 dtype=int)
     # Medians
     ax.scatter(positions, medians, marker='o', color='white', s=30, zorder=3)
     # IQR
     ax.vlines(positions, inferior_quartile, superior_quartile, color='k', linestyle='-', lw=5)
     # Whiskers
     ax.vlines(positions, lower_adjacent_value, upper_adjacent_value, color='k', linestyle='-', lw=1)
-    # Extrema
-    # ax.scatter(positions_extrema, upper_extrema, marker='.', color='green', s=0.005, zorder=3)
-    # ax.scatter(positions_extrema, lower_extrema, marker='.', color='green', s=0.005, zorder=3)
 
     # We save the file
     plt.savefig(r'C:\Users\%s\Desktop\practicas_alvaro\images\boxplots\monthly\%s_%s_boxplot_definitive_paper.tiff'
@@ -213,86 +208,4 @@ def boxplot(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendal
     # We close the figure
     plt.close(12)
 
-    return (pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, pollution_histogram, longitude,
-            latitude)
-
-
-def boxplots_parameters(pollution):
-    """"""
-
-    # We initialize the adjacent values
-    upper_adjacent_value = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
-    lower_adjacent_value = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
-
-    # We initialize the superior quartile, the inferior quartile and the median
-    superior_quartile = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
-    inferior_quartile = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
-    medians = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=float)
-
-    # We initialize the inferior and superior extreme values
-    lower_extrema = np.array([[0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
-                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
-                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
-                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0])],
-                             dtype=float)
-
-    upper_extrema = np.array([[0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
-                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
-                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0]),
-                              [0] * len(pollution[0]), [0] * len(pollution[0]), [0] * len(pollution[0])],
-                             dtype=float)
-
-    for i in range(0, len(pollution)):
-        # We compute the superior and inferior quartiles
-        sorted_data = np.sort(pollution[i])
-        superior_quartile[i] = np.quantile(sorted_data, 0.75)
-        inferior_quartile[i] = np.quantile(sorted_data, 0.25)
-        medians[i] = np.median(sorted_data)
-
-        # We compute the upper and lower adjacent values
-        upper_adjacent_value[i] = superior_quartile[i] + (superior_quartile[i] - inferior_quartile[i]) * 1.5
-        upper_adjacent_value[i] = np.clip(upper_adjacent_value[i], superior_quartile[i], sorted_data[-1])
-
-        lower_adjacent_value[i] = inferior_quartile[i] - (superior_quartile[i] - inferior_quartile[i]) * 1.5
-        lower_adjacent_value[i] = np.clip(lower_adjacent_value[i], sorted_data[0], inferior_quartile[i])
-
-        # We compute the upper and lower extrema
-        upper_extrema[i, ::] = sorted_data
-        upper_extrema[i] = np.clip(upper_extrema[i], upper_adjacent_value[i], sorted_data[-1])
-
-        lower_extrema[i] = sorted_data
-        lower_extrema[i] = np.clip(lower_extrema[i], sorted_data[0], lower_adjacent_value[i])
-
-    return (lower_adjacent_value, upper_adjacent_value, superior_quartile, inferior_quartile, medians, upper_extrema,
-            lower_extrema)
-
-
-def month_selector(i):
-    """"""
-
-    if i == 0:
-        month = 'January'
-    elif i == 1:
-        month = 'February'
-    elif i == 2:
-        month = 'March'
-    elif i == 3:
-        month = 'April'
-    elif i == 4:
-        month = 'May'
-    elif i == 5:
-        month = 'June'
-    elif i == 6:
-        month = 'July'
-    elif i == 7:
-        month = 'August'
-    elif i == 8:
-        month = 'September'
-    elif i == 9:
-        month = 'October'
-    elif i == 10:
-        month = 'November'
-    else:
-        month = 'December'
-
-    return month
+    return

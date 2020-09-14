@@ -17,7 +17,6 @@ def main_code():
 
     # We initialize the variables containing the pollutant's names and years
     pollutants_names = [no2, ozone, pm_10, pm_2p5]
-    pollutant_big_name = [NO2, OZONE, PM10, PM2P5]
     years = [first_year, second_year, third_year, fourth_year, fifth_year]
 
     # We search for the root folder containing the files
@@ -27,8 +26,7 @@ def main_code():
     for x in range(0, 4):
         # Pollutant which is going to be analyzed for the five years of data collected
         name = pollutants_names[x]
-        big_name = pollutant_big_name[x]
-        for y in range(3, 5):
+        for y in range(0, 5):
             # We establish the year we are analyzing
             year = years[y]
             # We establish the days we have according to the year being leap or not
@@ -43,24 +41,17 @@ def main_code():
             data_index, data_lon, data_lat, data_month, data_pollutant = read_files.read(root, name, year)
 
             # We sort the data and compute the statistical variables
-            sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, sorted_pollution_iqr, \
-                sorted_pollution_yule_kendall, sorted_pollution_kurtosis, monthly_median, monthly_iqr, \
+            sorted_index, sorted_lon, sorted_lat, sorted_month, sorted_pollution, monthly_median, monthly_iqr, \
                 monthly_yule_kendall, monthly_robust_kurtosis = \
                 monthly_analysis.monthly_analysis(data_index, data_lon, data_lat, data_month, data_pollutant, days)
 
             # We plot the boxplots and histograms
-            pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis, longitude, latitude, \
-                pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient, e_mod_coefficient = \
-                diagrams.diagrams_representation(sorted_pollution, sorted_pollution_iqr, sorted_pollution_yule_kendall,
-                                                 sorted_pollution_kurtosis, sorted_lon, sorted_lat, name, big_name,
-                                                 year)
+            pollution, longitude, latitude = \
+                diagrams.diagrams_representation(sorted_pollution, sorted_lon, sorted_lat, name, year)
 
             # We create the output files
-            output_files.output_and_closing(pollution, pollution_iqr, pollution_yule_kendall, pollution_kurtosis,
-                                            longitude, latitude, monthly_median, monthly_iqr,
-                                            monthly_yule_kendall, monthly_robust_kurtosis, name, year,
-                                            pearson_coefficient, d_coefficient, e_coefficient, d_mod_coefficient,
-                                            e_mod_coefficient)
+            output_files.output_and_closing(pollution, longitude, latitude, monthly_median, monthly_iqr,
+                                            monthly_yule_kendall, monthly_robust_kurtosis, name, year)
 
             # We emit a beep to show that this pollutant in the selected year has been analyzed
             winsound.Beep(2500, 500)

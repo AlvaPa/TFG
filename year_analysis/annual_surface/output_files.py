@@ -6,7 +6,13 @@ from constants import *
 
 
 def output_and_closing(total_surface_percentage, name, years):
-    """"""
+    """
+    Main function. It makes the output of the surface percentage affected by each concentration.
+    :param total_surface_percentage: Every year surface percentage affected by each interval of concentration
+    :param name: Pollutant's name
+    :param years: Years
+    :return:
+    """
 
     # We get the username
     username = os.getlogin()
@@ -25,7 +31,14 @@ def output_and_closing(total_surface_percentage, name, years):
 
 
 def no2_output(total_surface_percentage, name, years, username):
-    """"""
+    """
+    Function that makes the output of the surface percentage affected by each concentration of NO2
+    :param total_surface_percentage: Every year surface percentage affected by each interval of concentration
+    :param name: Pollutant's name
+    :param years: Years
+    :param username: Username
+    :return:
+    """
 
     # We generate the data frame to output
     df = pd.DataFrame({'years': years, '(0 - 40)': total_surface_percentage[0],
@@ -40,7 +53,14 @@ def no2_output(total_surface_percentage, name, years, username):
 
 
 def ozone_output(total_surface_percentage, name, years, username):
-    """"""
+    """
+    Function that makes the output of the surface percentage affected by each concentration of ozone
+    :param total_surface_percentage: Every year surface percentage affected by each interval of concentration
+    :param name: Pollutant's name
+    :param years: Years
+    :param username: Username
+    :return:
+    """
 
     # We generate the data frame to output
     df = pd.DataFrame({'year': years, '(0 - 45)': total_surface_percentage[0],
@@ -55,7 +75,14 @@ def ozone_output(total_surface_percentage, name, years, username):
 
 
 def pm10_output(total_surface_percentage, name, years, username):
-    """"""
+    """
+    Function that makes the output of the surface percentage affected by each concentration of PM10
+    :param total_surface_percentage: Every year surface percentage affected by each interval of concentration
+    :param name: Pollutant's name
+    :param years: Years
+    :param username: Username
+    :return:
+    """
 
     # We generate the data frame to output
     df = pd.DataFrame({'year': years, '(0 - 20)': total_surface_percentage[0],
@@ -70,7 +97,14 @@ def pm10_output(total_surface_percentage, name, years, username):
 
 
 def pm2p5_output(total_surface_percentage, name, years, username):
-    """"""
+    """
+    Function that makes the output of the surface percentage affected by each concentration of PM2.5
+    :param total_surface_percentage: Every year surface percentage affected by each interval of concentration
+    :param name: Pollutant's name
+    :param years: Years
+    :param username: Username
+    :return:
+    """
 
     # We generate the data frame to output
     df = pd.DataFrame({'year': years, '(0 - 10)': total_surface_percentage[0],

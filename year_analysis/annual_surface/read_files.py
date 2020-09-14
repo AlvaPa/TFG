@@ -10,7 +10,7 @@ def read(root, name, year):
     """
     Main function of this script, where all the other functions are called to read the files necessary to perform the
     statistical analysis.
-    :return:
+    :return: lon, lat, pollution
     """
     # We generate the file's name for the pollutant and year
     file_name = 'grid_1km_annual_%s_%s.txt' % (name, year)
@@ -51,7 +51,7 @@ def file_opening(absolute_path, name):
     analysis.
     :param absolute_path: Absolute path of the file to be opened.
     :param name: Pollutant's name
-    :return: lon, lat, pollution, standard_deviation
+    :return: lon, lat, pollution
     """
 
     # We initialize the arrays to contain the file's data
